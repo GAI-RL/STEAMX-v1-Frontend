@@ -27,6 +27,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   error = '';
   success = false;
   termsAccepted = false;
+    isGoogleLoginLoading: boolean = false;
+  sendError: string ="";
 
   constructor(
     private authService: AuthService,
@@ -50,10 +52,42 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     if (this.googleButton) {
       this.googleAuthService.initializeGoogleSignIn(
         this.googleButton.nativeElement,
-        (credential) => this.googleAuthService.handleGoogleLogin(credential)
+        (credential) => this.onGoogleCredential(credential)
       );
     }
   }
+   onGoogleCredential(credential: string): void {
+  this.isGoogleLoginLoading = true;
+  this.sendError = '';
+  this.cdr.detectChanges();
+
+  setTimeout(() => {
+    this.googleAuthService.handleGoogleLogin(credential).subscribe({
+      next: () => {
+        this.ngZone.run(() => {
+          this.isGoogleLoginLoading = false;
+          this.router.navigate(['/chat']);
+        });
+      },
+      error: (err) => {
+        this.ngZone.run(() => {
+          this.isGoogleLoginLoading = false;
+
+          // Handle offline explicitly
+          if (err.status === 0 || err.message?.includes('INTERNET_DISCONNECTED')) {
+            this.sendError = 'No internet connection. Please check your network.';
+          } else {
+            this.sendError = err.message || 'Google login failed. Please try again.';
+            console.error('Login error:', err);
+              this.cdr.detectChanges();
+
+          }
+        });
+      }
+    });
+  }, 0);
+}
+
 
   // Clear error when user starts typing
   clearError(): void {

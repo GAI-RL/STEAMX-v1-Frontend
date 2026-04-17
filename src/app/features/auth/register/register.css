@@ -121,7 +121,7 @@
 
 .error-alert svg {
   flex-shrink: 0;
-  color: #ef4444;
+  color: #a32d2d;
 }
 
 @keyframes slideInShake {
@@ -309,4 +309,73 @@
   .branding-headline p  { font-size: 0.85rem; }
   .proof-caption        { font-size: 0.78rem; }
   .stars                { font-size: 0.72rem; }
+}
+
+.google-btn-wrap {
+  position: relative;
+}
+
+
+.google-btn-wrap--busy {
+  pointer-events: none;
+}
+
+.google-button-container {
+  width: 100%;
+}
+
+
+.google-btn-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #f8f8f8;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #5f6368;
+  cursor: not-allowed;
+}
+
+.g-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #dadce0;
+  border-top-color: #4285f4;
+  border-radius: 50%;
+  animation: gspin 0.75s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes gspin {
+  to { transform: rotate(360deg); }
+}
+
+
+.error-alert--google {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: #fff4f4;
+  border: 1px solid #f5c1c1;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #a32d2d;
+}
+
+.error-dismiss {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #a32d2d;
+  font-size: 12px;
+  padding: 0;
 }

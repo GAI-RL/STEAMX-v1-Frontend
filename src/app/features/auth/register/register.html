@@ -62,7 +62,7 @@
           </div>
 
           <!-- Google -->
-          <div class="google-signin-section">
+          <!-- <div class="google-signin-section">
             <div #googleButton class="google-button-container">
               <button class="google-btn" type="button">
                 <svg width="18" height="18" viewBox="0 0 24 24">
@@ -74,7 +74,37 @@
                 Continue with Google
               </button>
             </div>
-          </div>
+          </div> -->
+
+        
+        <div class="google-signin-section">
+
+  <div class="google-btn-wrap" [class.google-btn-wrap--busy]="isGoogleLoginLoading">
+    <div #googleButton class="google-button-container"></div>
+
+    @if (isGoogleLoginLoading) {
+      <div class="google-btn-overlay">
+        <span class="g-spinner"></span>
+        <span>Signing in with Google…</span>
+      </div>
+    }
+  </div>
+
+  @if (sendError) {
+    <div class="error-alert error-alert--google" style="padding: 5px !important;">
+     
+
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+       fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="12" y1="8" x2="12" y2="12"/>
+    <line x1="12" y1="16" x2="12.01" y2="16"/>
+  </svg>
+      <span>{{ sendError }}</span>
+      <!-- <button class="error-dismiss" (click)="sendError = ''">✕</button> -->
+    </div>
+  }
+</div>
 
           <div class="divider"><span>or</span></div>
 

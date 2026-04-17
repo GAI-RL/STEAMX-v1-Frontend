@@ -53,27 +53,34 @@
     </header>
 
     <!-- Session / Auth error banner -->
-    @if (sessionError) {
-      <div class="session-error-banner" [class.session-error--auth]="sessionError === 'auth'" [class.session-error--network]="sessionError === 'network'">
-        <div class="session-error-icon">
-          @if (sessionError === 'auth') {
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          } @else {
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M18.364 5.636a9 9 0 010 12.728M15.536 8.464a5 5 0 010 7.072M5.636 5.636a9 9 0 000 12.728M8.464 8.464a5 5 0 000 7.072M12 12h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          }
-        </div>
-        <div class="session-error-text">
-          @if (sessionError === 'auth') {
-            <strong>Session expired</strong> — Your login session has expired. Redirecting to login&hellip;
-          } @else {
-            <strong>Could not load chats</strong> — Network error. Please check your connection and refresh.
-          }
-        </div>
-        @if (sessionError === 'network') {
-          <button class="session-error-refresh" (click)="loadSessions()">Retry</button>
-        }
-      </div>
+   @if (sessionError) {
+  <div class="session-error-banner"
+    [class.session-error--auth]="sessionError === 'auth'"
+    [class.session-error--network]="sessionError === 'network'"
+    [class.session-error--service]="sessionError === 'service'">
+    <div class="session-error-icon">
+      @if (sessionError === 'auth') {
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      } @else if (sessionError === 'service') {
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 8v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      } @else {
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M18.364 5.636a9 9 0 010 12.728M15.536 8.464a5 5 0 010 7.072M5.636 5.636a9 9 0 000 12.728M8.464 8.464a5 5 0 000 7.072M12 12h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      }
+    </div>
+    <div class="session-error-text">
+      @if (sessionError === 'auth') {
+        <strong>Session expired</strong> — Your login session has expired. Redirecting to login&hellip;
+      } @else if (sessionError === 'service') {
+        <strong>Service unavailable</strong> — AI service is temporarily unavailable. Please try again in a few moments.
+      } @else {
+        <strong>Could not load chats</strong> — Network error. Please check your connection and refresh.
+      }
+    </div>
+    @if (sessionError === 'network' || sessionError === 'service') {
+      <button class="session-error-refresh" (click)="loadSessions()">Retry</button>
     }
+  </div>
+}
 
     <!-- Messages -->
     <div class="messages-area" #messagesContainer>
@@ -199,6 +206,16 @@
     <!-- Input Area -->
     <div class="input-area">
       <div class="input-wrapper">
+         <div class="error-banner" *ngIf="sendErrorMessage">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+       fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="12" y1="8" x2="12" y2="12"/>
+    <line x1="12" y1="16" x2="12.01" y2="16"/>
+  </svg>
+  {{ sendErrorMessage }}
+  <button (click)="sendErrorMessage = ''">✕</button>
+</div>
         <div class="input-box" [class.focused]="inputFocused">
 
           <!-- + Button with dropdown -->
@@ -257,6 +274,7 @@
             }
           </button>
         </div>
+       
         <p class="input-hint">
           Press <kbd>Enter</kbd> to send
           <span class="separator">·</span>

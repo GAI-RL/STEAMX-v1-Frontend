@@ -217,6 +217,7 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   }
 
   private sendToSession(question: string, sessionId: string): void {
+    this.sendErrorMessage='';
     console.log('[sendToSession] Starting - Session:', sessionId, 'Question:', question);
     console.log('[sendToSession] Current messages count:', this.messages.length);
 
@@ -236,6 +237,7 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
 
     this.chatService.sendMessage(sessionId, question).subscribe({
       next: (response) => {
+        this.sendErrorMessage='';
         console.log('[sendToSession] FULL RESPONSE:', response);
         console.log('[sendToSession] RESPONSE FIGURES:', response.figures);
 

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, HostListener, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -30,18 +31,22 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   messages: ChatMessage[] = [];
   currentMessage = '';
   loading = false;
+  /** True while waiting for /api/extract after image upload (does not block textarea like `loading`). */
+  ocrLoading = false;
   loadingSessions = false;
   sidebarCollapsed = true; // Changed to true - sidebar closed by default
   inputFocused = false;
   inputMenuOpen = false;
   sessionExpired = false;
+  uploadedFileName = '';
+  uploadedFileType = '';
 
   stats = { plan: 'FREE' };
   sendError: { type: 'offline' | 'timeout' | 'server' | 'unknown'; message: string } | null = null;
   sessionError: 'auth' | 'network' | 'service' | null = null;
   private shouldScroll = false;
   private isFirstMessage = false; // Track if this is the first message in a new session
-  sendErrorMessage: string ='';
+  sendErrorMessage: string = '';
 
   constructor(
     private chatService: ChatService,
@@ -50,7 +55,8 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private sessionService: SessionService,
-  ) {}
+    private http: HttpClient
+  ) { }
 
   ngOnInit(): void {
     this.user = this.authService.currentUserValue;
@@ -78,14 +84,14 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
         if (err.status === 401 || err.status === 403) {
           this.sessionError = 'auth';
           this.cdr.detectChanges();
-           this.sessionService.triggerSessionExpired();
-        } 
-          else if (err.status === 521 ) {
-            this.sessionError = 'service';
-            this.cdr.detectChanges();
-          }else {
+          this.sessionService.triggerSessionExpired();
+        }
+        else if (err.status === 521) {
+          this.sessionError = 'service';
+          this.cdr.detectChanges();
+        } else {
           this.sessionError = 'network';
-         
+
           this.cdr.detectChanges();
         }
       }
@@ -145,7 +151,7 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
         this.cdr.detectChanges();
         // Check if it's an auth error
         if (err.status === 401 || err.status === 403) {
-           this.sessionService.triggerSessionExpired();
+          this.sessionService.triggerSessionExpired();
         }
       }
     });
@@ -163,9 +169,10 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   }
 
   sendMessage(): void {
-    if (!this.currentMessage.trim() || this.loading) return;
+    if (!this.currentMessage.trim() || this.loading || this.ocrLoading) return;
     const userMessage = this.currentMessage.trim();
     this.currentMessage = '';
+    this.clearUploadedFile();
 
     // Reset textarea height after sending
     if (this.messageInput) {
@@ -194,7 +201,7 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
           this.isFirstMessage = false;
           // Check if it's an auth error
           if (err.status === 401 || err.status === 403) {
-             this.sessionService.triggerSessionExpired();
+            this.sessionService.triggerSessionExpired();
           }
         }
       });
@@ -288,31 +295,31 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
         this.isFirstMessage = false;
         if (err.status === 401 || err.status === 403) {
           this.sessionService.triggerSessionExpired()      // ← no inline banner
-           this.cdr.detectChanges();
-         //  this.sessionService.triggerSessionExpired();
-        } 
-         else if (err.status === 404 ) {
-    this.sendErrorMessage = 'AI service is temporarily unavailable. Please try again in a few moments';
-    this.shouldScroll = true;
-  }
-   else if (err.status === 429) {
-    this.sendErrorMessage = 'You have reached your usage limit. Please try again later or upgrade your plan to continue.';
-    this.shouldScroll = true;
-  }
-   else if (err.status === 0  ) {
-             this.sendErrorMessage = 'No internet connection. Please check your network.';
-              this.shouldScroll = true;
-            }
-     else if (err.status === 521) {
-                     this.sendErrorMessage =  "Web Server is currently down. Please try again later." ;
-                     this.shouldScroll =true;
-     }
-       else if (err.name === 'TimeoutError') {
-    this.sendErrorMessage = 'The request is taking longer than expected. Please try again.';
-  }
+          this.cdr.detectChanges();
+          //  this.sessionService.triggerSessionExpired();
+        }
+        else if (err.status === 404) {
+          this.sendErrorMessage = 'AI service is temporarily unavailable. Please try again in a few moments';
+          this.shouldScroll = true;
+        }
+        else if (err.status === 429) {
+          this.sendErrorMessage = 'You have reached your usage limit. Please try again later or upgrade your plan to continue.';
+          this.shouldScroll = true;
+        }
+        else if (err.status === 0) {
+          this.sendErrorMessage = 'No internet connection. Please check your network.';
+          this.shouldScroll = true;
+        }
+        else if (err.status === 521) {
+          this.sendErrorMessage = "Web Server is currently down. Please try again later.";
+          this.shouldScroll = true;
+        }
+        else if (err.name === 'TimeoutError') {
+          this.sendErrorMessage = 'The request is taking longer than expected. Please try again.';
+        }
         else {
           //this.sendError = this.resolveErrorMessage(err);
-          this.sendErrorMessage ="Something went wrong. Please try again."
+          this.sendErrorMessage = "Something went wrong. Please try again."
           this.shouldScroll = true;
         }
         this.cdr.detectChanges();
@@ -326,16 +333,94 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   toggleInputMenu(): void { this.inputMenuOpen = !this.inputMenuOpen; }
 
   handleInputAction(action: string): void {
-    this.inputMenuOpen = false;
-    if (action === 'upload') {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.multiple = true;
-      input.accept = 'image/*,.pdf,.doc,.docx,.txt,.csv';
-      input.click();
-    }
+  this.inputMenuOpen = false;
+
+  if (action === 'upload') {
+
+    const input = document.createElement('input');
+
+    input.type = 'file';
+
+    // Allow multiple file types
+    input.accept = `
+      image/*,
+      .pdf,
+      .doc,
+      .docx,
+      .xls,
+      .xlsx,
+      .csv,
+      .txt,
+      .ppt,
+      .pptx
+    `;
+
+    // Allow multiple files if needed
+    input.multiple = true;
+
+    input.onchange = (event: any) => {
+
+      const files: FileList = event.target.files;
+
+      if (files && files.length > 0) {
+
+        Array.from(files).forEach((file: File) => {
+
+          console.log('Selected File:', file.name, file.type);
+
+          this.uploadedFileName = file.name;
+          this.uploadedFileType = file.type;
+
+          this.uploadFileToApi(file);
+        });
+
+      }
+    };
+
+    input.click();
+  }
+}
+  uploadFileToApi(file: File): void {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    this.ocrLoading = true;
+    this.cdr.detectChanges();
+
+    this.http.post<any>('http://127.0.0.1:8000/api/extract', formData)
+      .subscribe({
+        next: (response) => {
+          this.ocrLoading = false;
+
+          const raw = response?.text ?? response?.data?.text;
+          this.currentMessage = raw == null ? '' : String(raw);
+
+          this.cdr.detectChanges();
+
+          setTimeout(() => {
+            if (this.messageInput) {
+              const textarea = this.messageInput.nativeElement;
+              textarea.focus();
+              textarea.style.height = 'auto';
+              textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+            }
+          }, 0);
+
+          console.log('OCR Text:', this.currentMessage);
+        },
+        error: (error) => {
+          this.ocrLoading = false;
+          this.clearUploadedFile();
+          console.error('Upload failed', error);
+          this.cdr.detectChanges();
+        }
+      });
   }
 
+  clearUploadedFile(): void {
+    this.uploadedFileName = '';
+    this.uploadedFileType = '';
+  }
   loadSessions(silent = false): void {
     if (!silent) this.loadingSessions = true;
     this.chatService.getAllSessions().subscribe({
@@ -350,12 +435,12 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
         if (!silent) this.loadingSessions = false;
         // Check if it's an auth error
         if (err.status === 401 || err.status === 403) {
-           this.sessionService.triggerSessionExpired();
+          this.sessionService.triggerSessionExpired();
         }
-         else if (err.status === 521 || err.status === 0) {
-            this.sessionError = 'service';
-            this.cdr.detectChanges();
-          }else {
+        else if (err.status === 521 || err.status === 0) {
+          this.sessionError = 'service';
+          this.cdr.detectChanges();
+        } else {
           this.sessionError = 'network';
           this.cdr.detectChanges();
         }
@@ -373,7 +458,7 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
         console.error('Error deleting session:', err);
         // Check if it's an auth error
         if (err.status === 401 || err.status === 403) {
-           this.sessionService.triggerSessionExpired();
+          this.sessionService.triggerSessionExpired();
         }
       }
     });
@@ -414,8 +499,43 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     }, 0);
   }
 
+  hasAssistantReplyAfter(index: number): boolean {
+    return this.messages[index + 1]?.role === 'assistant';
+  }
+
+  editUserMessage(content: string): void {
+    this.currentMessage = content;
+    setTimeout(() => {
+      if (this.messageInput) {
+        const textarea = this.messageInput.nativeElement;
+        textarea.focus();
+        textarea.style.height = 'auto';
+        textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+      }
+    }, 0);
+  }
+
+  retryUserMessage(content: string): void {
+    if (this.loading || this.ocrLoading) return;
+    this.currentMessage = content;
+    this.sendMessage();
+  }
+
+  copyUserMessage(content: string): void {
+    if (!content) return;
+    navigator.clipboard?.writeText(content).catch(() => {
+      // Keep fallback minimal without adding new UI noise.
+      const temp = document.createElement('textarea');
+      temp.value = content;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+    });
+  }
+
   scrollToBottom(): void {
-    try { this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight; } catch {}
+    try { this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight; } catch { }
   }
 
   // Get count of user messages only (professional standard)
@@ -434,7 +554,7 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   }
 
   // Handle authentication errors
-   handleAuthError(): void {
+  handleAuthError(): void {
     console.log('Authentication error detected - logging out');
     this.authService.logout();
     this.router.navigate(['/login']);

@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
+import { timeout, catchError, throwError } from 'rxjs';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, HostListener, ChangeDetectorRef } from '@angular/core';
+import { environment } from '../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
@@ -384,37 +386,56 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     const formData = new FormData();
     formData.append('file', file);
 
+    const extractUrl = `${environment.ocrApiUrl}/api/extract`;
+    const ocrTimeoutMs = 120_000;
+
     this.ocrLoading = true;
+    this.sendErrorMessage = '';
     this.cdr.detectChanges();
 
-    this.http.post<any>('http://127.0.0.1:8000/api/extract', formData)
-      .subscribe({
-        next: (response) => {
-          this.ocrLoading = false;
+    console.log('[OCR] POST', extractUrl, { fileName: file.name, fileType: file.type, timeoutMs: ocrTimeoutMs });
 
-          const raw = response?.text ?? response?.data?.text;
-          this.currentMessage = raw == null ? '' : String(raw);
+    this.http.post<{ text?: string; data?: { text?: string } }>(extractUrl, formData).pipe(
+      timeout(ocrTimeoutMs),
+      catchError((error) => {
+        console.error('[OCR] Request failed', { url: extractUrl, error });
+        return throwError(() => error);
+      })
+    ).subscribe({
+      next: (response) => {
+        this.ocrLoading = false;
 
-          this.cdr.detectChanges();
+        const raw = response?.text ?? response?.data?.text;
+        this.currentMessage = raw == null ? '' : String(raw);
 
-          setTimeout(() => {
-            if (this.messageInput) {
-              const textarea = this.messageInput.nativeElement;
-              textarea.focus();
-              textarea.style.height = 'auto';
-              textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
-            }
-          }, 0);
+        console.log('[OCR] Response from', extractUrl, { textLength: this.currentMessage.length });
 
-          console.log('OCR Text:', this.currentMessage);
-        },
-        error: (error) => {
-          this.ocrLoading = false;
-          this.clearUploadedFile();
-          console.error('Upload failed', error);
-          this.cdr.detectChanges();
+        this.cdr.detectChanges();
+
+        setTimeout(() => {
+          if (this.messageInput) {
+            const textarea = this.messageInput.nativeElement;
+            textarea.focus();
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+          }
+        }, 0);
+      },
+      error: (error) => {
+        this.ocrLoading = false;
+        this.clearUploadedFile();
+
+        const isTimeout = error?.name === 'TimeoutError';
+        const status = error?.status;
+        if (isTimeout || status === 0) {
+          this.sendErrorMessage = 'File processing is taking longer than expected. Please try again.';
+        } else {
+          this.sendErrorMessage = 'Unable to process this file. Please try again.';
         }
-      });
+
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   clearUploadedFile(): void {

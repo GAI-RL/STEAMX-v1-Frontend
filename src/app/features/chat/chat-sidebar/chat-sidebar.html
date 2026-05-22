@@ -5,7 +5,12 @@
 
     <div class="sidebar-header">
       <a routerLink="/" class="sidebar-logo">
-  <img src="assets/images/logo.png" alt="STEAMX" style="height:130px; width:auto; display:block; mix-blend-mode:multiply; margin: -65px 0 -50px -20px !important;" />
+  <div class="logo-inline">
+    <div class="logo-icon-pill">
+      <img src="assets/images/logo.png" alt="STEAMX" class="logo-pill-img" />
+    </div>
+    
+  </div>
 </a>
       <button class="icon-btn" (click)="toggleSidebar.emit()" title="Close sidebar">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">

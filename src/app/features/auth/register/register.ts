@@ -4,18 +4,20 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { GoogleAuthService } from '../../../core/services/google-auth.service';
+import { CustomDropdownComponent } from '../../../shared/components/custom-dropdown/custom-dropdown.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, CustomDropdownComponent],
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
-  
+
   @ViewChild('googleButton') googleButton!: ElementRef;
 
+  // ── Existing form data ──────────────────────────
   formData = {
     full_name: '',
     email: '',
@@ -27,8 +29,52 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   error = '';
   success = false;
   termsAccepted = false;
-    isGoogleLoginLoading: boolean = false;
-  sendError: string ="";
+  isGoogleLoginLoading: boolean = false;
+  sendError: string = '';
+
+  // ── Step 2 academic data ─────────────────────────────────────
+  academicData = {
+    province: '',
+    grade: '',
+    subjectGroup: '',
+    medium: '',
+    school: '',
+    phone: ''
+  };
+
+  // ── Step 3 preference data ───────────────────────────────────
+  prefData = {
+    bio: '',
+    emailNotif: true,
+    studyReminders: true
+  };
+
+  // ── Multi-step state ─────────────────────────────────────────
+  currentStep = 1;
+  showPassword = false;
+  showConfirmPassword = false;
+  isGoogleUser = false;
+
+  subjects: string[] = [];
+
+  readonly provinces = [
+    'Punjab',
+    'Sindh',
+    'Khyber Pakhtunkhwa (KPK)',
+    'Balochistan',
+    'Gilgit-Baltistan',
+    'Azad Jammu & Kashmir (AJK)',
+    'Islamabad Capital Territory (ICT)'
+  ];
+
+  readonly grades = ['Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'];
+
+  readonly subjectMap: Record<string, string[]> = {
+    'Grade 9':  ['Science — Pre-Medical (Bio, Chem, Phy, Math)', 'Science — Pre-Engineering (CS, Chem, Phy, Math)', 'Arts / General Group'],
+    'Grade 10': ['Science — Pre-Medical (Bio, Chem, Phy, Math)', 'Science — Pre-Engineering (CS, Chem, Phy, Math)', 'Arts / General Group'],
+    'Grade 11': ['Pre-Medical (Bio, Chem, Phy)', 'Pre-Engineering (Math, Phy, CS)', 'ICS (Math, Stats, CS)', 'I.Com (Accounting, Economics)', 'Arts / Humanities'],
+    'Grade 12': ['Pre-Medical (Bio, Chem, Phy)', 'Pre-Engineering (Math, Phy, CS)', 'ICS (Math, Stats, CS)', 'I.Com (Accounting, Economics)', 'Arts / Humanities']
+  };
 
   constructor(
     private authService: AuthService,
@@ -39,7 +85,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    // Add scroll animation class
     setTimeout(() => {
       document.querySelectorAll('.animate-on-scroll').forEach(el => {
         el.classList.add('visible');
@@ -48,7 +93,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Initialize Google Sign-In button
     if (this.googleButton) {
       this.googleAuthService.initializeGoogleSignIn(
         this.googleButton.nativeElement,
@@ -56,47 +100,94 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       );
     }
   }
-   onGoogleCredential(credential: string): void {
-  this.isGoogleLoginLoading = true;
-  this.sendError = '';
-  this.cdr.detectChanges();
 
-  setTimeout(() => {
+  // ── Step navigation ──────────────────────────────────────────
+  goStep(n: number): void {
+    if (n === 2 && !this.validateStep1()) return;
+    this.currentStep = n;
+    this.error = '';
+  }
+
+  private validateStep1(): boolean {
+    if (!this.formData.full_name.trim()) {
+      this.error = 'Please enter your full name';
+      return false;
+    }
+    if (!this.formData.email.trim()) {
+      this.error = 'Please enter your email';
+      return false;
+    }
+    
+    // Only validate password for non-Google users
+    if (!this.isGoogleUser) {
+      if (this.formData.password.length < 8) {
+        this.error = 'Password must be at least 8 characters';
+        return false;
+      }
+      if (this.formData.password !== this.formData.confirm_password) {
+        this.error = 'Passwords do not match';
+        return false;
+      }
+    }
+    
+    return true;
+  }
+
+  updateSubjects(): void {
+    this.subjects = this.subjectMap[this.academicData.grade] ?? [];
+    this.academicData.subjectGroup = '';
+  }
+
+  togglePassword(field: 'pw' | 'cpw'): void {
+    if (field === 'pw') this.showPassword = !this.showPassword;
+    else this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  // ── Google auth - fills step 1 and goes to step 2 ────────────
+  onGoogleCredential(credential: string): void {
+    this.isGoogleLoginLoading = true;
+    this.sendError = '';
+    this.cdr.detectChanges();
+
     this.googleAuthService.handleGoogleLogin(credential).subscribe({
-      next: () => {
+      next: (response: any) => {
         this.ngZone.run(() => {
           this.isGoogleLoginLoading = false;
-          this.router.navigate(['/chat']);
+          
+          // Auto-fill Step 1 form with Google user data
+          if (response?.user) {
+            this.formData.full_name = response.user.full_name || response.user.name || '';
+            this.formData.email = response.user.email || '';
+            
+            // Generate dummy password for Google users
+            const dummyPassword = 'GoogleAuth_' + Math.random().toString(36).substring(2, 15);
+            this.formData.password = dummyPassword;
+            this.formData.confirm_password = dummyPassword;
+            
+            // Mark as Google user to skip password validation
+            this.isGoogleUser = true;
+          }
+          
+          // Move to Step 2 instead of navigating to chat
+          this.currentStep = 2;
+          this.error = '';
+          this.cdr.detectChanges();
         });
       },
       error: (err) => {
         this.ngZone.run(() => {
           this.isGoogleLoginLoading = false;
-
-          // Handle offline explicitly
-          if (err.status === 0 || err.message?.includes('INTERNET_DISCONNECTED')) {
-            this.sendError = 'No internet connection. Please check your network.';
-          } else {
-            this.sendError = err.message || 'Google login failed. Please try again.';
-            console.error('Login error:', err);
-              this.cdr.detectChanges();
-
-          }
+          this.sendError = err.message || 'Google login failed. Please try again.';
+          this.cdr.detectChanges();
         });
       }
     });
-  }, 0);
-}
-
-
-  // Clear error when user starts typing
-  clearError(): void {
-    if (this.error) {
-      this.error = '';
-    }
   }
 
-  // Scroll to error message
+  clearError(): void {
+    if (this.error) this.error = '';
+  }
+
   private scrollToError(): void {
     setTimeout(() => {
       const errorElement = document.querySelector('.error-alert');
@@ -106,33 +197,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     }, 100);
   }
 
+  // ── Final submit ─────────────────────────────────────────
   onSubmit() {
-    console.log('🚀 Form submitted! Starting validation...');
-    console.log('Form data:', this.formData);
-    console.log('Terms accepted:', this.termsAccepted);
-    
-    // Validation
-    if (!this.formData.full_name || !this.formData.email || !this.formData.password || !this.formData.confirm_password) {
-      this.error = 'Please fill in all fields';
-      this.cdr.detectChanges();
-      this.scrollToError();
-      return;
-    }
-
-    if (this.formData.password.length < 8) {
-      this.error = 'Password must be at least 8 characters';
-      this.cdr.detectChanges();
-      this.scrollToError();
-      return;
-    }
-
-    if (this.formData.password !== this.formData.confirm_password) {
-      this.error = 'Passwords do not match';
-      this.cdr.detectChanges();
-      this.scrollToError();
-      return;
-    }
-
     if (!this.termsAccepted) {
       this.error = 'Please agree to the Terms of Service and Privacy Policy';
       this.cdr.detectChanges();
@@ -150,7 +216,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     };
 
     this.authService.register(registerData).subscribe({
-      next: (response) => {
+      next: () => {
         this.loading = false;
         this.success = true;
         setTimeout(() => {
@@ -158,83 +224,51 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         }, 2000);
       },
       error: (err) => {
-        // Run inside Angular zone to ensure change detection
         this.ngZone.run(() => {
           this.loading = false;
-          
-          // Comprehensive error logging for debugging
+
           console.log('═══════════════════════════════════════════');
           console.log('REGISTRATION ERROR DETAILS:');
+          console.log('Full error object:', err);
+          console.log('Error status:', err.status);
+          console.log('Error body:', err.error);
           console.log('═══════════════════════════════════════════');
-          console.log('1. Full error object:', err);
-          console.log('2. Error status:', err.status);
-          console.log('3. Error statusText:', err.statusText);
-          console.log('4. Error body (err.error):', err.error);
-          console.log('5. Error detail (err.error?.detail):', err.error?.detail);
-          console.log('6. Error message (err.error?.message):', err.error?.message);
-          console.log('7. Type of detail:', typeof err.error?.detail);
-          console.log('═══════════════════════════════════════════');
-          
-          // Handle different error response formats
+
           let errorMessage = '';
-          
+
           if (err.error) {
-            // Check for detail field
             if (err.error.detail) {
               if (typeof err.error.detail === 'string') {
                 errorMessage = err.error.detail;
-              } 
-              else if (Array.isArray(err.error.detail)) {
+              } else if (Array.isArray(err.error.detail)) {
                 errorMessage = err.error.detail
                   .map((e: any) => e.msg || e.message || JSON.stringify(e))
                   .join(', ');
-              }
-              else if (typeof err.error.detail === 'object') {
+              } else if (typeof err.error.detail === 'object') {
                 errorMessage = Object.values(err.error.detail).join(', ');
               }
-            }
-            // Check for message field
-            else if (err.error.message) {
+            } else if (err.error.message) {
               errorMessage = err.error.message;
-            }
-            // Check for error field
-            else if (err.error.error) {
+            } else if (err.error.error) {
               errorMessage = err.error.error;
             }
           }
-          
-          // If still no error message, use status-based messages
+
           if (!errorMessage) {
-            if (err.status === 400) {
+            if (err.status === 400 || err.status === 409) {
               errorMessage = 'This email is already registered. Please use a different email or try logging in.';
-            }
-            else if (err.status === 409) {
-              errorMessage = 'This email is already registered. Please use a different email or try logging in.';
-            }
-            else if (err.status === 422) {
+            } else if (err.status === 422) {
               errorMessage = 'Invalid input. Please check your information and try again.';
-            }
-            else if (err.status === 0) {
+            } else if (err.status === 0) {
               errorMessage = 'Unable to connect to server. Please check your internet connection.';
-            }
-            else {
+            } else {
               errorMessage = 'Registration failed. Please try again.';
             }
           }
-          
+
           this.error = errorMessage;
-          
-          console.log('Final displayed error:', this.error);
-          console.log('Error variable set, triggering change detection...');
-          console.log('═══════════════════════════════════════════');
-          
-          // Force Angular to detect changes
           this.cdr.detectChanges();
-          
-          // Scroll to error message after a brief delay to ensure rendering
-          setTimeout(() => {
-            this.scrollToError();
-          }, 50);
+          setTimeout(() => this.scrollToError(), 50);
         });
       }
     });

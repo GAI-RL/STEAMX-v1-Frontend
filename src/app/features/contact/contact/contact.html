@@ -1,0 +1,171 @@
+<div class="contact-page">
+  <div class="contact-background">
+    <div class="mesh-gradient"></div>
+    <div class="noise-overlay"></div>
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+  </div>
+
+  <div class="contact-container">
+    <!-- Left Column - Contact Info -->
+    <div class="contact-info">
+      <a routerLink="/" class="back-home">← Back to Home</a>
+      
+      <h1 class="contact-headline">Let's Talk</h1>
+      <p class="contact-subheadline">Have questions? We're here to help.</p>
+
+      <div class="contact-details">
+        <div class="contact-detail">
+          <div class="contact-icon">📞</div>
+          <div>
+            <h4>PHONE</h4>
+            <p>+92-342-4555059</p>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <h4>EMAIL</h4>
+            <p>contact@steamx.com</p>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">📍</div>
+          <div>
+            <h4>LOCATION</h4>
+            <p>Lahore, Pakistan</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="office-hours">
+        <h3>OFFICE HOURS</h3>
+        <div class="hours-list">
+          <div class="hour-row">
+            <span>Monday – Friday</span>
+            <span>9 AM – 6 PM</span>
+          </div>
+          <div class="hour-row">
+            <span>Saturday</span>
+            <span>10 AM – 3 PM</span>
+          </div>
+          <div class="hour-row">
+            <span>Sunday</span>
+            <span>Closed</span>
+          </div>
+        </div>
+        <p class="hours-note">We typically respond within 2–4 business hours</p>
+      </div>
+
+      <div class="social-links">
+        <h3>FOLLOW US</h3>
+        <div class="social-icons">
+          <a href="#" class="social-icon facebook">📘</a>
+          <a href="#" class="social-icon instagram">📷</a>
+          <a href="#" class="social-icon twitter">🐦</a>
+          <a href="#" class="social-icon linkedin">🔗</a>
+          <a href="#" class="social-icon youtube">▶️</a>
+          <a href="#" class="social-icon whatsapp">💬</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column - Contact Form -->
+    <div class="contact-form-wrapper">
+      <div class="contact-header">
+        <h2>Send us a message</h2>
+        <p>Fill out the form below and we'll get back to you as soon as possible.</p>
+      </div>
+
+      @if (contactSuccess) {
+        <div class="success-message">
+          <div class="success-icon">✓</div>
+          <h3>Message sent successfully!</h3>
+          <p>We'll get back to you within 24 hours.</p>
+          <button class="btn-new-message" (click)="contactSuccess = false">Send another message</button>
+        </div>
+      } @else {
+        <form class="contact-form" (ngSubmit)="submitContact()">
+          <div class="form-row">
+            <div class="form-field">
+              <label>FIRST NAME *</label>
+              <input type="text" [(ngModel)]="contact.firstName" name="firstName" placeholder="John">
+            </div>
+            <div class="form-field">
+              <label>LAST NAME *</label>
+              <input type="text" [(ngModel)]="contact.lastName" name="lastName" placeholder="Doe">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label>EMAIL ADDRESS *</label>
+              <input type="email" [(ngModel)]="contact.email" name="email" placeholder="john@example.com">
+            </div>
+            <div class="form-field">
+              <label>PHONE NUMBER</label>
+              <input type="tel" [(ngModel)]="contact.phone" name="phone" placeholder="+92-342-4555059">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label>WHAT'S THIS ABOUT? *</label>
+              <select [(ngModel)]="contact.topic" name="topic">
+                <option value="">Select a topic</option>
+                <option value="general">General Inquiry</option>
+                <option value="ai">AI Exam System</option>
+                <option value="collaboration">Collaboration</option>
+                <option value="support">Technical Support</option>
+                <option value="pricing">Pricing & Plans</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label>School / Institution</label>
+              <input type="text" [(ngModel)]="contact.school" name="school" placeholder="Your school name">
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>SUBJECT</label>
+            <input type="text" [(ngModel)]="contact.subject" name="subject" placeholder="Brief description of your inquiry">
+          </div>
+
+          <div class="form-field">
+            <label>YOUR MESSAGE *</label>
+            <textarea [(ngModel)]="contact.message" name="message" rows="5" placeholder="Tell us more about how we can help you..."></textarea>
+            <div class="char-counter">{{ contact.message.length }} / 1000</div>
+          </div>
+
+          @if (contactError) {
+            <div class="form-error">
+              {{ contactError }}
+            </div>
+          }
+
+          <div class="form-security">
+            <span>🔒 Your info is 100% secure & private</span>
+          </div>
+
+          <button type="submit" class="btn-submit" [disabled]="contactLoading">
+            @if (contactLoading) {
+              <span class="spinner"></span>
+              Sending...
+            } @else {
+              Send Message →
+            }
+          </button>
+        </form>
+      }
+
+      <div class="social-reach">
+        <h4>OR REACH US ON SOCIAL MEDIA</h4>
+        <div class="social-buttons">
+          <a href="#" class="social-btn whatsapp">💬 Chat on WhatsApp</a>
+          <a href="#" class="social-btn twitter">🐦 DM on Twitter/X</a>
+          <a href="#" class="social-btn linkedin">🔗 Message on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

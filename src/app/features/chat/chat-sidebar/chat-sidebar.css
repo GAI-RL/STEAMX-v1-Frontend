@@ -390,3 +390,55 @@
   .chat-sidebar.collapsed { width: 0; border-right: none; }
   .collapsed-strip { display: none; }
 }
+/* ── Option 2: Horizontal inline logo ── */
+.sidebar-logo {
+  text-decoration: none;
+  display: block;
+}
+
+.logo-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon-pill {
+  width: 65px;
+  height: 65px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.logo-pill-img {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+}
+
+.logo-text-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.logo-name {
+  font-size: 1rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #00687a 0%, #008a9e 50%, #00a6bd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.logo-tagline {
+  font-size: 0.68rem;
+  color: #7aaab3;
+  font-weight: 500;
+  line-height: 1;
+}

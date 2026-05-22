@@ -1,53 +1,48 @@
 <div class="landing-page">
 
-<!-- ==================== HERO SECTION ==================== -->
+<!-- ==================== HERO SECTION - STEAMX STYLE ==================== -->
 <section id="hero" class="hero-section">
   <div class="hero-glow"></div>
+  <div class="floating-orb-hero"></div>
+  <div class="floating-orb-hero-2"></div>
   
   <div class="container">
     <div class="hero-wrapper">
   
-      <!-- Main headline - Conversion optimized with animation -->
-      <h1 class="hero-headline scroll-fade-in-up stagger-1">
-        Learn Anything
-        <span class="headline-break">Understand Everything</span>
-      </h1>
+      <!-- Headline - Your Text -->
+      <div class="hero-headlines">
+        <h2 class="hero-line-2">Learn Anything</h2>
+        <h3 class="hero-line-3">Understand Everything</h3>
+      </div>
       
       <!-- Subheadline -->
-      <p class="hero-subheadline scroll-fade-in-up stagger-2">
-           Mastering Science, Technology, Engineering, Arts, and Mathematics Through eXplainability </p>
+      <p class="hero-subheadline">
+        Mastering Science, Technology, Engineering, Arts, and<br> Mathematics Through eXplainability
+      </p>
       
-      <!-- CTA Buttons -->
-      <div class="hero-actions scroll-fade-in-up stagger-3">
-        <a routerLink="/login" class="btn-hero-primary">
-          <span class="btn-text">Get started free</span>
-          <span class="btn-shine"></span>
+      <!-- CTA Buttons (Contact button removed) -->
+      <div class="hero-actions">
+        <a routerLink="/register" class="btn-hero-primary">
+          Start for Free
         </a>
-        <a href="#demo" class="btn-hero-secondary">
-          Watch in action
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="btn-icon">
-            <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <a href="#features" class="btn-hero-secondary" (click)="scrollToSection('features')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="play-icon">
+            <polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/>
           </svg>
+          Watch
         </a>
       </div>
       
-      <!-- Trust indicators -->
-      <div class="hero-trust scroll-fade-in-up stagger-4">
-        <div class="trust-stats">
-          <div class="trust-item">
-            <span class="trust-number">50,000+</span>
-            <span class="trust-label">active learners</span>
+      <!-- Stats Section - Colorful Avatars -->
+      <div class="hero-stats">
+        <div class="stats-avatars">
+          <div class="avatar-stack">
+            <span class="avatar av1">AM</span>
+            <span class="avatar av2">SK</span>
+            <span class="avatar av3">HA</span>
+            <span class="avatar av4">ZR</span>
           </div>
-          <div class="trust-divider"></div>
-          <div class="trust-item">
-            <span class="trust-number">5M+</span>
-            <span class="trust-label">questions answered</span>
-          </div>
-          <div class="trust-divider"></div>
-          <div class="trust-item">
-            <div class="trust-stars">★★★★★</div>
-            <span class="trust-label">4.9 average rating</span>
-          </div>
+          <p class="stats-text"><strong>145+ students</strong> across Pakistan trust STEAMX</p>
         </div>
       </div>
       
@@ -55,357 +50,324 @@
   </div>
 </section>
 
- <!-- ==================== FEATURES SECTION - 3 CARDS ONLY ==================== -->
+<!-- ==================== MOVING MARQUEE STRIP ==================== -->
+<div class="marquee-section">
+  <div class="marquee-wrapper">
+    <div class="marquee-track">
+      <div class="marquee-item">
+        <span class="marquee-icon color1">✦</span>
+        <span>Punjab Board Aligned</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color2">✦</span>
+        <span>Sindh Board Aligned</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color3">✦</span>
+        <span>KPK Board Aligned</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color4">✦</span>
+        <span>Federal Board Aligned</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color5">✦</span>
+        <span>AI-Powered Assessments</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color6">✦</span>
+        <span>FERPA & COPPA Compliant</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color7">✦</span>
+        <span>99% Platform Uptime</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color8">✦</span>
+        <span>432+ Questions Generated</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color1">✦</span>
+        <span>Punjab Board Aligned</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color2">✦</span>
+        <span>Sindh Board Aligned</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color3">✦</span>
+        <span>KPK Board Aligned</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color4">✦</span>
+        <span>Federal Board Aligned</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color5">✦</span>
+        <span>AI-Powered Assessments</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color6">✦</span>
+        <span>FERPA & COPPA Compliant</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color7">✦</span>
+        <span>99% Platform Uptime</span>
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-icon color8">✦</span>
+        <span>432+ Questions Generated</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== FEATURES SECTION ==================== -->
 <section id="features" class="section features-section">
   <div class="container">
-    
-    <!-- Section Header -->
     <div class="section-header animate-on-scroll">
-      <h2 class="section-title">Built for how you actually learn</h2>
-      <p class="section-subtitle">
-        Powerful AI capabilities designed specifically for students
-      </p>
+      <h2 class="section-title">Built for how you <span class="highlight-text">actually learn</span></h2>
+      <p class="section-subtitle">Powerful AI capabilities designed specifically for students</p>
     </div>
 
-    <!-- 3 Feature Cards Grid -->
-    <div class="features-grid">
-      
-      <!-- Feature 1 -->
-      <div class="feature-card animate-on-scroll stagger-1">
-        <div class="feature-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-          </svg>
-        </div>
-        <h3 class="feature-card-title">Instant Explanations</h3>
-        <p class="feature-card-description">Get clear, step-by-step answers to any question in seconds. No waiting, no confusion.</p>
-      </div>
-
-      <!-- Feature 2 -->
-      <div class="feature-card animate-on-scroll stagger-2">
-        <div class="feature-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-            <polyline points="21 15 16 10 5 21"></polyline>
-          </svg>
-        </div>
-        <h3 class="feature-card-title">Visual Learning</h3>
-        <p class="feature-card-description">Upload images and get instant help understanding diagrams, charts, and visual concepts.</p>
-      </div>
-
-      <!-- Feature 3 -->
-      <div class="feature-card animate-on-scroll stagger-3">
-        <div class="feature-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 3l7 17 2-7 7-2L3 3z"></path>
-
-          </svg>
-        </div>
-        <h3 class="feature-card-title">Easy to Use</h3>
-        <p class="feature-card-description">Simple, distraction-free interface designed for fast and focused learning.</p>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-  <!-- ==================== HOW IT WORKS SECTION ==================== -->
-<section id="how-it-works" class="section how-section">
-  <div class="container">
-    
-    <!-- Section Header -->
-    <div class="section-header animate-on-scroll">
-      <h2 class="section-title">Get Started in 3 Easy Steps</h2>
-      <p class="section-subtitle">From signup to success in under a minute</p>
-    </div>
-
-    <!-- Vertical Steps -->
-    <div class="steps-vertical">
-      
-      <!-- Vertical Line -->
-      <div class="steps-line"></div>
-
-      <!-- Step 1 -->
-      <div class="step-vertical animate-on-scroll stagger-1">
-        <div class="step-number-circle">01</div>
-        <div class="step-content-block">
-          <h3 class="step-heading">Sign up instantly</h3>
-          <p class="step-text">Create your account and start learning immediately.</p>
-        </div>
-      </div>
-
-      <!-- Step 2 -->
-      <div class="step-vertical animate-on-scroll stagger-2">
-        <div class="step-number-circle">02</div>
-        <div class="step-content-block">
-          <h3 class="step-heading">Ask naturally</h3>
-          <p class="step-text">Get clear, step-by-step explanations in seconds.</p>
-        </div>
-      </div>
-
-      <!-- Step 3 -->
-      <div class="step-vertical animate-on-scroll stagger-3">
-        <div class="step-number-circle">03</div>
-        <div class="step-content-block">
-          <h3 class="step-heading">Learn continuously</h3>
-          <p class="step-text">Track progress and improve with personalized guidance.</p>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Bottom CTA -->
-    <div class="steps-cta animate-on-scroll">
-      <h3 class="steps-cta-title">Ready to transform your learning?</h3>
-      <p class="steps-cta-text">Join 50,000+ students learning smarter with STEAMX</p>
-      <a routerLink="/login" class="btn-steps-primary">
-        Start learning free
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-    </div>
-
-  </div>
-</section>
-
-  <!-- ==================== TESTIMONIALS SECTION ==================== -->
-  <section id="testimonials" class="section testimonials-section">
-    <div class="container">
-      <div class="section-header animate-on-scroll">
-        <div class="section-badge">
-          <span class="badge-dot"></span>
-          <span>Student Success Stories</span>
-        </div>
-        <h2 class="section-title">Loved by Thousands</h2>
-        <p class="section-subtitle">Real stories from real students achieving real results</p>
-      </div>
-
-      <div class="testimonials-carousel">
-        <button class="testimonial-nav-btn prev" (click)="previousTestimonial()">
-          <span>‹</span>
-        </button>
-
-        <div class="testimonial-wrapper">
-          <div class="testimonial-track" [style.transform]="'translateX(-' + (currentTestimonial * 100) + '%)'">
-            @for (testimonial of testimonials; track testimonial.name) {
-              <div class="testimonial-slide">
-                <div class="testimonial-card card">
-                  <div class="testimonial-header">
-                    <img [src]="testimonial.avatar" [alt]="testimonial.name" class="testimonial-avatar">
-                    <div class="testimonial-info">
-                      <h4>{{ testimonial.name }}</h4>
-                      <p class="testimonial-role">{{ testimonial.role }}</p>
-                      <div class="testimonial-platform">
-                        <span class="verified-badge">✓</span>
-                        {{ testimonial.platform }}
-                      </div>
-                    </div>
-                    <div class="testimonial-rating">
-                      @for (star of [1,2,3,4,5]; track star) {
-                        <span class="star">★</span>
-                      }
-                    </div>
-                  </div>
-                  
-                  <div class="testimonial-content">
-                    <div class="quote-icon">"</div>
-                    <p class="testimonial-text">{{ testimonial.text }}</p>
-                  </div>
-                  
-                  
-                </div>
-              </div>
-            }
+    <div class="features-container">
+      <div class="features-set" [class.active]="currentFeatureSet === 0" [class.fade-out]="currentFeatureSet !== 0">
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Instant Explanations</h3>
+            <p class="feature-card-description">Get clear, step-by-step answers to any question in seconds. No waiting, no confusion.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Smart Study Planner</h3>
+            <p class="feature-card-description">Enter your exam date and create a day-by-day study schedule balancing all subjects — no panic before exams.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Real-Time Analytics</h3>
+            <p class="feature-card-description">After every test, receive detailed reports showing strong areas, weak topics, and improvement trends.</p>
           </div>
         </div>
-
-        <button class="testimonial-nav-btn next" (click)="nextTestimonial()">
-          <span>›</span>
-        </button>
       </div>
 
-      
+      <div class="features-set" [class.active]="currentFeatureSet === 1" [class.fade-out]="currentFeatureSet !== 1">
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Visual Learning</h3>
+            <p class="feature-card-description">Upload images and get instant help understanding diagrams, charts, and visual concepts.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4v16h16V4H4zm2 2h12v12H6V6zm2 2v8h8V8H8zm2 2h4v4h-4v-4z"></path>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Past Papers Archive</h3>
+            <p class="feature-card-description">Access 10 years of past papers for all boards. AI identifies frequently repeated questions.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Easy to Use</h3>
+            <p class="feature-card-description">Simple, distraction-free interface designed for fast and focused learning.</p>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
 
-  
+    <div class="feature-dots">
+      <button class="dot" [class.active]="currentFeatureSet === 0" (click)="goToFeatureSet(0)"></button>
+      <button class="dot" [class.active]="currentFeatureSet === 1" (click)="goToFeatureSet(1)"></button>
+    </div>
+  </div>
+</section>
 
-  <!-- ==================== PRICING SECTION ==================== -->
+<!-- ==================== HOW IT WORKS SECTION + DASHBOARD ==================== -->
+<section id="how-it-works" class="section how-section">
+  <div class="container">
+    <div class="how-it-works-grid">
+      <div class="left-column">
+        <div class="section-header-left animate-on-scroll">
+          <h2 class="section-title-left">Get Started in <span class="highlight-text">3 Easy Steps</span></h2>
+          <p class="section-subtitle-left">From signup to success in under a minute</p>
+        </div>
+        <div class="steps-vertical-wrapper">
+          <div class="steps-vertical">
+            <div class="steps-line"></div>
+            <div class="step-vertical animate-on-scroll stagger-1">
+              <div class="step-number-circle">01</div>
+              <div class="step-content-block">
+                <h3 class="step-heading">Sign up instantly</h3>
+                <p class="step-text">Create your account and start learning immediately.</p>
+              </div>
+            </div>
+            <div class="step-vertical animate-on-scroll stagger-2">
+              <div class="step-number-circle">02</div>
+              <div class="step-content-block">
+                <h3 class="step-heading">Ask naturally</h3>
+                <p class="step-text">Get clear, step-by-step explanations in seconds.</p>
+              </div>
+            </div>
+            <div class="step-vertical animate-on-scroll stagger-3">
+              <div class="step-number-circle">03</div>
+              <div class="step-content-block">
+                <h3 class="step-heading">Learn continuously</h3>
+                <p class="step-text">Track progress and improve with personalized guidance.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-wrapper animate-on-scroll stagger-2">
+        <div class="db">
+          <div class="db-titlebar">
+            <div class="db-dot" style="background:#FF5F57;"></div>
+            <div class="db-dot" style="background:#FEBC2E;"></div>
+            <div class="db-dot" style="background:#28C840;"></div>
+            <span class="db-title">STEAMX — Student Dashboard</span>
+          </div>
+          <div class="db-body">
+            <div class="stat-row">
+              <div class="stat-card"><div class="stat-val v-teal" id="avg-score">0%</div><div class="stat-label">Average Score</div></div>
+              <div class="stat-card"><div class="stat-val v-blue" id="tests-taken">0</div><div class="stat-label">Tests Taken</div></div>
+              <div class="stat-card"><div class="stat-val v-amber">2nd</div><div class="stat-label">Class Rank</div></div>
+            </div>
+            <div class="progress-panel">
+              <div class="db-section-header"><span class="db-section-title">Subject Progress</span><span class="db-section-badge">This Month</span></div>
+              <div class="bar-row"><span class="bar-label">Mathematics</span><div class="bar-track"><div class="bar-fill" data-w="88" style="background:#00778a;"></div></div><span class="bar-pct" style="color:#00778a;">88%</span></div>
+              <div class="bar-row"><span class="bar-label">Physics</span><div class="bar-track"><div class="bar-fill" data-w="72" style="background:#0099b8;"></div></div><span class="bar-pct" style="color:#0099b8;">72%</span></div>
+              <div class="bar-row"><span class="bar-label">Chemistry</span><div class="bar-track"><div class="bar-fill" data-w="65" style="background:#d4820a;"></div></div><span class="bar-pct" style="color:#d4820a;">65%</span></div>
+              <div class="bar-row"><span class="bar-label">Biology</span><div class="bar-track"><div class="bar-fill" data-w="79" style="background:#2563a8;"></div></div><span class="bar-pct" style="color:#2563a8;">79%</span></div>
+              <div class="bar-row"><span class="bar-label">English</span><div class="bar-track"><div class="bar-fill" data-w="91" style="background:#00778a;opacity:0.7;"></div></div><span class="bar-pct" style="color:#00778a;">91%</span></div>
+            </div>
+            <div class="panel-row">
+              <div class="panel">
+                <div class="db-section-header"><span class="db-section-title">Leaderboard</span><span class="db-section-badge">This Week</span></div>
+                <div class="lb-item"><div class="rank-badge" style="background:rgba(212,130,10,0.15);color:#d4820a;">1</div><div class="avatar" style="background:rgba(212,130,10,0.12);color:#d4820a;">AM</div><div style="flex:1;"><div class="lb-name">Ali Murtaza</div><div class="lb-city">Lahore</div></div><span class="lb-score" style="color:#d4820a;">94%</span></div>
+                <div class="lb-item you"><div class="rank-badge" style="background:rgba(0,119,138,0.15);color:#00778a;">2</div><div class="avatar" style="background:rgba(0,119,138,0.12);color:#00778a;">YOU</div><div style="flex:1;"><div class="lb-name" style="color:#00778a;">You — 2nd Place</div><div class="lb-city" style="color:#00a855;">↑ +5% this week</div></div><span class="lb-score" style="color:#00778a;">88%</span></div>
+                <div class="lb-item"><div class="rank-badge" style="background:rgba(37,99,168,0.12);color:#2563a8;">3</div><div class="avatar" style="background:rgba(37,99,168,0.1);color:#2563a8;">SK</div><div style="flex:1;"><div class="lb-name">Sara Khan</div><div class="lb-city">Karachi</div></div><span class="lb-score" style="color:#4a7a84;">82%</span></div>
+                <div class="lb-item"><div class="rank-badge" style="background:#e8f4f6;color:#7aacb4;">4</div><div class="avatar" style="background:#e8f4f6;color:#7aacb4;">HA</div><div style="flex:1;"><div class="lb-name" style="color:#4a7a84;">Hamza Aslam</div><div class="lb-city">Islamabad</div></div><span class="lb-score" style="color:#7aacb4;">76%</span></div>
+              </div>
+              <div class="panel">
+                <div class="db-section-header"><span class="db-section-title">Recent Activity</span><span class="db-section-badge">Today</span></div>
+                <div class="activity-row"><div class="act-icon" style="background:rgba(0,119,138,0.1);">📐</div><div><div class="act-text">Completed <span style="color:#00778a;font-weight:500;">Trigonometry Quiz</span></div><div class="act-time">2 hours ago · Score: 92%</div></div></div>
+                <div class="activity-row"><div class="act-icon" style="background:rgba(0,153,184,0.1);">⚗️</div><div><div class="act-text">Practiced <span style="color:#0099b8;font-weight:500;">Organic Chemistry</span></div><div class="act-time">Yesterday · 18 questions</div></div></div>
+                <div class="activity-row"><div class="act-icon" style="background:rgba(212,130,10,0.1);">⚡</div><div><div class="act-text">Solved <span style="color:#d4820a;font-weight:500;">Newton's Laws</span> set</div><div class="act-time">2 days ago · Score: 85%</div></div></div>
+                <div class="activity-row"><div class="act-icon" style="background:rgba(37,99,168,0.1);">📝</div><div><div class="act-text">Took <span style="color:#2563a8;font-weight:500;">English Grammar</span> test</div><div class="act-time">3 days ago · Score: 91%</div></div></div>
+                <div class="activity-row"><div class="act-icon" style="background:rgba(0,119,138,0.08);">🔬</div><div><div class="act-text">Studied <span style="color:#00778a;font-weight:500;">Cell Biology</span> chapter</div><div class="act-time">4 days ago · 32 min</div></div></div>
+              </div>
+            </div>
+            <div class="footer-row">
+              <div class="mini-card"><div class="mini-label">Study Streak</div><div class="mini-val" style="color:#d4820a;">14 Days 🔥</div><div class="streak-dots"><div class="streak-dot" style="background:#00778a;"></div><div class="streak-dot" style="background:#00778a;"></div><div class="streak-dot" style="background:#00778a;"></div><div class="streak-dot" style="background:#00778a;"></div><div class="streak-dot" style="background:#00778a;"></div><div class="streak-dot" style="background:#00778a;"></div><div class="streak-dot" style="background:#d4eaed;"></div></div><div class="mini-sub">Keep it going!</div></div>
+              <div class="mini-card"><div class="mini-label">Questions Solved</div><div class="mini-val" style="color:#00778a;" id="q-count">0</div><div class="mini-sub">+47 this week</div><div style="margin-top:4px;height:4px;background:#d4eaed;border-radius:2px;overflow:hidden;"><div id="q-bar" style="height:100%;background:#00778a;border-radius:2px;width:0;"></div></div></div>
+              <div class="mini-card"><div class="mini-label">Board</div><div class="mini-val" style="color:#00778a;">Punjab</div><div class="mini-sub">Grade 11 · Science</div><div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap;"><span style="font-size:7px;padding:2px 6px;border-radius:8px;background:rgba(0,119,138,0.1);color:#00778a;">Physics</span><span style="font-size:7px;padding:2px 6px;border-radius:8px;background:rgba(0,153,184,0.1);color:#0099b8;">Chemistry</span><span style="font-size:7px;padding:2px 6px;border-radius:8px;background:rgba(37,99,168,0.1);color:#2563a8;">Biology</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps-cta animate-on-scroll">
+      <h3 class="steps-cta-title">Ready to <span class="highlight-teal">Score Higher</span>?</h3>
+      <p class="steps-cta-text">Start for free today — no credit card required. Generate your first AI board-style test in under 2 minutes.</p>
+      <div class="cta-buttons"><a routerLink="/register" class="btn-cta-primary">Start for Free Today →</a></div>
+      <div class="cta-features">
+        <div class="feature-item"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#00687a" stroke-width="2"><path d="M16.667 5L7.5 14.167L3.333 10"/></svg><span>No credit card required</span></div>
+        <div class="feature-item"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#27ae60" stroke-width="2"><path d="M16.667 5L7.5 14.167L3.333 10"/></svg><span>Free plan always available</span></div>
+        <div class="feature-item"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#e67e22" stroke-width="2"><path d="M16.667 5L7.5 14.167L3.333 10"/></svg><span>Punjab, Sindh, KPK & Federal boards</span></div>
+      </div>
+      <div class="cta-footer"><a href="#" class="schedule-link">Schedule a Demo →</a></div>
+      <div class="cta-trust-badge"><span>JOIN 152+ STUDENTS ACROSS PAKISTAN</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TESTIMONIALS SECTION ==================== -->
+<section id="testimonials" class="section testimonials-section">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><span class="badge-dot"></span><span>Student Success Stories</span></div>
+      <h2 class="section-title">Loved by Thousands</h2>
+      <p class="section-subtitle">Real stories from real students achieving real results</p>
+    </div>
+    <div class="testimonials-carousel">
+      <button class="testimonial-nav-btn prev" (click)="previousTestimonial()"><span>‹</span></button>
+      <div class="testimonial-wrapper">
+        <div class="testimonial-track" [style.transform]="'translateX(-' + (currentTestimonial * 100) + '%)'">
+          @for (testimonial of testimonials; track testimonial.name) {
+            <div class="testimonial-slide">
+              <div class="testimonial-card card">
+                <div class="testimonial-header">
+                  <img [src]="testimonial.avatar" [alt]="testimonial.name" class="testimonial-avatar">
+                  <div class="testimonial-info">
+                    <h4>{{ testimonial.name }}</h4>
+                    <p class="testimonial-role">{{ testimonial.role }}</p>
+                    <div class="testimonial-platform"><span class="verified-badge">✓</span>{{ testimonial.platform }}</div>
+                  </div>
+                  <div class="testimonial-rating">@for (star of [1,2,3,4,5]; track star) {<span class="star">★</span>}</div>
+                </div>
+                <div class="testimonial-content"><div class="quote-icon">"</div><p class="testimonial-text">{{ testimonial.text }}</p></div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+      <button class="testimonial-nav-btn next" (click)="nextTestimonial()"><span>›</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PRICING SECTION ==================== -->
 <section id="pricing" class="section pricing-section">
   <div class="container">
-    
-    <!-- Section Header -->
     <div class="section-header animate-on-scroll">
       <h2 class="section-title">Choose Your Learning Plan</h2>
       <p class="section-subtitle">Start free. Upgrade only when you need more power.</p>
     </div>
-
-    <!-- Pricing Grid -->
     <div class="pricing-grid">
-      
-      <!-- Free Plan -->
       <div class="pricing-card animate-on-scroll stagger-1">
-        <div class="card-header">
-          <h3 class="plan-name">Free</h3>
-          <div class="plan-price">
-            <span class="price-amount">$0</span>
-            <span class="price-period">/month</span>
-          </div>
-          <p class="plan-description">Perfect for trying out STEAMX</p>
-        </div>
-
-        <ul class="feature-list">
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>100 questions per month</span>
-          </li>
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Standard explanations</span>
-          </li>
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Web access</span>
-          </li>
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Community support</span>
-          </li>
-        </ul>
-
-        <a routerLink="/login" class="btn-pricing btn-outline">
-          Start Free
-        </a>
+        <div class="card-header"><h3 class="plan-name">Free</h3><div class="plan-price"><span class="price-amount">$0</span><span class="price-period">/month</span></div><p class="plan-description">Perfect for trying out STEAMX</p></div>
+        <ul class="feature-list"><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>100 questions per month</span></li><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>Standard explanations</span></li><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>Web access</span></li><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>Community support</span></li></ul>
+        <a routerLink="/login" class="btn-pricing btn-outline">Start Free</a>
       </div>
-
-      <!-- Pro Plan -->
       <div class="pricing-card pricing-featured animate-on-scroll stagger-2">
         <div class="popular-badge">Most Popular</div>
-        
-        <div class="card-header">
-          <h3 class="plan-name">Pro</h3>
-          <div class="plan-price">
-            <span class="price-amount">$9.99</span>
-            <span class="price-period">/month</span>
-          </div>
-          <p class="plan-description">Best for serious learners</p>
-        </div>
-
-        <ul class="feature-list">
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Unlimited questions</span>
-          </li>
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Faster responses</span>
-          </li>
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Advanced explanations</span>
-          </li>
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Upload images & PDFs</span>
-          </li>
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Priority support</span>
-          </li>
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Access anywhere</span>
-          </li>
-        </ul>
-
-        <a routerLink="/login" class="btn-pricing btn-primary">
-          Start 7-Day Free Trial
-        </a>
+        <div class="card-header"><h3 class="plan-name">Pro</h3><div class="plan-price"><span class="price-amount">$9.99</span><span class="price-period">/month</span></div><p class="plan-description">Best for serious learners</p></div>
+        <ul class="feature-list"><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>Unlimited questions</span></li><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>Faster responses</span></li><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>Advanced explanations</span></li><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>Upload images & PDFs</span></li><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>Priority support</span></li><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>Access anywhere</span></li></ul>
+        <a routerLink="/login" class="btn-pricing btn-primary">Start 7-Day Free Trial</a>
       </div>
-
-      <!-- Enterprise Plan -->
       <div class="pricing-card animate-on-scroll stagger-3">
-        <div class="card-header">
-          <h3 class="plan-name">Enterprise</h3>
-          <div class="plan-price">
-            <span class="price-amount">Custom</span>
-          </div>
-          <p class="plan-description">For schools and organizations</p>
-        </div>
-
-        <ul class="feature-list">
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Everything in Pro</span>
-          </li>
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Team management</span>
-          </li>
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Admin dashboard</span>
-          </li>
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Usage analytics</span>
-          </li>
-          <li>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Dedicated support</span>
-          </li>
-        </ul>
-
-        <a href="mailto:sales@steamx.com" class="btn-pricing btn-outline">
-          Contact Sales
-        </a>
+        <div class="card-header"><h3 class="plan-name">Enterprise</h3><div class="plan-price"><span class="price-amount">Custom</span></div><p class="plan-description">For schools and organizations</p></div>
+        <ul class="feature-list"><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>Everything in Pro</span></li><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>Team management</span></li><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>Admin dashboard</span></li><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>Usage analytics</span></li><li><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.667 5L7.5 14.167L3.333 10" stroke="currentColor" stroke-width="2"/></svg><span>Dedicated support</span></li></ul>
+        <a href="mailto:sales@steamx.com" class="btn-pricing btn-outline">Contact Sales</a>
       </div>
-
     </div>
-
-    <!-- Trust Element -->
     <div class="pricing-guarantee animate-on-scroll">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-        <path d="M10 1.667L2.5 5.833v5c0 4.688 3.229 9.063 7.5 10.209 4.271-1.146 7.5-5.521 7.5-10.209v-5L10 1.667z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M7.5 10l1.875 1.875L13.125 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 1.667L2.5 5.833v5c0 4.688 3.229 9.063 7.5 10.209 4.271-1.146 7.5-5.521 7.5-10.209v-5L10 1.667z" stroke="currentColor" stroke-width="1.5"/><path d="M7.5 10l1.875 1.875L13.125 7.5" stroke="currentColor" stroke-width="1.5"/></svg>
       <span>30-day money-back guarantee. No risk.</span>
     </div>
-
   </div>
 </section>
 
@@ -416,13 +378,10 @@
       <h2 class="section-title">Meet Our Team</h2>
       <p class="section-subtitle">Passionate experts dedicated to transforming education</p>
     </div>
-
     <div class="team-grid grid grid-4">
       @for (member of team; track member.name) {
         <div class="team-card">
-          <div class="team-avatar-wrapper">
-            <img [src]="member.avatar" [alt]="member.name" class="team-image">
-          </div>
+          <div class="team-avatar-wrapper"><img [src]="member.avatar" [alt]="member.name" class="team-image"></div>
           <h3 class="team-name">{{ member.name }}</h3>
           <p class="team-role">{{ member.role }}</p>
           <p class="team-bio">{{ member.bio }}</p>
@@ -432,109 +391,98 @@
   </div>
 </section>
 
- <!-- ==================== CONTACT SECTION ==================== -->
-<section id="contact" class="section contact-section">
+<!-- ==================== FAQ SECTION ==================== -->
+<section id="faq" class="section faq-section">
   <div class="container">
-    
-    <!-- Section Header -->
     <div class="section-header animate-on-scroll">
-      <h2 class="section-title">Send us a message</h2>
-      <p class="section-subtitle">Fill out the form below and we'll get back to you as soon as possible.</p>
+      <div class="section-badge"><span class="badge-dot"></span><span>Got Questions?</span></div>
+      <h2 class="section-title">We've Got <span class="highlight-text">Answers</span></h2>
+      <p class="section-subtitle">Everything you need to know about STEAMX and how it works.</p>
     </div>
 
-    <!-- Contact Form -->
-    <div class="contact-form-container animate-on-scroll">
-      
-      @if (contactSuccess) {
-        <!-- Success State -->
-        <div class="form-success">
-          <div class="success-icon">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-              <circle cx="24" cy="24" r="22" stroke="#10b981" stroke-width="3"/>
-              <path d="M14 24l8 8 12-12" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <h3>Message sent successfully!</h3>
-          <p>We'll get back to you within 24 hours.</p>
+    <div class="faq-grid">
+      <div class="faq-item animate-on-scroll stagger-1">
+        <div class="faq-question" (click)="toggleFaq(0)">
+          <h3>What is STEAMX and how does it work?</h3>
+          <span class="faq-icon" [class.rotated]="openFaqIndex === 0">+</span>
         </div>
-      } @else {
-        <!-- Contact Form -->
-        <form class="contact-form" (ngSubmit)="submitContact()" #contactForm="ngForm">
-          
-          <div class="form-row">
-            <!-- Full Name -->
-            <div class="form-field">
-              <label for="name">Full Name *</label>
-              <input 
-                type="text" 
-                id="name"
-                [(ngModel)]="contact.name" 
-                name="name"
-                placeholder="John Doe"
-                required>
-            </div>
-            
-            <!-- Email -->
-            <div class="form-field">
-              <label for="email">Email Address *</label>
-              <input 
-                type="email" 
-                id="email"
-                [(ngModel)]="contact.email" 
-                name="email"
-                placeholder="john@example.com"
-                required>
-            </div>
+        <div class="faq-answer" [class.open]="openFaqIndex === 0">
+          <p>STEAMX is an AI-powered education platform for Grade 9–12 students in Pakistan. Students choose their board, grade, and subject, and the platform instantly generates board-style tests. After each test, detailed analytics identify weak areas and the AI tutor provides targeted recommendations.</p>
+          <div class="faq-links">
+            <a routerLink="/contact">Help Center</a>
+            <a routerLink="/contact">Contact Us</a>
+            <a href="#">Community</a>
           </div>
-          
-          <!-- Subject -->
-          <div class="form-field">
-            <label for="subject">Subject</label>
-            <input 
-              type="text" 
-              id="subject"
-              [(ngModel)]="contact.subject" 
-              name="subject"
-              placeholder="How can we help you?">
-          </div>
-          
-          <!-- Message -->
-          <div class="form-field">
-            <label for="message">Message *</label>
-            <textarea 
-              id="message"
-              [(ngModel)]="contact.message" 
-              name="message"
-              rows="5"
-              placeholder="Tell us what's on your mind..."
-              required></textarea>
-          </div>
-          
-          <!-- Error State -->
-          @if (contactError) {
-            <div class="form-error">
-              {{ contactError }}
-            </div>
-          }
-          
-          <!-- Submit Button -->
-          <button 
-            type="submit" 
-            class="btn-submit" 
-            [disabled]="contactLoading">
-            @if (contactLoading) {
-              <span class="btn-spinner"></span>
-              <span>Sending...</span>
-            } @else {
-              <span>Send Message</span>
-            }
-          </button>
-          
-        </form>
-      }
+        </div>
+      </div>
 
+      <div class="faq-item animate-on-scroll stagger-2">
+        <div class="faq-question" (click)="toggleFaq(1)">
+          <h3>Is STEAMX aligned with Pakistani Board curricula?</h3>
+          <span class="faq-icon" [class.rotated]="openFaqIndex === 1">+</span>
+        </div>
+        <div class="faq-answer" [class.open]="openFaqIndex === 1">
+          <p>Yes! STEAMX is fully aligned with all major Pakistani boards including Punjab Board, Sindh Board, KPK Board, and Federal Board. Our content is regularly updated to match the latest curriculum changes.</p>
+        </div>
+      </div>
+
+      <div class="faq-item animate-on-scroll stagger-3">
+        <div class="faq-question" (click)="toggleFaq(2)">
+          <h3>Do I need any technical skills to use STEAMX?</h3>
+          <span class="faq-icon" [class.rotated]="openFaqIndex === 2">+</span>
+        </div>
+        <div class="faq-answer" [class.open]="openFaqIndex === 2">
+          <p>Not at all! STEAMX is designed to be simple and intuitive. Just sign up, select your subjects, and start learning. No technical expertise required.</p>
+        </div>
+      </div>
+
+      <div class="faq-item animate-on-scroll stagger-4">
+        <div class="faq-question" (click)="toggleFaq(3)">
+          <h3>How is STEAMX different from a traditional coaching center?</h3>
+          <span class="faq-icon" [class.rotated]="openFaqIndex === 3">+</span>
+        </div>
+        <div class="faq-answer" [class.open]="openFaqIndex === 3">
+          <p>STEAMX offers 24/7 access, personalized AI-powered learning, instant feedback, and costs a fraction of traditional coaching centers. Learn anytime, anywhere at your own pace.</p>
+        </div>
+      </div>
+
+      <div class="faq-item animate-on-scroll stagger-5">
+        <div class="faq-question" (click)="toggleFaq(4)">
+          <h3>Is student data safe on STEAMX?</h3>
+          <span class="faq-icon" [class.rotated]="openFaqIndex === 4">+</span>
+        </div>
+        <div class="faq-answer" [class.open]="openFaqIndex === 4">
+          <p>Absolutely! We take data security seriously. STEAMX is fully compliant with FERPA and COPPA regulations. Your data is encrypted and never shared with third parties.</p>
+        </div>
+      </div>
     </div>
 
+    <!-- Contact Button added at the bottom of FAQ -->
+    <div class="faq-contact-btn animate-on-scroll">
+      <a routerLink="/contact" class="btn-faq-contact">
+        Still have questions? Contact us →
+      </a>
+    </div>
   </div>
 </section>
+
+<!-- ==================== TRUST SECTION ==================== -->
+<section id="trust" class="section trust-section">
+  <div class="container">
+    <div class="trust-header animate-on-scroll">
+      <h2 class="trust-title">Trusted <span class="highlight-text">Across Pakistan</span></h2>
+      <p class="trust-subtitle">From Karachi to Peshawar, thousands of students, teachers and schools rely on STEAMX every day.</p>
+    </div>
+    <div class="trust-stats-grid">
+      <div class="trust-stat-card animate-on-scroll stagger-1"><div class="stat-number" data-count="152">0</div><div class="stat-label">Active Students Nationwide</div></div>
+      <div class="trust-stat-card animate-on-scroll stagger-2"><div class="stat-number" data-count="437">0</div><div class="stat-label">AI Questions Generated & Growing</div></div>
+      <div class="trust-stat-card animate-on-scroll stagger-3"><div class="stat-number" data-count="100">0</div><div class="stat-label">Partner Schools & Institutes</div></div>
+      <div class="trust-stat-card animate-on-scroll stagger-4"><div class="stat-number" data-count="99">0</div><div class="stat-label">Platform Uptime Always Available</div></div>
+    </div>
+    <div class="trust-footer animate-on-scroll">
+      <p>Need study tips? <a href="#" class="trust-link">Get weekly learning insights →</a></p>
+    </div>
+  </div>
+</section>
+
 </div>

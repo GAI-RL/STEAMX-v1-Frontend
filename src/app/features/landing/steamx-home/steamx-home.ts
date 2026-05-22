@@ -12,55 +12,65 @@ import { FormsModule } from '@angular/forms';
 })
 export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
   
+  // ==================== FAQ ====================
+  openFaqIndex: number | null = null;
+
+  // ==================== FEATURES CAROUSEL ====================
+  currentFeatureSet = 0;
+  featureSetInterval: any;
+
+  // Dashboard Animation Flag
+  private dashboardAnimated = false;
+
   // Enhanced Features - Minimal Horizontal Scroll
   features = [
     {
       title: 'Instant Explanations',
       description: 'Get clear, detailed answers to any question in seconds. No waiting, just learning.',
-      iconPath: 'M13 10V3L4 14h7v7l9-11h-7z' // Lightning bolt
+      iconPath: 'M13 10V3L4 14h7v7l9-11h-7z'
     },
     {
       title: 'Step-by-Step Solutions',
       description: 'See problems broken down into manageable steps with reasoning for each one.',
-      iconPath: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4' // Clipboard with checkmark
+      iconPath: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4'
     },
     {
       title: 'Works Across Subjects',
       description: 'From calculus to creative writing, get reliable help in any academic field.',
-      iconPath: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' // Book open
+      iconPath: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'
     },
     {
       title: 'Available 24/7',
       description: 'Study on your schedule. Get help at 3 AM or during your lunch break.',
-      iconPath: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' // Clock
+      iconPath: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
     },
     {
       title: 'Adapts to You',
       description: 'Explanations adjust to your level and learning style automatically.',
-      iconPath: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z' // Light bulb
+      iconPath: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
     },
     {
       title: 'Save & Export',
       description: 'Keep all your conversations. Export to PDF or search your history anytime.',
-      iconPath: 'M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2' // Document duplicate
+      iconPath: 'M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2'
     },
     {
       title: 'Contextual Understanding',
       description: 'Ask follow-up questions naturally. The AI remembers your conversation.',
-      iconPath: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z' // Chat
+      iconPath: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
     },
     {
       title: 'Multiple Languages',
       description: 'Learn in your preferred language with support for 50+ languages worldwide.',
-      iconPath: 'M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129' // Translate
+      iconPath: 'M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129'
     }
   ];
 
   currentSlide = 0;
   carouselTransform = '0px';
   autoPlayInterval: any;
-  autoPlayDuration = 30; // Milliseconds between each pixel move
-  scrollSpeed = 1; // Pixels per frame
+  autoPlayDuration = 30;
+  scrollSpeed = 1;
 
   // How It Works Steps
   steps = [
@@ -237,8 +247,6 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   ];
 
-  
-
   // Statistics
   stats = {
     users: '50,000+',
@@ -254,12 +262,15 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.startAutoScroll();
     this.startTestimonialCarousel();
+    this.startFeatureAutoRotation();
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
       this.initScrollAnimations();
       this.initHeroAnimation();
+      this.initDashboardAnimation();
+      this.animateTrustNumbers();
     }, 100);
   }
 
@@ -270,11 +281,108 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
       clearInterval(this.testimonialInterval);
     }
     
+    if (this.featureSetInterval) {
+      clearInterval(this.featureSetInterval);
+    }
+    
     if (this.intersectionObserver) {
       this.intersectionObserver.disconnect();
     }
     if (this.heroObserver) {
       this.heroObserver.disconnect();
+    }
+  }
+
+  // ==================== FAQ ====================
+  
+  toggleFaq(index: number) {
+    this.openFaqIndex = this.openFaqIndex === index ? null : index;
+  }
+
+  // ==================== FEATURES CAROUSEL ====================
+  
+  startFeatureAutoRotation() {
+    this.featureSetInterval = setInterval(() => {
+      this.currentFeatureSet = this.currentFeatureSet === 0 ? 1 : 0;
+    }, 3000);
+  }
+
+  resetFeatureInterval() {
+    if (this.featureSetInterval) {
+      clearInterval(this.featureSetInterval);
+      this.startFeatureAutoRotation();
+    }
+  }
+
+  goToFeatureSet(index: number) {
+    this.currentFeatureSet = index;
+    this.resetFeatureInterval();
+  }
+
+  // ==================== DASHBOARD ANIMATION ====================
+  
+  initDashboardAnimation() {
+    const dashboard = document.querySelector('.db');
+    if (!dashboard) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !this.dashboardAnimated) {
+          this.dashboardAnimated = true;
+          this.animateDashboard();
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(dashboard);
+  }
+
+  animateDashboard() {
+    const bars = document.querySelectorAll('.bar-fill');
+    bars.forEach((bar: any) => {
+      const width = bar.getAttribute('data-w');
+      if (width) {
+        setTimeout(() => {
+          bar.style.width = width + '%';
+        }, 100);
+      }
+    });
+
+    const avgEl = document.getElementById('avg-score');
+    const testsEl = document.getElementById('tests-taken');
+    const qEl = document.getElementById('q-count');
+    const qBar = document.getElementById('q-bar');
+
+    if (avgEl && testsEl && qEl && qBar) {
+      const duration = 1200;
+      const startTime = performance.now();
+      
+      const ease = (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      
+      const animate = (ts: number) => {
+        const elapsed = ts - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = ease(progress);
+        
+        const avgScore = Math.round(eased * 86);
+        avgEl.textContent = avgScore + '%';
+        
+        const testsTaken = Math.round(eased * 12);
+        testsEl.textContent = testsTaken.toString();
+        
+        const questions = Math.round(eased * 432);
+        qEl.textContent = questions.toLocaleString();
+        
+        const barPercent = Math.round((questions / 600) * 100);
+        qBar.style.width = barPercent + '%';
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+      
+      requestAnimationFrame(animate);
     }
   }
 
@@ -286,12 +394,10 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.autoPlayInterval = setInterval(() => {
       position -= this.scrollSpeed;
       
-      // Get the width of one set of cards (card width + gap)
-      const cardWidth = 320; // Card flex-basis
-      const gap = 24; // Gap between cards
+      const cardWidth = 320;
+      const gap = 24;
       const totalWidth = this.features.length * (cardWidth + gap);
       
-      // Reset position when we've scrolled through one full set
       if (Math.abs(position) >= totalWidth) {
         position = 0;
       }
@@ -387,61 +493,42 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  // ==================== CONTACT FORM ====================
+  // ==================== TRUST SECTION ANIMATION ====================
   
- // Contact Form
-contact = {
-  name: '',
-  email: '',
-  subject: '',
-  message: ''
-};
-contactLoading = false;
-contactSuccess = false;
-contactError = '';
-
-// ==================== CONTACT FORM ====================
-
-submitContact() {
-  // Clear previous errors
-  this.contactError = '';
-
-  // Validate required fields (subject is optional)
-  if (!this.contact.name || !this.contact.email || !this.contact.message) {
-    this.contactError = 'Please fill in all required fields';
-    return;
+  animateTrustNumbers() {
+    const statCards = document.querySelectorAll('.trust-stat-card');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const card = entry.target;
+          const numberElement = card.querySelector('.stat-number');
+          if (numberElement && !numberElement.hasAttribute('data-animated')) {
+            const targetCount = parseInt(numberElement.getAttribute('data-count') || '0');
+            numberElement.setAttribute('data-animated', 'true');
+            
+            let current = 0;
+            const duration = 1500;
+            const step = Math.ceil(targetCount / (duration / 16));
+            
+            const timer = setInterval(() => {
+              current += step;
+              if (current >= targetCount) {
+                numberElement.textContent = targetCount.toString();
+                clearInterval(timer);
+              } else {
+                numberElement.textContent = current.toString();
+              }
+            }, 16);
+          }
+          observer.unobserve(card);
+        }
+      });
+    }, { threshold: 0.3 });
+    
+    statCards.forEach(card => observer.observe(card));
   }
 
-  // Validate email format
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(this.contact.email)) {
-    this.contactError = 'Please enter a valid email address';
-    return;
-  }
-
-  // Start loading state
-  this.contactLoading = true;
-  this.contactSuccess = false;
-
-  // Simulate API call (replace with your actual API endpoint)
-  setTimeout(() => {
-    this.contactLoading = false;
-    this.contactSuccess = true;
-    
-    // Reset form
-    this.contact = { 
-      name: '', 
-      email: '', 
-      subject: '',
-      message: '' 
-    };
-    
-    // Hide success message after 5 seconds
-    setTimeout(() => {
-      this.contactSuccess = false;
-    }, 5000);
-  }, 1500);
-}
   // ==================== SMOOTH SCROLL ====================
   
   scrollToSection(sectionId: string) {

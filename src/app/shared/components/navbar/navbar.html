@@ -1,12 +1,10 @@
 <nav class="navbar" [class.scrolled]="isScrolled">
   <div class="container">
     
-    <!-- Logo (LEFT) - Gradient Style -->
-    <!-- Logo (LEFT) - SVG Style -->
-<a href="#hero" (click)="scrollToSection('hero', $event)" class="logo">
-  <img src="assets/images/logo.png" alt="STEAMX" class="logo-svg" />
-
-</a>
+    <!-- Logo -->
+    <a href="#hero" (click)="scrollToSection('hero', $event)" class="logo">
+      <img src="assets/images/logo.png" alt="STEAMX" class="logo-svg" />
+    </a>
 
     <!-- RIGHT SIDE: Links + Login Button -->
     <div class="nav-right desktop-nav">
@@ -44,10 +42,8 @@
           </a>
         </li>
         <li>
-          <a 
-            href="#contact" 
-            (click)="scrollToSection('contact', $event)"
-            [class.active]="isActive('contact')">
+          <!-- FIXED: Changed from scroll to routerLink -->
+          <a routerLink="/contact" [class.active]="activeSection === 'contact'">
             Contact
           </a>
         </li>
@@ -106,10 +102,8 @@
         </a>
       </li>
       <li>
-        <a 
-          href="#contact" 
-          (click)="scrollToSection('contact', $event)"
-          [class.active]="isActive('contact')">
+        <!-- FIXED: Mobile menu Contact link -->
+        <a routerLink="/contact" (click)="closeMenu()">
           Contact
         </a>
       </li>

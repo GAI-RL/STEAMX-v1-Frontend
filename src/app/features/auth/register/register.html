@@ -9,16 +9,18 @@
 
   <div class="auth-container">
 
-    <!-- ══════════ LEFT PANEL ══════════ -->
+    <!-- ══════════ LEFT PANEL - CENTERED ══════════ -->
     <div class="auth-branding animate-on-scroll">
 
-      <a routerLink="/" class="brand-logo">
-        <img src="assets/images/logo.png" alt="STEAMX" class="brand-logo-img"
-          style="height:140px !important; width:auto !important; display:block !important; mix-blend-mode:multiply !important; margin:0 0 -20px -15px !important;" />
-      </a>
+      <div class="brand-logo-wrapper">
+        <a routerLink="/" class="brand-logo">
+          <img src="assets/images/logo.png" alt="STEAMX" class="brand-logo-img" />
+        </a>
+      </div>
 
       <div class="branding-headline">
-        <h1>Start your<br/><em>journey today</em></h1>
+        <h1>Start your <span class="gradient-text">journey</span></h1>
+        <h2 class="brand-subtitle">today</h2>
         <p>Join 50,000+ students already learning smarter with AI-powered education</p>
       </div>
 
@@ -38,7 +40,7 @@
 
     </div>
 
-    <!-- ══════════ RIGHT PANEL ══════════ -->
+    <!-- ══════════ RIGHT PANEL — Form ══════════ -->
     <div class="auth-form-section animate-on-scroll">
       <div class="auth-card">
         <div class="card-glow"></div>
@@ -222,7 +224,6 @@
 
             <form class="auth-form" (ngSubmit)="goStep(3)">
 
-              <!-- Province - Full width -->
               <div class="form-group">
                 <label for="province">Province / Region</label>
                 <app-custom-dropdown
@@ -232,7 +233,6 @@
                 ></app-custom-dropdown>
               </div>
 
-              <!-- Grade and Medium - Side by side -->
               <div class="form-row">
                 <div class="form-group">
                   <label>Grade</label>
@@ -253,7 +253,6 @@
                 </div>
               </div>
 
-              <!-- Subject Group - Full width -->
               <div class="form-group">
                 <label>Subject Group</label>
                 <app-custom-dropdown
@@ -264,7 +263,6 @@
                 ></app-custom-dropdown>
               </div>
 
-              <!-- School - Full width -->
               <div class="form-group">
                 <label>School / Institution <span class="label-optional">(optional)</span></label>
                 <input type="text" class="form-input"
@@ -272,7 +270,6 @@
                   placeholder="e.g. Lahore Grammar School" />
               </div>
 
-              <!-- Phone - Full width -->
               <div class="form-group">
                 <label>Phone Number <span class="label-optional">(optional)</span></label>
                 <div class="phone-input-wrap">
@@ -283,7 +280,6 @@
                 </div>
               </div>
 
-              <!-- Buttons - Equal width -->
               <div class="step-btn-row">
                 <button type="button" class="btn-secondary" (click)="goStep(1)">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">

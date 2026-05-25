@@ -97,19 +97,19 @@
   position: relative;
   overflow: hidden;
   padding: 40px 24px;
-  background: #f0f7f8;
+  background: #e8f0f2;
 }
 
-/* ─── Background ─────────────────────────────────────────────── */
+/* ─── Background — DARKER VERSION ───────────────────────────────── */
 .auth-background { position: absolute; inset: 0; z-index: 0; }
 
 .mesh-gradient {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 10% 0%, rgba(0,104,122,0.13) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 90% 100%, rgba(0,138,158,0.10) 0%, transparent 60%),
-    linear-gradient(160deg, #e8f4f6 0%, #f4fafb 45%, #e8f4f6 100%);
+    radial-gradient(ellipse 80% 60% at 10% 0%, rgba(0,104,122,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 100%, rgba(0,138,158,0.14) 0%, transparent 60%),
+    linear-gradient(160deg, #dce8ea 0%, #e2eef0 45%, #dce8ea 100%);
 }
 .noise-overlay {
   position: absolute;
@@ -127,20 +127,20 @@
 .orb-1 {
   width: 520px; height: 520px;
   top: -160px; right: -120px;
-  background: radial-gradient(circle, rgba(0,104,122,0.11), transparent 70%);
+  background: radial-gradient(circle, rgba(0,104,122,0.15), transparent 70%);
 }
 .orb-2 {
   width: 380px; height: 380px;
   bottom: -120px; left: -100px;
-  background: radial-gradient(circle, rgba(0,166,189,0.09), transparent 70%);
+  background: radial-gradient(circle, rgba(0,166,189,0.12), transparent 70%);
   animation-delay: -10s;
 }
 .grid-lines {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0,104,122,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,104,122,0.04) 1px, transparent 1px);
+    linear-gradient(rgba(0,104,122,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,104,122,0.05) 1px, transparent 1px);
   background-size: 52px 52px;
   mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
 }
@@ -157,116 +157,86 @@
   display: grid;
   grid-template-columns: 1fr 0.9fr;
   gap: 40px;
-  max-width: 980px;
+  max-width: 1020px;
   width: 100%;
   align-items: center;
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   LEFT PANEL
+   LEFT PANEL — CENTERED TEXT
 ═══════════════════════════════════════════════════════════════ */
 .auth-branding {
   display: flex;
   flex-direction: column;
   gap: 0;
+  text-align: center;
 }
 
-/* ── TOP: Logo + Headline ──────────────────────────────────── */
+/* ── TOP: Logo + Headline ── CENTERED ────────────────────────── */
 .branding-top {
   padding-bottom: 28px;
   border-bottom: 1px solid rgba(0,104,122,0.1);
   margin-bottom: 24px;
-  text-align: left;
+  text-align: center;
+}
+
+.brand-logo-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
 .brand-logo {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
+  justify-content: center;
   text-decoration: none;
-  justify-content: flex-start;
+  transition: transform 0.2s ease;
 }
 
-/* ── LOGO — base size (desktop default) ── */
+.brand-logo:hover {
+  transform: scale(1.02);
+}
+
 .brand-logo-img {
-  height: 105px;
+  height: 120px;
   width: auto;
   display: block;
-  mix-blend-mode: multiply;
-  margin: 0;
   object-fit: contain;
 }
 
-.logo-mark {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, #00687a, #008a9e);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  box-shadow: 0 4px 14px rgba(0,104,122,0.3);
-  flex-shrink: 0;
-}
-.logo-text {
-  font-size: 1.2rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  background: linear-gradient(135deg, #00687a, #00a6bd);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.eyebrow-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(0,104,122,0.07);
-  border: 1px solid rgba(0,104,122,0.14);
-  color: #007b91;
-  font-size: 0.75rem;
-  font-weight: 650;
-  letter-spacing: 0.02em;
-  padding: 5px 12px;
-  border-radius: 100px;
-  margin-bottom: 16px;
-}
-.badge-dot {
-  width: 6px;
-  height: 6px;
-  background: #00a6bd;
-  border-radius: 50%;
-  animation: pulse-dot 2s ease-in-out infinite;
-}
-@keyframes pulse-dot {
-  0%,100% { opacity:1; transform:scale(1); }
-  50%      { opacity:0.4; transform:scale(0.65); }
-}
-
 .branding-top h1 {
-  font-size: 2.8rem;
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  font-size: 2.5rem;
+  font-weight: 700;
   color: #0d3b43;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
 }
-.branding-top h1 em {
-  font-style: normal;
+
+.gradient-text {
   background: linear-gradient(135deg, #00687a, #00a6bd);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+.brand-subtitle {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #00687a, #00a6bd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
 .brand-sub {
   font-size: 0.95rem;
   color: #5a8a94;
   line-height: 1.6;
-  max-width: 380px;
-  margin: 0;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 /* ── MIDDLE: Features ──────────────────────────────────────── */
@@ -348,11 +318,10 @@
 }
 
 /* ── BOTTOM: Social proof ──────────────────────────────────── */
-.branding-bottom { /* anchored below features */ }
-
 .social-proof {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 16px;
   background: rgba(255,255,255,0.55);
   backdrop-filter: blur(10px);
@@ -366,7 +335,6 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  flex: 1;
 }
 .avatars { display: flex; }
 .avatar {
@@ -451,7 +419,7 @@
   width: 100%;
   max-width: 420px;
   padding: 36px 32px;
-  background: rgba(255,255,255,0.88);
+  background: rgba(255,255,255,0.92);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border-radius: 24px;
@@ -478,6 +446,7 @@
 
 .auth-header {
   margin-bottom: 22px;
+  text-align: center;
 }
 .auth-header h2 {
   font-size: 1.65rem;
@@ -764,18 +733,20 @@
 /* ── Large Desktop: 1280px+ ── */
 @media (min-width: 1280px) {
   .auth-container {
-    max-width: 1060px;
+    max-width: 1100px;
     gap: 56px;
   }
-  .branding-top h1 { font-size: 3.2rem; }
-  .brand-logo-img  { height: 112px; }   /* ← largest screens, biggest logo */
+  .branding-top h1 { font-size: 2.8rem; }
+  .brand-subtitle { font-size: 2.2rem; }
+  .brand-logo-img  { height: 135px; }
 }
 
 /* ── Desktop / Laptop: 981px – 1279px ── */
 @media (min-width: 981px) and (max-width: 1279px) {
-  .auth-container  { gap: 36px; max-width: 940px; }
+  .auth-container  { gap: 36px; max-width: 980px; }
   .branding-top h1 { font-size: 2.4rem; }
-  .brand-logo-img  { height: 85px; }   /* ← same as base, no shrink */
+  .brand-subtitle { font-size: 1.9rem; }
+  .brand-logo-img  { height: 110px; }
   .auth-card       { padding: 32px 28px; }
 }
 
@@ -788,38 +759,36 @@
     max-width: 520px;
   }
   .auth-branding   { align-items: stretch; }
-  .branding-top    { text-align: center; padding-bottom: 22px; margin-bottom: 20px; }
-  .brand-logo      { justify-content: center; }
-  .brand-logo-img  { height: 92px; margin: 0 auto; }  /* ← comfortable on tablet */
+  .branding-top    { padding-bottom: 22px; margin-bottom: 20px; }
+  .brand-logo-img  { height: 100px; }
   .eyebrow-badge   { margin: 0 auto 16px; }
-  .brand-sub       { max-width: 100%; text-align: center; }
-  .branding-top h1 { font-size: 2.1rem; }
-  .feature-item    { padding: 11px 14px; }
-  .branding-middle { padding-bottom: 20px; margin-bottom: 20px; }
+  .brand-sub       { max-width: 100%; margin: 0 auto; }
+  .branding-top h1 { font-size: 2.2rem; }
+  .brand-subtitle { font-size: 1.8rem; }
 }
 
 /* ── Tablet Portrait: up to 768px ── */
 @media (max-width: 768px) {
   .auth-page       { padding: 24px 16px; }
   .auth-container  { max-width: 480px; gap: 22px; }
-  .branding-top h1 { font-size: 1.85rem; }
-  .brand-logo-img  { height: 72px; }   /* ← still clearly visible */
+  .branding-top h1 { font-size: 1.9rem; }
+  .brand-subtitle { font-size: 1.5rem; }
+  .brand-logo-img  { height: 85px; }
   .brand-sub       { font-size: 0.88rem; }
   .auth-card       { padding: 30px 24px; border-radius: 20px; }
   .auth-header h2  { font-size: 1.5rem; }
   .social-proof    { gap: 12px; padding: 12px 16px; }
   .stat-num        { font-size: 1.1rem; }
-  .feature-text strong { font-size: 0.85rem; }
-  .feature-text span   { font-size: 0.75rem; }
 }
 
 /* ── Mobile Large: up to 600px ── */
 @media (max-width: 600px) {
   .auth-page       { padding: 18px 14px; align-items: flex-start; padding-top: 28px; }
   .auth-container  { max-width: 100%; gap: 20px; }
-  .branding-top h1 { font-size: 1.7rem; letter-spacing: -0.02em; }
-  .brand-logo-img  { height: 64px; }   /* ← still readable on mobile */
-  .brand-sub       { font-size: 0.86rem; }
+  .branding-top h1 { font-size: 1.6rem; }
+  .brand-subtitle { font-size: 1.3rem; }
+  .brand-logo-img  { height: 72px; }
+  .brand-sub       { font-size: 0.84rem; }
   .auth-card       { padding: 26px 20px; border-radius: 18px; }
   .auth-header     { margin-bottom: 18px; }
   .auth-header h2  { font-size: 1.38rem; }
@@ -835,10 +804,10 @@
 /* ── Mobile Small: up to 420px ── */
 @media (max-width: 420px) {
   .auth-page       { padding: 14px 12px; padding-top: 20px; }
-  .branding-top h1 { font-size: 1.5rem; }
-  .brand-logo-img  { height: 56px; }   /* ← minimum size, still clear */
-  .brand-sub       { font-size: 0.82rem; line-height: 1.5; }
-  .branding-top    { padding-bottom: 18px; margin-bottom: 16px; }
+  .branding-top h1 { font-size: 1.4rem; }
+  .brand-subtitle { font-size: 1.1rem; }
+  .brand-logo-img  { height: 60px; }
+  .brand-sub       { font-size: 0.8rem; line-height: 1.5; }
   .auth-card       { padding: 22px 16px; border-radius: 16px; }
   .auth-header h2  { font-size: 1.25rem; }
   .google-btn      { font-size: 0.82rem; padding: 9px 12px; gap: 8px; }

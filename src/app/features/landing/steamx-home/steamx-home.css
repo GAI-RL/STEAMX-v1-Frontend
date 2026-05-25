@@ -1505,6 +1505,70 @@
   height: 5px;
   border-radius: 50%;
 }
+/* Formula Rows for Dashboard */
+.formula-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0 8px 78px;
+  gap: 12px;
+  border-bottom: 1px dashed rgba(0, 104, 122, 0.08);
+}
+
+.formula-text {
+  font-size: 0.75rem;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: #334155;
+  background: rgba(0, 104, 122, 0.04);
+  padding: 4px 10px;
+  border-radius: 8px;
+  letter-spacing: 0.3px;
+}
+
+.urdu-text {
+  font-family: 'Noto Nastaliq Urdu', 'Urdu Typesetting', serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  direction: rtl;
+}
+
+.reference {
+  font-size: 0.6rem;
+  color: #8ab4bb;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  background: rgba(0, 104, 122, 0.05);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+/* Adjust bar-row margin */
+.bar-row {
+  margin-bottom: 0;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .formula-row {
+    padding-left: 68px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  
+  .formula-text {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+  }
+  
+  .urdu-text {
+    font-size: 0.75rem;
+  }
+  
+  .reference {
+    font-size: 0.55rem;
+  }
+}
 
 /* ==================== BOTTOM CTA -  STYLE ==================== */
 
@@ -2776,7 +2840,7 @@
   box-shadow: 0 8px 25px rgba(0, 104, 122, 0.35);
 }
 
-/* ==================== TRUST SECTION ==================== */
+/* ==================== TRUST SECTION — COLORFUL ==================== */
 
 .trust-section {
   background: linear-gradient(135deg, #f8fafc 0%, #eef2f6 100%);
@@ -2832,27 +2896,134 @@
   z-index: 1;
 }
 
+/* Card 1 — Teal */
+.trust-stat-card:nth-child(1) {
+  background: linear-gradient(135deg, rgba(0, 104, 122, 0.08), rgba(0, 166, 189, 0.05));
+  border-color: rgba(0, 104, 122, 0.2);
+}
+
+.trust-stat-card:nth-child(1):hover {
+  border-color: #00687a;
+  box-shadow: 0 8px 30px rgba(0, 104, 122, 0.2);
+}
+
+.trust-stat-card:nth-child(1) .stat-number {
+  color: #00687a;
+}
+
+.trust-stat-card:nth-child(1) .stat-number::after {
+  color: #00a6bd;
+}
+
+/* Card 2 — Orange */
+.trust-stat-card:nth-child(2) {
+  background: linear-gradient(135deg, rgba(230, 126, 34, 0.08), rgba(243, 156, 18, 0.05));
+  border-color: rgba(230, 126, 34, 0.2);
+}
+
+.trust-stat-card:nth-child(2):hover {
+  border-color: #e67e22;
+  box-shadow: 0 8px 30px rgba(230, 126, 34, 0.2);
+}
+
+.trust-stat-card:nth-child(2) .stat-number {
+  color: #e67e22;
+}
+
+.trust-stat-card:nth-child(2) .stat-number::after {
+  color: #f39c12;
+}
+
+/* Card 3 — Green */
+.trust-stat-card:nth-child(3) {
+  background: linear-gradient(135deg, rgba(39, 174, 96, 0.08), rgba(46, 204, 113, 0.05));
+  border-color: rgba(39, 174, 96, 0.2);
+}
+
+.trust-stat-card:nth-child(3):hover {
+  border-color: #27ae60;
+  box-shadow: 0 8px 30px rgba(39, 174, 96, 0.2);
+}
+
+.trust-stat-card:nth-child(3) .stat-number {
+  color: #27ae60;
+}
+
+.trust-stat-card:nth-child(3) .stat-number::after {
+  color: #2ecc71;
+}
+
+/* Card 4 — Purple */
+.trust-stat-card:nth-child(4) {
+  background: linear-gradient(135deg, rgba(142, 68, 173, 0.08), rgba(155, 89, 182, 0.05));
+  border-color: rgba(142, 68, 173, 0.2);
+}
+
+.trust-stat-card:nth-child(4):hover {
+  border-color: #8e44ad;
+  box-shadow: 0 8px 30px rgba(142, 68, 173, 0.2);
+}
+
+.trust-stat-card:nth-child(4) .stat-number {
+  color: #8e44ad;
+}
+
+.trust-stat-card:nth-child(4) .stat-number::after {
+  color: #9b59b6;
+}
+
+/* Base Card Styles */
 .trust-stat-card {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
   border-radius: 24px;
   padding: 32px 24px;
   text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle glow effect on hover */
+.trust-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.trust-stat-card:nth-child(1)::before {
+  background: linear-gradient(90deg, #00687a, #00a6bd);
+}
+
+.trust-stat-card:nth-child(2)::before {
+  background: linear-gradient(90deg, #e67e22, #f39c12);
+}
+
+.trust-stat-card:nth-child(3)::before {
+  background: linear-gradient(90deg, #27ae60, #2ecc71);
+}
+
+.trust-stat-card:nth-child(4)::before {
+  background: linear-gradient(90deg, #8e44ad, #9b59b6);
+}
+
+.trust-stat-card:hover::before {
+  transform: scaleX(1);
 }
 
 .trust-stat-card:hover {
   transform: translateY(-5px);
-  border-color: rgba(0, 104, 122, 0.2);
-  box-shadow: 0 8px 30px rgba(0, 104, 122, 0.12);
 }
 
 .stat-number {
   font-size: 2.5rem;
   font-weight: 800;
-  color: #00687a;
   margin-bottom: 8px;
   line-height: 1.2;
 }
@@ -2861,7 +3032,6 @@
   content: '+';
   font-size: 2rem;
   font-weight: 700;
-  color: #00687a;
 }
 
 .stat-label {
@@ -2870,6 +3040,7 @@
   font-weight: 500;
 }
 
+/* Trust Footer */
 .trust-footer {
   text-align: center;
   position: relative;
@@ -2889,11 +3060,15 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  padding: 8px 16px;
+  border-radius: 40px;
+  background: rgba(0, 104, 122, 0.05);
 }
 
 .trust-link:hover {
   transform: translateX(4px);
-  opacity: 0.8;
+  background: rgba(0, 104, 122, 0.1);
+  color: #00687a;
 }
 
 /* ==================== RESPONSIVE ==================== */

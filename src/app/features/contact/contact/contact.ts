@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { CustomDropdownComponent } from '../../../shared/components/custom-dropdown/custom-dropdown.component';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, CustomDropdownComponent],
   templateUrl: './contact.html',
   styleUrls: ['./contact.css']
 })
@@ -24,9 +25,37 @@ export class ContactComponent {
     message: ''
   };
   
+  // Dropdown options for topic
+  topicOptions = [
+    'General Inquiry',
+    'AI Exam System',
+    'Collaboration',
+    'Technical Support',
+    'Pricing & Plans'
+  ];
+  
   contactLoading = false;
   contactSuccess = false;
   contactError = '';
+
+  constructor(private router: Router) {}
+
+  // Navigate back to home
+  goToHome() {
+    this.router.navigate(['/']);
+  }
+
+  // Scroll to specific section on home page
+  scrollToSection(sectionId: string) {
+    this.router.navigate(['/']).then(() => {
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    });
+  }
 
   submitContact() {
     this.contactError = '';

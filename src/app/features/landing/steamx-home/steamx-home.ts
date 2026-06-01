@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -72,7 +72,7 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
   autoPlayDuration = 30;
   scrollSpeed = 1;
 
-  // How It Works Steps
+  // How It Works Steps Data
   steps = [
     {
       number: 1,
@@ -97,55 +97,58 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   ];
 
-  // Real Testimonials
+  // Real Testimonials - Complete with full text
   testimonials = [
     {
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80',
       name: 'Ahmed Hassan',
       role: 'Computer Science Major, MIT',
-      text: 'I was failing data structures until I started using STEAMX. The way it breaks down recursion and dynamic programming finally made things click. Went from a C+ to an A- in one semester. The 24/7 availability saved me during late-night coding sessions.',
+      text: 'I was failing data structures until I started using STEAMX. The way it breaks down recursion and dynamic programming finally made things click. Went from a C+ to an A- in one semester. The 24/7 availability saved me during late-night coding sessions. I can honestly say this platform changed my academic life forever.',
       rating: 5,
-      platform: 'Verified Student'
+      platform: 'Verified Student',
+      theme: 'teal'
     },
     {
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80',
       name: 'Sarah Johnson',
       role: 'Part-Time MBA Student',
-      text: 'Between work and classes, I don\'t have time to wait for tutoring appointments. STEAMX gives me instant help with financial modeling and statistics at 2 AM when I\'m actually free to study. My grades improved significantly once I could learn on my own schedule.',
+      text: 'Between work and classes, I don\'t have time to wait for tutoring appointments. STEAMX gives me instant help with financial modeling and statistics at 2 AM when I\'m actually free to study. My grades improved significantly once I could learn on my own schedule. I am so excited to be a part of this platform!',
       rating: 5,
-      platform: 'Verified Professional'
+      platform: 'Verified Professional',
+      theme: 'orange'
     },
     {
       avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80',
       name: 'Dr. Michael Chen',
       role: 'PhD Candidate, Harvard Medical School',
-      text: 'Research requires understanding concepts across multiple disciplines quickly. STEAMX helps me grasp biochemistry principles outside my specialty faster than reading papers alone. The ability to ask follow-up questions until I truly understand is invaluable.',
+      text: 'Research requires understanding concepts across multiple disciplines quickly. STEAMX helps me grasp biochemistry principles outside my specialty faster than reading papers alone. The ability to ask follow-up questions until I truly understand is invaluable. Highly recommended for any researcher.',
       rating: 5,
-      platform: 'Verified Researcher'
+      platform: 'Verified Researcher',
+      theme: 'green'
     },
     {
       avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80',
       name: 'Emily Rodriguez',
       role: 'High School AP Physics Teacher',
-      text: 'I recommend STEAMX to students who need extra support outside class hours. It doesn\'t just hand them answers—it teaches problem-solving approaches. I\'ve noticed students asking better questions in class and showing deeper understanding on exams.',
+      text: 'I recommend STEAMX to students who need extra support outside class hours. It doesn\'t just hand them answers—it teaches problem-solving approaches. I\'ve noticed students asking better questions in class and showing deeper understanding on exams. I have been teaching for over 10 years and this is the best tool I\'ve found.',
       rating: 5,
-      platform: 'Verified Educator'
+      platform: 'Verified Educator',
+      theme: 'purple'
     }
   ];
 
   currentTestimonial = 0;
   testimonialInterval: any;
+  private autoPlayDelay = 5000;
+
+  // Touch/Swipe support for mobile
+  private touchStartX = 0;
+  private touchEndX = 0;
+  private minSwipeDistance = 50;
 
   // Team
   team = [
-    {
-      avatar: 'assets/images/Niaz.png',
-      name: 'Niaz Ahmad',
-      role: 'Project Director',
-      bio: 'Drives product direction by aligning market research, client requirements, and business objectives into a data-driven strategic roadmap.',
-      linkedin: '#',
-      twitter: '#'
-    },
+    
     {
       avatar: 'assets/images/Tooba.png',
       name: 'Tooba Pervaiz',
@@ -158,17 +161,10 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
       avatar: 'assets/images/Ayesha.png',
       name: 'Ayesha Azam',
       role: 'Technical Lead',
-      bio: 'Architected the platform’s core systems and guided engineering implementation to ensure scalability and reliability.',
+      bio: 'Architected the platform\'s core systems and guided engineering implementation to ensure scalability and reliability.',
       twitter: '#'
     },
-    {
-      avatar: 'assets/images/Tayyaba.png',
-      name: 'Tayyaba Hayyat',
-      role: 'Marketing Manager',
-      bio: ' Develops and executes marketing strategies to drive brand awareness, customer acquisition, and revenue growth.',
-      linkedin: '#',
-      twitter: '#'
-    },
+    
     {
       avatar: 'assets/images/Rameez.png',
       name: 'Rameez Qadeer',
@@ -271,6 +267,8 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.initHeroAnimation();
       this.initDashboardAnimation();
       this.animateTrustNumbers();
+      this.initStepObservers();
+      this.initDashboardCounterAnimation();
     }, 100);
   }
 
@@ -386,6 +384,62 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  initDashboardCounterAnimation() {
+    const dashboard = document.querySelector('.db');
+    if (!dashboard) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          this.animateLeaderboardScores();
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.5 });
+
+    observer.observe(dashboard);
+  }
+
+  animateLeaderboardScores() {
+    const scoreElements = document.querySelectorAll('.lb-score');
+    const targetScores = [94, 88, 82, 76];
+    
+    scoreElements.forEach((el, idx) => {
+      if (idx < targetScores.length) {
+        let current = 0;
+        const target = targetScores[idx];
+        const duration = 1000;
+        const increment = target / (duration / 16);
+        
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            el.textContent = target + '%';
+            clearInterval(timer);
+          } else {
+            el.textContent = Math.floor(current) + '%';
+          }
+        }, 16);
+      }
+    });
+  }
+
+  initStepObservers() {
+    const steps = document.querySelectorAll('.step-vertical');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, idx) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('step-visible');
+          }, idx * 150);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3, rootMargin: '0px 0px -50px 0px' });
+
+    steps.forEach(step => observer.observe(step));
+  }
+
   // ==================== CONTINUOUS HORIZONTAL SCROLL ====================
   
   startAutoScroll() {
@@ -412,12 +466,22 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  // ==================== TESTIMONIALS ====================
+  // ==================== TESTIMONIALS CAROUSEL ====================
   
   startTestimonialCarousel() {
+    if (this.testimonialInterval) {
+      clearInterval(this.testimonialInterval);
+    }
     this.testimonialInterval = setInterval(() => {
       this.nextTestimonial();
-    }, 6000);
+    }, this.autoPlayDelay);
+  }
+
+  resetAutoPlay() {
+    if (this.testimonialInterval) {
+      clearInterval(this.testimonialInterval);
+      this.startTestimonialCarousel();
+    }
   }
 
   nextTestimonial() {
@@ -433,6 +497,62 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.currentTestimonial--;
     } else {
       this.currentTestimonial = this.testimonials.length - 1;
+    }
+  }
+
+  goToTestimonial(index: number) {
+    this.currentTestimonial = index;
+    this.resetAutoPlay();
+  }
+
+  public getPreviousIndex(): number {
+    return this.currentTestimonial === 0 
+      ? this.testimonials.length - 1 
+      : this.currentTestimonial - 1;
+  }
+
+  public getNextIndex(): number {
+    return this.currentTestimonial === this.testimonials.length - 1 
+      ? 0 
+      : this.currentTestimonial + 1;
+  }
+
+  public getTrackTransform(): string {
+    const cardWidthPercent = 33.333;
+    const offset = (this.currentTestimonial * cardWidthPercent);
+    return `translateX(calc(-${offset}% + 50% - ${cardWidthPercent / 2}%))`;
+  }
+
+  public getTestimonialTheme(index: number): string {
+    return this.testimonials[index % this.testimonials.length].theme || 'teal';
+  }
+
+  onTouchStart(event: TouchEvent) {
+    this.touchStartX = event.touches[0].clientX;
+  }
+
+  onTouchEnd(event: TouchEvent) {
+    this.touchEndX = event.changedTouches[0].clientX;
+    const swipeDistance = this.touchStartX - this.touchEndX;
+    
+    if (Math.abs(swipeDistance) > this.minSwipeDistance) {
+      if (swipeDistance > 0) {
+        this.nextTestimonial();
+      } else {
+        this.previousTestimonial();
+      }
+      this.resetAutoPlay();
+    }
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardNavigation(event: KeyboardEvent) {
+    if (event.key === 'ArrowLeft') {
+      this.previousTestimonial();
+      this.resetAutoPlay();
+    } else if (event.key === 'ArrowRight') {
+      this.nextTestimonial();
+      this.resetAutoPlay();
     }
   }
 
@@ -539,5 +659,31 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
         block: 'start' 
       });
     }
+  }
+
+  // ==================== STEP NAVIGATION ====================
+  
+  scrollToStep(stepNumber: number) {
+    const stepElement = document.querySelector(`.step-vertical:nth-child(${stepNumber})`);
+    if (stepElement) {
+      stepElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      stepElement.classList.add('step-highlight');
+      setTimeout(() => {
+        stepElement.classList.remove('step-highlight');
+      }, 1000);
+    }
+  }
+
+  getStepIcon(stepNumber: number): string {
+    const icons = {
+      1: 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M15 11V9a3 3 0 00-3-3H4a3 3 0 00-3 3v2',
+      2: 'M8 9l3 3-3 3m5-6l3 3-3 3',
+      3: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+    };
+    return icons[stepNumber as keyof typeof icons] || icons[1];
+  }
+
+  trackCtaClick(source: string) {
+    console.log(`CTA clicked from: ${source}`);
   }
 }

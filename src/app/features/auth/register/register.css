@@ -7,7 +7,7 @@
 .auth-branding {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 1.5rem;
   justify-content: center;
   padding-right: 0;
   margin-top: 0;
@@ -18,7 +18,7 @@
 .brand-logo-wrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 /* Logo */
@@ -35,25 +35,42 @@
 }
 
 .brand-logo-img {
-  height: 120px !important;
+  height: 55px !important;
   width: auto !important;
   display: block !important;
   margin: 0 auto !important;
   object-fit: contain;
 }
 
-/* Headline - Centered with gradient */
+/* AI Badge */
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 104, 122, 0.08);
+  color: #00687a;
+  border: 1px solid rgba(0, 104, 122, 0.15);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 14px;
+  width: fit-content;
+  margin: 0 auto 0.75rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+}
+
+/* Headline */
 .branding-headline {
-  margin-bottom: 20px !important;
+  margin-bottom: 0 !important;
 }
 
 .branding-headline h1 {
-  font-size: 2.5rem !important;
+  font-size: 1.8rem !important;
   font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.035em;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
   color: #0d3b43;
-  margin-bottom: 4px !important;
+  margin-bottom: 0 !important;
 }
 
 .gradient-text {
@@ -64,27 +81,84 @@
 }
 
 .brand-subtitle {
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 800;
   background: linear-gradient(135deg, #00687a, #00a6bd);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 16px;
+  margin-bottom: 0.5rem;
   letter-spacing: -0.02em;
 }
 
 .branding-headline p {
-  font-size: 0.95rem !important;
+  font-size: 0.85rem !important;
   color: #5a8a94;
   line-height: 1.5;
-  max-width: 380px;
+  max-width: 360px;
   margin: 0 auto;
 }
 
-/* ── BOTTOM: Social proof - FIXED ──────────────────────────────────── */
+/* Features List */
+.branding-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4px);
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 104, 122, 0.08);
+}
+
+.feature-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background: #ffffff;
+  border: 1.5px solid #dde3ea;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: #00687a;
+  fill: none;
+  stroke-width: 2;
+}
+
+.feature-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.feature-text strong {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0d3b43;
+}
+
+.feature-text span {
+  font-size: 11px;
+  color: #6a9aa3;
+}
+
+/* Social proof */
 .branding-proof {
-  margin-top: 24px;
+  margin-top: 0.5rem;
   display: flex;
   justify-content: center;
   width: 100%;
@@ -93,7 +167,7 @@
 .proof-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   justify-content: center;
 }
 
@@ -103,23 +177,21 @@
 }
 
 .avatar {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: 2.5px solid white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  margin-left: -9px;
+  margin-left: -8px;
   flex-shrink: 0;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.avatars .avatar:first-child { 
-  margin-left: 0; 
-}
+.avatars .avatar:first-child { margin-left: 0; }
 
 .av1 { background: rgba(0,104,122,0.13); color: #00687a; }
 .av2 { background: rgba(0,138,158,0.17); color: #00687a; }
@@ -132,25 +204,20 @@
 }
 
 .stars {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #f59e0b;
   letter-spacing: 0.04em;
   line-height: 1;
 }
 
 .proof-caption {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: #7aaab3;
   font-weight: 500;
 }
 
-/* Hide any extra proof elements that might cause issues */
-.branding-bottom {
-  margin-top: 0;
-}
-
 /* ═══════════════════════════════════════════════════════════════
-   CARD & CONTAINER
+   CARD & CONTAINER (KEPT FROM CODE 2)
 ═══════════════════════════════════════════════════════════════ */
 .auth-container {
   gap: 48px !important;
@@ -249,7 +316,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   FORM ELEMENTS
+   FORM ELEMENTS (KEPT FROM CODE 2 - UNCHANGED)
 ═══════════════════════════════════════════════════════════════ */
 .form-row {
   display: grid;
@@ -541,64 +608,74 @@ app-custom-dropdown {
    RESPONSIVE
 ═══════════════════════════════════════════════════════════════ */
 @media (min-width: 1280px) {
-  .branding-headline h1 { font-size: 2.8rem !important; }
-  .brand-subtitle { font-size: 2.2rem !important; }
-  .brand-logo-img { height: 135px !important; }
+  .brand-logo-img { height: 70px !important; }
+  .branding-headline h1 { font-size: 2rem !important; }
+  .brand-subtitle { font-size: 1.8rem !important; }
   .auth-container { max-width: 1100px !important; }
 }
+
 @media (min-width: 981px) and (max-width: 1279px) {
-  .branding-headline h1 { font-size: 2.2rem !important; }
-  .brand-subtitle { font-size: 1.8rem !important; }
-  .brand-logo-img { height: 110px !important; }
+  .brand-logo-img { height: 60px !important; }
+  .branding-headline h1 { font-size: 1.7rem !important; }
+  .brand-subtitle { font-size: 1.5rem !important; }
   .step-line { width: 55px; }
   .auth-container { gap: 40px !important; }
 }
+
 @media (max-width: 980px) {
-  .auth-branding { padding-right: 0; text-align: center; margin-top: 0; }
-  .branding-headline h1 { font-size: 1.9rem !important; }
-  .brand-subtitle { font-size: 1.5rem !important; }
-  .branding-headline p { max-width: 100%; }
+  .auth-branding { display: none; }
   .auth-container { gap: 28px !important; flex-direction: column; }
-  .brand-logo-img { margin: 0 auto !important; }
-  .proof-row { justify-content: center; }
 }
+
 @media (max-width: 768px) {
-  .brand-logo-img { height: 90px !important; }
-  .branding-headline h1 { font-size: 1.7rem !important; }
-  .brand-subtitle { font-size: 1.3rem !important; }
   .auth-card { padding: 24px 28px 28px 28px !important; }
   .step-line { width: 48px; }
   .step-bubble { width: 30px; height: 30px; font-size: 0.75rem; }
-  .avatar { width: 30px; height: 30px; font-size: 0.65rem; }
-  .stars { font-size: 0.68rem; }
-  .proof-caption { font-size: 0.65rem; }
 }
+
 @media (max-width: 600px) {
   .form-row { grid-template-columns: 1fr; gap: 12px; }
-  .brand-logo-img { height: 75px !important; }
-  .branding-headline h1 { font-size: 1.5rem !important; }
-  .brand-subtitle { font-size: 1.1rem !important; }
-  .branding-headline p { font-size: 0.85rem !important; }
   .step-line { width: 32px; }
   .step-btn-row { gap: 10px; }
   .btn-secondary, .btn-primary { padding: 10px 14px; font-size: 0.85rem; }
   .auth-container { gap: 20px !important; }
-  .avatar { width: 28px; height: 28px; font-size: 0.6rem; }
-  .stars { font-size: 0.62rem; }
-  .proof-caption { font-size: 0.6rem; }
-  .proof-row { gap: 8px; }
 }
+
 @media (max-width: 480px) {
-  .brand-logo-img { height: 60px !important; }
-  .branding-headline h1 { font-size: 1.3rem !important; }
-  .brand-subtitle { font-size: 1rem !important; }
-  .branding-headline p { font-size: 0.78rem !important; }
+  .auth-card { padding: 18px 20px 22px 20px !important; }
   .step-line { width: 25px; }
   .step-labels span { font-size: 0.65rem; }
   .step-bubble { width: 26px; height: 26px; font-size: 0.68rem; }
-  .auth-card { padding: 18px 20px 22px 20px !important; }
-  .avatar { width: 26px; height: 26px; font-size: 0.55rem; margin-left: -6px; }
-  .stars { font-size: 0.58rem; }
-  .proof-caption { font-size: 0.55rem; }
-  .proof-row { gap: 6px; }
+}
+/* Branding Illustration */
+.branding-illustration {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0 0.5rem;
+}
+
+.illustration-img {
+  height: 200px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0, 104, 122, 0.12));
+  animation: floatImage 5s ease-in-out infinite;
+}
+
+@keyframes floatImage {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Responsive illustration */
+@media (max-width: 600px) {
+  .illustration-img {
+    height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .illustration-img {
+    height: 70px;
+  }
 }

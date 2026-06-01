@@ -9,7 +9,7 @@
 
   <div class="auth-container">
 
-    <!-- ══════════ LEFT PANEL - CENTERED ══════════ -->
+    <!-- ══════════ LEFT PANEL - WITH IMAGE ══════════ -->
     <div class="auth-branding animate-on-scroll">
 
       <div class="brand-logo-wrapper">
@@ -19,9 +19,47 @@
       </div>
 
       <div class="branding-headline">
-        <h1>Start your <span class="gradient-text">journey</span></h1>
-        <h2 class="brand-subtitle">today</h2>
-        <p>Join 50,000+ students already learning smarter with AI-powered education</p>
+        <span class="ai-badge">✦ AI-Powered Learning</span>
+        <h1>Start your <span class="gradient-text">learning journey</span></h1>
+        <h2 class="brand-subtitle">with STEAMX</h2>
+        <p>Join 50,000+ students who are learning smarter with AI-powered education.</p>
+      </div>
+
+      <div class="branding-features">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="feature-text">
+            <strong>Personalized Learning</strong>
+            <span>AI adapts to your pace and style</span>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="feature-text">
+            <strong>Smart Progress Tracking</strong>
+            <span>Track, analyze and improve</span>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/></svg>
+          </div>
+          <div class="feature-text">
+            <strong>Exam Ready</strong>
+            <span>Practice smarter, score higher</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADDED: Illustration Image -->
+      <div class="branding-illustration">
+        <img src="assets/images/regsiter-img.png" alt="Learning illustration" class="illustration-img" />
       </div>
 
       <div class="branding-proof">
@@ -40,7 +78,7 @@
 
     </div>
 
-    <!-- ══════════ RIGHT PANEL — Form ══════════ -->
+    <!-- ══════════ RIGHT PANEL — Form (UNCHANGED) ══════════ -->
     <div class="auth-form-section animate-on-scroll">
       <div class="auth-card">
         <div class="card-glow"></div>
@@ -103,16 +141,13 @@
             </div>
           </div>
 
-          <!-- ════════════════════════════════════════
-               STEP 1 — Personal / Account Info
-          ════════════════════════════════════════ -->
+          <!-- ════ STEP 1 ════ -->
           @if (currentStep === 1) {
             <div class="auth-header">
               <h2>Create account</h2>
               <p class="auth-subtext">Let's start with your basic details</p>
             </div>
 
-            <!-- Google Sign-in -->
             <div class="google-signin-section">
               <div class="google-btn-wrap" [class.google-btn-wrap--busy]="isGoogleLoginLoading">
                 <div #googleButton class="google-button-container"></div>
@@ -139,7 +174,6 @@
             <div class="divider"><span>or</span></div>
 
             <form class="auth-form" (ngSubmit)="goStep(2)">
-
               <div class="form-row">
                 <div class="form-group">
                   <label for="fullName">Full Name</label>
@@ -209,13 +243,10 @@
                 Continue
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </button>
-
             </form>
           }
 
-          <!-- ════════════════════════════════════════
-               STEP 2 — Academic Details
-          ════════════════════════════════════════ -->
+          <!-- ════ STEP 2 ════ -->
           @if (currentStep === 2) {
             <div class="auth-header">
               <h2>Academic details</h2>
@@ -223,7 +254,6 @@
             </div>
 
             <form class="auth-form" (ngSubmit)="goStep(3)">
-
               <div class="form-group">
                 <label for="province">Province / Region</label>
                 <app-custom-dropdown
@@ -242,7 +272,6 @@
                     (selectionChanged)="academicData.grade = $event; updateSubjects()"
                   ></app-custom-dropdown>
                 </div>
-
                 <div class="form-group">
                   <label>Medium</label>
                   <app-custom-dropdown
@@ -294,13 +323,10 @@
                   </svg>
                 </button>
               </div>
-
             </form>
           }
 
-          <!-- ════════════════════════════════════════
-               STEP 3 — Preferences + Submit
-          ════════════════════════════════════════ -->
+          <!-- ════ STEP 3 ════ -->
           @if (currentStep === 3) {
             <div class="auth-header">
               <h2>Almost done!</h2>
@@ -308,7 +334,6 @@
             </div>
 
             <form class="auth-form" (ngSubmit)="onSubmit()">
-
               <div class="form-group">
                 <label for="bio">About you <span class="label-optional">(optional)</span></label>
                 <textarea id="bio" [(ngModel)]="prefData.bio" name="bio"
@@ -369,18 +394,14 @@
                   }
                 </button>
               </div>
-
             </form>
           }
-
         }
 
         <div class="auth-footer">
           <p>Already have an account? <a routerLink="/login" class="link-primary">Sign in</a></p>
         </div>
-
       </div>
     </div>
-
   </div>
 </div>

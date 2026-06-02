@@ -1,334 +1,675 @@
-<div class="dashboard-page">
-  <div class="dashboard-background">
-    <div class="floating-shape shape-1"></div>
-    <div class="floating-shape shape-2"></div>
-  </div>
+<div class="portal-container" [class.sidebar-collapsed]="sidebarCollapsed">
+  
+  <!-- ==================== SIDEBAR ==================== -->
+  <aside class="portal-sidebar">
+    <div class="sidebar-header">
+      <a routerLink="/" class="sidebar-logo">
+        <img src="assets/images/logo.png" alt="STEAMX" class="logo-icon sidebar-logo-img" />
+        <span class="logo-text">STEAMX</span>
+      </a>
+      <button class="icon-btn collapse-btn" (click)="toggleSidebar()" title="Collapse Sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+    </div>
 
-  <div class="dashboard-container">
-    
-    <!-- Dashboard Header -->
-    <header class="dashboard-header">
-      <div class="header-content">
-        <div class="greeting-section">
-          <h1>{{ getGreeting() }}, <span class="gradient-text">{{ getUserFirstName() }}</span></h1>
-          <p class="header-subtitle">Here's what's happening with your learning today</p>
-        </div>
-        <div class="header-meta">
-          <div class="date-badge">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <rect x="3" y="4" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
-              <line x1="3" y1="8" x2="17" y2="8" stroke="currentColor" stroke-width="1.5"/>
-              <line x1="7" y1="2" x2="7" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="13" y1="2" x2="13" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-            {{ currentDate | date: 'EEEE, MMMM d' }}
-          </div>
-        </div>
-      </div>
+    <nav class="sidebar-nav">
+      <a routerLink="/dashboard" class="nav-item active">
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span class="nav-label">Dashboard</span>
+      </a>
       
-      <div class="header-actions">
-        <a routerLink="/chat" class="btn btn-primary">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <a href="#" class="nav-item">
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 7a2 2 0 0 0-2.45-1.45L11 8 1 5.55A2 2 0 0 0 0 7.45V19a2 2 0 0 0 2.45 1.45L13 18l10 2.45A2 2 0 0 0 24 18.55V7.45z"></path>
+          <line x1="12" y1="8" x2="12" y2="18"></line>
+        </svg>
+        <span class="nav-label">Live Sessions</span>
+        <span class="sidebar-badge badge-live">LIVE</span>
+      </a>
+      
+      <a href="#" class="nav-item">
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5L4 3.5A2.5 2.5 0 0 1 6.5 1H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z"></path>
+        </svg>
+        <span class="nav-label">My Courses</span>
+      </a>
+      
+      <a href="#" class="nav-item">
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+        <span class="nav-label">Practice</span>
+      </a>
+      
+      <a href="#" class="nav-item">
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"></line>
+          <line x1="12" y1="20" x2="12" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="14"></line>
+        </svg>
+        <span class="nav-label">Analytics</span>
+      </a>
+      
+      <a href="#" class="nav-item">
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="7"></circle>
+          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+        </svg>
+        <span class="nav-label">Achievements</span>
+      </a>
+      
+      <a href="#" class="nav-item">
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span class="nav-label">Messages</span>
+      </a>
+      
+      <a href="#" class="nav-item">
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span class="nav-label">Calendar</span>
+      </a>
+      
+      <a href="#" class="nav-item">
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        <span class="nav-label">Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <!-- Upgrade card -->
+      <div class="sidebar-upgrade-card">
+        <div class="crown-badge">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2">
+            <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"></path>
           </svg>
-          New Session
-        </a>
-        <button class="btn btn-secondary" (click)="refreshData()">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C11.6768 3 13.2116 3.55885 14.4286 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M17 3V7H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </div>
+        <h4>Upgrade to Pro</h4>
+        <p>Unlock unlimited sessions, advanced analytics and priority support.</p>
+        <button class="btn-upgrade-action">
+          Upgrade Now <span class="action-arrows">&gt;&gt;</span>
+        </button>
+      </div>
+
+      <!-- User Profile block -->
+      <div class="sidebar-profile-block">
+        <div class="profile-avatar">
+          {{ userInitial }}
+        </div>
+        <div class="profile-details">
+          <span class="profile-name">{{ user?.full_name || 'Aiemen Altaf' }}</span>
+          <span class="profile-tier">{{ stats.plan | titlecase }} Plan</span>
+        </div>
+        <button class="profile-chevron" (click)="logout()" title="Logout">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==================== MAIN CONTENT AREA ==================== -->
+  <main class="portal-main">
+    <!-- Top Bar -->
+    <header class="portal-header">
+      <div class="greeting-box">
+        <h2>{{ getGreeting() }}, {{ getUserFirstName() }} <span class="wave-emoji">👋</span></h2>
+        <p>Here's what's happening with your learning today</p>
+      </div>
+      
+      <div class="header-controls">
+        <div class="calendar-pill">
+          <svg class="control-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>{{ currentDate | date: 'EEEE, MMMM d, y' }}</span>
+        </div>
+        
+        <button class="notification-pill-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notification-badge">3</span>
+        </button>
+
+        <div class="user-pill-avatar">
+          {{ userInitial }}
+        </div>
       </div>
     </header>
 
-    <!-- Key Metrics Grid -->
-    <section class="metrics-section">
-      <div class="metric-card card primary animate-on-scroll">
-        <div class="metric-content">
-          <div class="metric-header">
-            <span class="metric-label">Total Sessions</span>
-            <div class="metric-icon primary">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <rect x="4" y="6" width="16" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
-                <path d="M8 10H16M8 14H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <!-- Navigation Buttons -->
+    <div class="action-buttons-row">
+      <a routerLink="/chat" class="action-btn btn-teal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>New Session</span>
+      </a>
+      <a href="#" class="action-btn btn-outline">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 7a2 2 0 0 0-2.45-1.45L11 8 1 5.55A2 2 0 0 0 0 7.45V19a2 2 0 0 0 2.45 1.45L13 18l10 2.45A2 2 0 0 0 24 18.55V7.45z"></path>
+        </svg>
+        <span>Join Live Session</span>
+      </a>
+    </div>
+
+    <!-- ════════════════ METRIC CARDS ROW ════════════════ -->
+    <div class="metrics-grid">
+      <!-- Card 1: Total Sessions -->
+      <div class="metric-card">
+        <div class="card-header">
+          <span class="metric-title">Total Sessions</span>
+          <div class="metric-icon-box bg-light-blue">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+          </div>
+        </div>
+        <div class="metric-body">
+          <div class="metric-left">
+            <span class="metric-num">{{ stats.totalSessions }}</span>
+            <div class="metric-growth color-green">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"></polyline>
               </svg>
+              <span>25% from last week</span>
             </div>
           </div>
-          <div class="metric-value">{{ stats.totalSessions }}</div>
-          <div class="metric-footer">
-            <span class="trend positive">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 10L8 6L12 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-              12% from last week
-            </span>
+          <!-- Small sparkline chart SVG -->
+          <div class="metric-sparkline">
+            <svg class="sparkline-svg" viewBox="0 0 120 40">
+              <defs>
+                <linearGradient id="sparkline-teal-grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#00687a" stop-opacity="0.15"/>
+                  <stop offset="100%" stop-color="#00687a" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M 0 30 L 25 30 L 45 10 L 65 25 L 85 5 L 100 15 L 120 15 L 120 40 L 0 40 Z" fill="url(#sparkline-teal-grad)"></path>
+              <path d="M 0 30 L 25 30 L 45 10 L 65 25 L 85 5 L 100 15 L 120 15" fill="none" stroke="#00687a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+            </svg>
           </div>
         </div>
       </div>
 
-      <div class="metric-card card success animate-on-scroll stagger-1">
-        <div class="metric-content">
-          <div class="metric-header">
-            <span class="metric-label">Questions Asked</span>
-            <div class="metric-icon success">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-                <path d="M12 8V12L15 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <!-- Card 2: Questions Asked -->
+      <div class="metric-card">
+        <div class="card-header">
+          <span class="metric-title">Questions Asked</span>
+          <div class="metric-icon-box bg-light-purple">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </div>
+        </div>
+        <div class="metric-body">
+          <div class="metric-left">
+            <span class="metric-num">{{ stats.messagesThisWeek }}</span>
+            <div class="metric-growth color-green">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"></polyline>
               </svg>
+              <span>18% from last week</span>
             </div>
           </div>
-          <div class="metric-value">{{ stats.messagesThisWeek }}</div>
-          <div class="metric-footer">
-            <span class="trend positive">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 10L8 6L12 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-              24% from last week
-            </span>
+          <!-- Purple sparkline SVG -->
+          <div class="metric-sparkline">
+            <svg class="sparkline-svg" viewBox="0 0 120 40">
+              <defs>
+                <linearGradient id="sparkline-purple-grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.15"/>
+                  <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M 0 35 L 20 35 L 40 10 L 60 25 L 80 5 L 100 20 L 120 15 L 120 40 L 0 40 Z" fill="url(#sparkline-purple-grad)"></path>
+              <path d="M 0 35 L 20 35 L 40 10 L 60 25 L 80 5 L 100 20 L 120 15" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+            </svg>
           </div>
         </div>
       </div>
 
-      <div class="metric-card card warning animate-on-scroll stagger-2">
-        <div class="metric-content">
-          <div class="metric-header">
-            <span class="metric-label">Learning Streak</span>
-            <div class="metric-icon warning">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M12 3L9 9L3 10L7.5 14.5L6.5 21L12 18L17.5 21L16.5 14.5L21 10L15 9L12 3Z" stroke="currentColor" stroke-width="2"/>
-              </svg>
+      <!-- Card 3: Learning Streak -->
+      <div class="metric-card">
+        <div class="card-header">
+          <span class="metric-title">Learning Streak</span>
+          <div class="metric-icon-box bg-light-orange">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="metric-body">
+          <div class="metric-left">
+            <span class="metric-num">{{ stats.learningStreak }} <span class="metric-unit">days</span></span>
+            <div class="metric-growth color-orange">
+              <span class="streak-emoji">🔥</span>
+              <span>Keep it going!</span>
             </div>
           </div>
-          <div class="metric-value">{{ stats.learningStreak }} <span class="metric-unit">days</span></div>
-          <div class="metric-footer">
-            <span class="trend">Keep it going!</span>
+          <!-- Orange sparkline SVG -->
+          <div class="metric-sparkline">
+            <svg class="sparkline-svg" viewBox="0 0 120 40">
+              <defs>
+                <linearGradient id="sparkline-orange-grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#ea580c" stop-opacity="0.15"/>
+                  <stop offset="100%" stop-color="#ea580c" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M 0 25 L 20 25 L 40 35 L 60 15 L 80 10 L 100 25 L 120 15 L 120 40 L 0 40 Z" fill="url(#sparkline-orange-grad)"></path>
+              <path d="M 0 25 L 20 25 L 40 35 L 60 15 L 80 10 L 100 25 L 120 15" fill="none" stroke="#ea580c" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+            </svg>
           </div>
         </div>
       </div>
 
-      <div class="metric-card card info animate-on-scroll stagger-3">
-        <div class="metric-content">
-          <div class="metric-header">
-            <span class="metric-label">Current Plan</span>
-            <div class="metric-icon info">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <rect x="6" y="8" width="12" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
-                <path d="M6 12H18M9 8V6M15 8V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </div>
+      <!-- Card 4: Current Plan -->
+      <div class="metric-card">
+        <div class="card-header">
+          <span class="metric-title">Current Plan</span>
+          <div class="metric-icon-box bg-light-pink">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#db2777" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="8" width="18" height="12" rx="2" ry="2"></rect>
+              <path d="M12 8V4H8a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4h-4z"></path>
+            </svg>
           </div>
-          <div class="metric-value plan-value">{{ stats.plan }}</div>
-          <div class="metric-footer">
-            <a href="#pricing" class="upgrade-link">
-              Upgrade
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </div>
+        <div class="metric-body">
+          <div class="metric-left">
+            <span class="metric-num color-pink">{{ stats.plan }}</span>
+            <a href="#" class="upgrade-text-link">
+              <span>Upgrade for more features</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
             </a>
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Activity Overview -->
-    <section class="activity-section">
-      <div class="section-header">
-        <h2>Recent Activity</h2>
-        <div class="header-actions">
-          <button 
-            class="filter-btn" 
-            [class.active]="activityFilter === 'today'"
-            (click)="activityFilter = 'today'">
-            Today
-          </button>
-          <button 
-            class="filter-btn" 
-            [class.active]="activityFilter === 'week'"
-            (click)="activityFilter = 'week'">
-            This Week
-          </button>
-          <button 
-            class="filter-btn" 
-            [class.active]="activityFilter === 'month'"
-            (click)="activityFilter = 'month'">
-            This Month
-          </button>
+    <!-- ════════════════ MIDDLE SECTION: RECENT ACTIVITY & LIVE SESSIONS ════════════════ -->
+    <div class="middle-columns-grid">
+      
+      <!-- COLUMN 1: Recent Activity -->
+      <div class="content-card recent-activity-card">
+        <div class="card-header">
+          <h3>Recent Activity</h3>
+          <div class="activity-tabs">
+            <button class="tab-btn" [class.active]="activityFilter === 'today'" (click)="activityFilter = 'today'">Today</button>
+            <button class="tab-btn" [class.active]="activityFilter === 'week'" (click)="activityFilter = 'week'">This Week</button>
+            <button class="tab-btn" [class.active]="activityFilter === 'month'" (click)="activityFilter = 'month'">This Month</button>
+          </div>
         </div>
-      </div>
 
-      <div class="activity-grid">
-        <div class="activity-card card animate-on-scroll">
-          <div class="activity-header">
-            <div class="activity-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2"/>
-                <path d="M10 6V10L13 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <div class="activity-list">
+          <!-- Item 1: Python Learning -->
+          <div class="activity-item">
+            <div class="activity-icon bg-light-blue">
+              <!-- Video / screen icon -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 7l-7 5 7 5V7z"></path>
+                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
               </svg>
             </div>
-            <span class="activity-time">2 hours ago</span>
+            <div class="activity-details">
+              <div class="item-title-row">
+                <h4>Completed Python Learning Session</h4>
+                <span class="activity-time">2 hours ago</span>
+              </div>
+              <p>Covered functions, loops, and list comprehensions</p>
+              <div class="activity-badges">
+                <span class="item-badge">12 Questions</span>
+                <span class="item-badge">45 min</span>
+              </div>
+            </div>
           </div>
-          <h4>Completed Python Learning Session</h4>
-          <p>Covered functions, loops, and list comprehensions</p>
-          <div class="activity-meta">
-            <span class="meta-badge">12 questions</span>
-            <span class="meta-badge">45 min</span>
-          </div>
-        </div>
 
-        <div class="activity-card card animate-on-scroll stagger-1">
-          <div class="activity-header">
-            <div class="activity-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M10 3L5 7V10C5 13 7 15 10 16C13 15 15 13 15 10V7L10 3Z" stroke="currentColor" stroke-width="2"/>
+          <!-- Item 2: Mathematics -->
+          <div class="activity-item">
+            <div class="activity-icon bg-light-purple">
+              <!-- Summation sign -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16v3M4 4l8 8-8 8v0h16v-3"></path>
               </svg>
             </div>
-            <span class="activity-time">5 hours ago</span>
+            <div class="activity-details">
+              <div class="item-title-row">
+                <h4>Mathematics Problem Solving</h4>
+                <span class="activity-time">5 hours ago</span>
+              </div>
+              <p>Worked on calculus derivatives and integrals</p>
+              <div class="activity-badges">
+                <span class="item-badge">8 Questions</span>
+                <span class="item-badge">30 min</span>
+              </div>
+            </div>
           </div>
-          <h4>Mathematics Problem Solving</h4>
-          <p>Worked on calculus derivatives and integrals</p>
-          <div class="activity-meta">
-            <span class="meta-badge">8 questions</span>
-            <span class="meta-badge">30 min</span>
-          </div>
-        </div>
 
-        <div class="activity-card card animate-on-scroll stagger-2">
-          <div class="activity-header">
-            <div class="activity-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M6 8L10 12L14 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <rect x="4" y="4" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
+          <!-- Item 3: Essay Writing -->
+          <div class="activity-item">
+            <div class="activity-icon bg-light-amber">
+              <!-- Document icon -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
               </svg>
             </div>
-            <span class="activity-time">Yesterday</span>
-          </div>
-          <h4>Essay Writing Practice</h4>
-          <p>Structured argumentative essay on climate change</p>
-          <div class="activity-meta">
-            <span class="meta-badge">5 questions</span>
-            <span class="meta-badge">1 hour</span>
+            <div class="activity-details">
+              <div class="item-title-row">
+                <h4>Essay Writing Practice</h4>
+                <span class="activity-time">Yesterday</span>
+              </div>
+              <p>Structured argumentative essay on climate change</p>
+              <div class="activity-badges">
+                <span class="item-badge">5 Questions</span>
+                <span class="item-badge">1 hour</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- Recent Sessions -->
-    <section class="sessions-section">
-      <div class="section-header">
-        <div>
-          <h2>Your Sessions</h2>
-          <p>Continue where you left off</p>
-        </div>
-        <a routerLink="/chat" class="view-all-link">
-          View All
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <a routerLink="/chat" class="view-all-activity-link">
+          <span>View All Activity</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
           </svg>
         </a>
       </div>
 
-      @if (loading) {
-        <div class="loading-state">
-          <div class="spinner"></div>
-          <p>Loading sessions...</p>
+      <!-- COLUMN 2: Live Sessions -->
+      <div class="content-card live-sessions-card">
+        <div class="card-header">
+          <h3>Live Sessions</h3>
+          <a href="#" class="view-all-link">
+            <span>View All</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
         </div>
-      } @else {
-        @if (recentSessions.length === 0) {
-          <div class="empty-state card">
-            <div class="empty-icon">
-              <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-                <circle cx="40" cy="40" r="35" fill="#e7ede9"/>
-                <path d="M30 38L40 48L50 38" stroke="#00687a" stroke-width="3" stroke-linecap="round"/>
-                <circle cx="40" cy="40" r="25" stroke="#00687a" stroke-width="2"/>
+
+        <!-- Featured Active Live Session Card -->
+        <div class="featured-live-session">
+          <div class="live-tag">
+            <span class="pulse-dot"></span>
+            <span>LIVE NOW</span>
+          </div>
+          
+          <div class="live-content-row">
+            <div class="live-topic">
+              <h4>Data Structures in Python</h4>
+              <span class="instructor-name">Instructor: Ali Raza</span>
+            </div>
+            
+            <div class="countdown-timer">
+              <span class="time-left-num">00 : 24 : 15</span>
+              <span class="time-left-lbl">Time Left</span>
+            </div>
+          </div>
+
+          <div class="live-footer-row">
+            <!-- Avatars overlapping stack -->
+            <div class="participant-avatars">
+              <div class="avatar-stack av-1" style="background: #a855f7;">R</div>
+              <div class="avatar-stack av-2" style="background: #3b82f6;">Z</div>
+              <div class="avatar-stack av-3" style="background: #ef4444;">K</div>
+              <div class="avatar-stack av-4" style="background: #10b981;">N</div>
+              <div class="avatar-stack av-5" style="background: #f59e0b;">S</div>
+              <span class="avatar-more">+24</span>
+            </div>
+            
+            <button class="join-session-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 7l-7 5 7 5V7z"></path>
+                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+              </svg>
+              <span>Join Session</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Next Up items list -->
+        <div class="next-up-section">
+          <h5>Next Up</h5>
+          
+          <div class="next-up-list">
+            <!-- Next Up 1 -->
+            <div class="next-up-item">
+              <div class="next-icon-wrap bg-light-purple">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 2v7.586l7.243 7.243a2 2 0 0 1 0 2.828v0a2 2 0 0 1-2.828 0L7.172 12.414A2 2 0 0 1 6.586 11V2h4z"></path>
+                </svg>
+              </div>
+              <div class="next-details">
+                <h6>Chemistry - Organic Reactions</h6>
+                <span class="instructor-tag">By Sara Khan</span>
+              </div>
+              <div class="next-time-box">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>Today, 9:00 PM</span>
+              </div>
+            </div>
+
+            <!-- Next Up 2 -->
+            <div class="next-up-item">
+              <div class="next-icon-wrap bg-light-blue">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+              </div>
+              <div class="next-details">
+                <h6>Physics - Laws of Motion</h6>
+                <span class="instructor-tag">By Hamza Ali</span>
+              </div>
+              <div class="next-time-box">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>Tomorrow, 6:00 PM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ BOTTOM SECTION: YOUR SESSIONS, CALENDAR, QUICK ACTIONS ════════════════ -->
+    <div class="bottom-columns-grid">
+      
+      <!-- COLUMN 1: Your Sessions -->
+      <div class="content-card your-sessions-card">
+        <div class="card-header">
+          <h3>Your Sessions</h3>
+          <a routerLink="/chat" class="view-all-link">
+            <span>View All</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+        </div>
+
+        <div class="sessions-resume-box">
+          <div class="resume-illustration">
+            <!-- stack of books and plant drawn cleanly in SVGs -->
+            <svg class="illustration-svg" viewBox="0 0 120 90" fill="none">
+              <!-- Book stack base -->
+              <rect x="20" y="60" width="70" height="10" rx="2" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5"></rect>
+              <rect x="25" y="50" width="60" height="10" rx="2" fill="#00687a" opacity="0.8" stroke="#004d5a" stroke-width="1.5"></rect>
+              <rect x="23" y="40" width="64" height="10" rx="2" fill="#7c3aed" opacity="0.7" stroke="#5b21b6" stroke-width="1.5"></rect>
+              <rect x="30" y="30" width="50" height="10" rx="2" fill="#f59e0b" opacity="0.8" stroke="#b45309" stroke-width="1.5"></rect>
+              
+              <!-- Potted plant -->
+              <path d="M92 45 C92 30 85 25 85 25 C85 25 78 30 78 45 C78 55 92 55 92 45 Z" fill="#10b981" opacity="0.8"></path>
+              <path d="M102 50 C102 40 96 35 96 35 C96 35 90 40 90 50 C90 58 102 58 102 50 Z" fill="#059669" opacity="0.6"></path>
+              <path d="M85 55 L85 70" stroke="#78350f" stroke-width="2"></path>
+              <path d="M96 55 L96 70" stroke="#78350f" stroke-width="2"></path>
+              <!-- Pot -->
+              <path d="M80 65 L100 65 L96 80 L84 80 Z" fill="#d97706"></path>
+            </svg>
+          </div>
+          
+          <div class="resume-content">
+            <h5>Pick up where you left off</h5>
+            <p>Continue your learning journey.</p>
+          </div>
+
+          <div class="resume-progress-section">
+            <div class="progress-details-row">
+              <span class="course-title">Python for Beginners</span>
+              <span class="progress-pct">65% Completed</span>
+            </div>
+            
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width: 65%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMN 2: Calendar -->
+      <div class="content-card calendar-mini-card">
+        <div class="card-header">
+          <h3>Calendar</h3>
+          <div class="calendar-controls">
+            <span class="calendar-year">2026</span>
+            <div class="arrow-buttons">
+              <button class="cal-arrow-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+              <button class="cal-arrow-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="calendar-grid-wrap">
+          <!-- Days of Week labels -->
+          <div class="calendar-week-days">
+            <span>SUN</span>
+            <span>MON</span>
+            <span>TUE</span>
+            <span>WED</span>
+            <span>THU</span>
+            <span>FRI</span>
+            <span>SAT</span>
+          </div>
+
+          <!-- Calendar Dates row -->
+          <div class="calendar-days-numbers">
+            <span class="day-num active">24</span>
+            <span class="day-num">25</span>
+            <span class="day-num">26</span>
+            <span class="day-num">27</span>
+            <span class="day-num">28</span>
+            <span class="day-num">29</span>
+            <span class="day-num">30</span>
+          </div>
+
+          <!-- Active Day Details item -->
+          <div class="calendar-day-details">
+            <div class="event-time">9:00 PM</div>
+            <div class="event-desc-block">
+              <span class="event-name">Data Structures in Python</span>
+              <span class="event-type-badge">Live Session</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMN 3: Quick Actions -->
+      <div class="content-card quick-actions-card">
+        <div class="card-header">
+          <h3>Quick Actions</h3>
+        </div>
+
+        <div class="quick-actions-box-grid">
+          <!-- Action 1: New Session -->
+          <a routerLink="/chat" class="quick-action-item animate-on-scroll stagger-1">
+            <div class="action-icon-wrap bg-light-blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
               </svg>
             </div>
-            <h3>No sessions yet</h3>
-            <p>Start your first learning session to see it here</p>
-            <a routerLink="/chat" class="btn btn-primary">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <h5>New Session</h5>
+            <p>Start a fresh conversation</p>
+          </a>
+
+          <!-- Action 2: Practice -->
+          <a routerLink="/chat" class="quick-action-item animate-on-scroll stagger-2">
+            <div class="action-icon-wrap bg-light-purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
               </svg>
-              Start Learning
-            </a>
-          </div>
-        } @else {
-          <div class="sessions-grid">
-            @for (session of recentSessions; track session.id) {
-              <a [routerLink]="['/chat', session.id]" class="session-card card animate-on-scroll" [class]="'stagger-' + ($index % 3)">
-                <div class="session-header">
-                  <h4>{{ session.title || 'Untitled Session' }}</h4>
-                  <span class="session-date">{{ formatDate(session.created_at) }}</span>
-                </div>
-                <p class="session-preview">{{ getSessionPreview(session) }}</p>
-                <div class="session-footer">
-                  <div class="session-meta">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                    <span>{{ session.messages?.length || 0 }} messages</span>
-                  </div>
-                  <svg class="arrow-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M7 15L12 10L7 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </div>
-              </a>
-            }
-          </div>
-        }
-      }
-    </section>
+            </div>
+            <h5>Practice</h5>
+            <p>Solve questions and quizzes</p>
+          </a>
 
-    <!-- Quick Actions -->
-    <section class="quick-actions-section">
-      <div class="section-header">
-        <h2>Quick Actions</h2>
+          <!-- Action 3: Resources -->
+          <a href="#" class="quick-action-item animate-on-scroll stagger-3">
+            <div class="action-icon-wrap bg-light-amber">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5L4 3.5A2.5 2.5 0 0 1 6.5 1H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z"></path>
+              </svg>
+            </div>
+            <h5>Resources</h5>
+            <p>Access study materials</p>
+          </a>
+
+          <!-- Action 4: Help Center -->
+          <a href="#" class="quick-action-item animate-on-scroll stagger-4">
+            <div class="action-icon-wrap bg-light-pink">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#db2777" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </div>
+            <h5>Help Center</h5>
+            <p>Get support and answers</p>
+          </a>
+        </div>
       </div>
-
-      <div class="actions-grid">
-        <a routerLink="/chat" class="action-card card animate-on-scroll">
-          <div class="action-icon primary">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <path d="M14 5L7 10V14C7 19 10 23 14 25C18 23 21 19 21 14V10L14 5Z" stroke="currentColor" stroke-width="2"/>
-              <circle cx="14" cy="14" r="4" fill="currentColor"/>
-            </svg>
-          </div>
-          <h3>New Session</h3>
-          <p>Start a fresh conversation</p>
-        </a>
-
-        <a href="#pricing" class="action-card card animate-on-scroll stagger-1">
-          <div class="action-icon success">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <path d="M14 4L10 10L4 12L9 17L8 24L14 21L20 24L19 17L24 12L18 10L14 4Z" stroke="currentColor" stroke-width="2"/>
-            </svg>
-          </div>
-          <h3>Upgrade Plan</h3>
-          <p>Unlock more features</p>
-        </a>
-
-        <a href="#contact" class="action-card card animate-on-scroll stagger-2">
-          <div class="action-icon warning">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="2"/>
-              <path d="M14 10V14M14 18H14.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <h3>Help Center</h3>
-          <p>Get support & answers</p>
-        </a>
-
-        <button class="action-card card animate-on-scroll stagger-3" (click)="logout()">
-          <div class="action-icon danger">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <path d="M17 20L22 14L17 8M22 14H10M10 4H7C5.89543 4 5 4.89543 5 6V22C5 23.1046 5.89543 24 7 24H10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <h3>Logout</h3>
-          <p>Sign out of your account</p>
-        </button>
-      </div>
-    </section>
-
-  </div>
+    </div>
+  </main>
 </div>

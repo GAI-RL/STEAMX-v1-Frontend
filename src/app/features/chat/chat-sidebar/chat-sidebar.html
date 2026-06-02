@@ -3,102 +3,152 @@
   <!-- ===================== EXPANDED STATE ===================== -->
   @if (!collapsed) {
 
+    <!-- Sidebar Header -->
     <div class="sidebar-header">
       <a routerLink="/" class="sidebar-logo">
-  <div class="logo-inline">
-    <div class="logo-icon-pill">
-      <img src="assets/images/logo.png" alt="STEAMX" class="logo-pill-img" />
-    </div>
-    
-  </div>
-</a>
-      <button class="icon-btn" (click)="toggleSidebar.emit()" title="Close sidebar">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <rect x="3" y="3" width="7" height="18" rx="1" stroke="currentColor" stroke-width="1.8"/>
-          <path d="M14 8h4M14 12h4M14 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <img src="assets/images/logo.png" alt="STEAMX" class="sidebar-logo-img" />
+      </a>
+      <button class="icon-btn toggle-sidebar-btn" (click)="toggleSidebar.emit()" title="Collapse sidebar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="18" rx="1"/>
+          <path d="M14 8h4M14 12h4M14 16h4"/>
         </svg>
       </button>
     </div>
 
+    <!-- Navigation Area -->
     <div class="sidebar-nav">
-      <!-- New chat button without plus sign -->
-      <button class="nav-row" (click)="newChat.emit()">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <!-- New chat Button -->
+      <button class="new-chat-btn" (click)="newChat.emit()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <path d="M12 5v14M5 12h14"/>
         </svg>
         <span>New chat</span>
       </button>
 
-      <button class="nav-row" (click)="toggleSearch()">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
-          <path d="M20 20l-3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <!-- Search Box (Always visible as in screenshot) -->
+      <div class="search-box-wrap">
+        <svg class="search-icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
-        <span>Search chats</span>
-      </button>
-
-      @if (searchOpen) {
-        <div class="search-box">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="filterSessions()" placeholder="Search your chats..." autofocus />
-          @if (searchQuery) {
-            <button class="clear-btn" (click)="clearSearch()">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
-            </button>
-          }
-        </div>
-      }
+        <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="filterSessions()" placeholder="Search chats" />
+        <span class="search-shortcut">Ctrl K</span>
+      </div>
     </div>
 
-    <div class="sidebar-divider"></div>
-
+    <!-- Sessions List (Categorized) -->
     <div class="sessions-list">
       @if (loading) {
         <div class="sessions-loading">
           <div class="spinner-small"></div>
-          <span>Loading...</span>
+          <span>Loading chats...</span>
         </div>
       } @else if (sessions.length === 0) {
         <div class="sessions-empty">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
           <p>No conversations yet</p>
           <span>Start a new chat to begin</span>
         </div>
       } @else {
-        <p class="section-label">Your chats</p>
-        @for (session of displayedSessions; track session.id) {
-          <div class="session-item" [class.active]="session.id === activeSessionId" (click)="selectSession.emit(session.id)">
-            <span class="session-title">{{ session.title || 'New Conversation' }}</span>
-            <button class="session-delete" (click)="$event.stopPropagation(); promptDeleteSession(session.id, session.title)" title="Delete chat">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div>
+        
+        <!-- Today Sessions -->
+        @if (todaySessions.length > 0) {
+          <p class="section-label">Today</p>
+          @for (session of todaySessions; track session.id) {
+            <div class="session-item" [class.active]="session.id === activeSessionId" (click)="selectSession.emit(session.id)">
+              <svg class="session-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              <span class="session-title">{{ session.title || 'New Conversation' }}</span>
+              <span class="session-time">{{ (session.updated_at || session.created_at) | date:'hh:mm a' }}</span>
+              <button class="session-delete" (click)="$event.stopPropagation(); promptDeleteSession(session.id, session.title)" title="Delete chat">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+              </button>
+            </div>
+          }
         }
+
+        <!-- Yesterday Sessions -->
+        @if (yesterdaySessions.length > 0) {
+          <p class="section-label">Yesterday</p>
+          @for (session of yesterdaySessions; track session.id) {
+            <div class="session-item" [class.active]="session.id === activeSessionId" (click)="selectSession.emit(session.id)">
+              <svg class="session-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              <span class="session-title">{{ session.title || 'New Conversation' }}</span>
+              <span class="session-time">{{ (session.updated_at || session.created_at) | date:'hh:mm a' }}</span>
+              <button class="session-delete" (click)="$event.stopPropagation(); promptDeleteSession(session.id, session.title)" title="Delete chat">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+              </button>
+            </div>
+          }
+        }
+
+        <!-- Older Sessions -->
+        @if (olderSessions.length > 0) {
+          <p class="section-label">Older Chats</p>
+          @for (session of olderSessions; track session.id) {
+            <div class="session-item" [class.active]="session.id === activeSessionId" (click)="selectSession.emit(session.id)">
+              <svg class="session-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              <span class="session-title">{{ session.title || 'New Conversation' }}</span>
+              <span class="session-time">{{ (session.updated_at || session.created_at) | date:'MMM dd' }}</span>
+              <button class="session-delete" (click)="$event.stopPropagation(); promptDeleteSession(session.id, session.title)" title="Delete chat">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+              </button>
+            </div>
+          }
+        }
+
         @if (searchQuery && displayedSessions.length === 0) {
           <p class="no-results">No chats match "{{ searchQuery }}"</p>
         }
       }
     </div>
 
+    <!-- Sidebar Footer -->
     <div class="sidebar-footer">
-      <!-- Upgrade plan button now links to /pricing -->
-      <a class="upgrade-btn" href="#pricing">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <span>Upgrade plan</span>
-      </a>
+      <!-- Upgrade plan premium card -->
+      <div class="upgrade-card">
+        <div class="upgrade-header">
+          <span class="upgrade-crown">👑</span>
+          <span class="upgrade-title">Upgrade to Pro</span>
+        </div>
+        <p class="upgrade-desc">Get unlimited access to advanced AI, priority support, and more.</p>
+        <a class="upgrade-btn-pill" href="#pricing">
+          <span>Upgrade Now</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
 
-      <!-- User info display with logout button -->
-      <div class="user-row">
+      <!-- User profile info row -->
+      <div class="user-row" (click)="toggleUserMenu()">
         <div class="user-avatar">{{ userInitial }}</div>
         <div class="user-details">
           <span class="user-name">{{ userName }}</span>
           <span class="user-plan">{{ userPlan }} Plan</span>
         </div>
-        <button class="logout-btn" (click)="logout.emit()" title="Log out">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
+        <svg class="user-chevron" [class.rotated]="userMenuOpen" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+
+        <!-- Dynamic User Options Menu (opens upward) -->
+        @if (userMenuOpen) {
+          <div class="user-menu" (click)="$event.stopPropagation()">
+            <button class="user-menu-item" (click)="handleLogout()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+              <span>Log out</span>
+            </button>
+            <div class="user-menu-divider"></div>
+            <button class="user-menu-item user-menu-danger" (click)="promptDeleteAccount()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+              <span>Delete account</span>
+            </button>
+          </div>
+        }
       </div>
     </div>
   }
@@ -107,16 +157,13 @@
   @if (collapsed) {
     <div class="collapsed-strip">
       <button class="collapsed-btn" (click)="toggleSidebar.emit()" title="Open sidebar">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="18" rx="1" stroke="currentColor" stroke-width="1.8"/><path d="M14 8h4M14 12h4M14 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="18" rx="1"/><path d="M14 8h4M14 12h4M14 16h4" stroke-linecap="round"/></svg>
       </button>
       <button class="collapsed-btn" (click)="newChat.emit()" title="New chat">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-      </button>
-      <button class="collapsed-btn" (click)="toggleSidebar.emit()" title="Search chats">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
       </button>
       <div class="collapsed-spacer"></div>
-      <button class="collapsed-avatar" title="{{ userName }}">{{ userInitial }}</button>
+      <button class="collapsed-avatar" (click)="toggleSidebar.emit()" title="{{ userName }}">{{ userInitial }}</button>
     </div>
   }
 
@@ -132,7 +179,7 @@
   <div class="modal-overlay" (click)="deleteModal.show = false">
     <div class="modal" (click)="$event.stopPropagation()">
       <div class="modal-icon modal-icon-warn">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
       </div>
       <h3 class="modal-title">Delete conversation?</h3>
       <p class="modal-desc">
@@ -151,7 +198,7 @@
   <div class="modal-overlay" (click)="deleteAccountModal = false">
     <div class="modal" (click)="$event.stopPropagation()">
       <div class="modal-icon modal-icon-danger">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
       </div>
       <h3 class="modal-title">Delete your account?</h3>
       <p class="modal-desc">

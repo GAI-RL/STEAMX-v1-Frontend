@@ -48,6 +48,51 @@ export class ChatSidebarComponent implements OnChanges {
     return this.searchQuery.trim() ? this.filteredSessions : this.sessions;
   }
 
+  get todaySessions(): ChatSession[] {
+    try {
+      const today = new Date().toDateString();
+      return this.displayedSessions.filter(s => {
+        const dStr = s.updated_at || s.created_at;
+        if (!dStr) return false;
+        return new Date(dStr).toDateString() === today;
+      });
+    } catch (e) {
+      return [];
+    }
+  }
+
+  get yesterdaySessions(): ChatSession[] {
+    try {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toDateString();
+      return this.displayedSessions.filter(s => {
+        const dStr = s.updated_at || s.created_at;
+        if (!dStr) return false;
+        return new Date(dStr).toDateString() === yesterdayStr;
+      });
+    } catch (e) {
+      return [];
+    }
+  }
+
+  get olderSessions(): ChatSession[] {
+    try {
+      const today = new Date().toDateString();
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toDateString();
+      return this.displayedSessions.filter(s => {
+        const dStr = s.updated_at || s.created_at;
+        if (!dStr) return false;
+        const sDateStr = new Date(dStr).toDateString();
+        return sDateStr !== today && sDateStr !== yesterdayStr;
+      });
+    } catch (e) {
+      return this.displayedSessions;
+    }
+  }
+
   ngOnChanges(): void {
     this.filterSessions();
   }

@@ -148,6 +148,14 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Team
   team = [
+    {
+      avatar: 'assets/images/Nauman.jpeg',
+      name: 'Nauman Hanif',
+      role: 'Founder',
+      bio: 'Founded STEAMx to transform digital education in Pakistan,leading strategic vision and cross functional teams to build the country\'s leading  AI-powered learning platform.',
+      twitter: '#'
+    },
+    
     
     {
       avatar: 'assets/images/Tooba.png',
@@ -155,13 +163,6 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
       role: 'Technical Project Manager',
       bio: 'Led cross-functional execution to deliver milestones on time while aligning product strategy with engineering delivery.',
       linkedin: '#',
-      twitter: '#'
-    },
-    {
-      avatar: 'assets/images/Ayesha.png',
-      name: 'Ayesha Azam',
-      role: 'Technical Lead',
-      bio: 'Architected the platform\'s core systems and guided engineering implementation to ensure scalability and reliability.',
       twitter: '#'
     },
     
@@ -250,6 +251,14 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
     satisfaction: '98%',
     countries: '150+'
   };
+
+  // Visitors Overview Live Data
+  totalVisitors = 0;
+  newVisitors = 0;
+  returningVisitors = 0;
+  newVisitorsPct = 0;
+  returningVisitorsPct = 0;
+  chartActive = false;
 
   // Scroll Animation Observers
   private intersectionObserver?: IntersectionObserver;
@@ -647,6 +656,52 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }, { threshold: 0.3 });
     
     statCards.forEach(card => observer.observe(card));
+
+    // Dynamic animation for Visitors Overview pie chart
+    const chartCard = document.querySelector('.visitors-chart-card');
+    if (chartCard) {
+      const chartObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !this.chartActive) {
+            this.chartActive = true;
+            this.animateVisitorsChart();
+            chartObserver.disconnect();
+          }
+        });
+      }, { threshold: 0.2 });
+      chartObserver.observe(chartCard);
+    }
+  }
+
+  animateVisitorsChart() {
+    const duration = 1500;
+    const startTime = performance.now();
+    
+    const ease = (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    
+    const animate = (timestamp: number) => {
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = ease(progress);
+      
+      this.totalVisitors = Math.round(eased * 50000);
+      this.newVisitors = Math.round(eased * 34500);
+      this.returningVisitors = Math.round(eased * 15500);
+      this.newVisitorsPct = parseFloat((eased * 69).toFixed(2));
+      this.returningVisitorsPct = parseFloat((eased * 31).toFixed(2));
+      
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        this.totalVisitors = 50000;
+        this.newVisitors = 34500;
+        this.returningVisitors = 15500;
+        this.newVisitorsPct = 69.00;
+        this.returningVisitorsPct = 31.00;
+      }
+    };
+    
+    requestAnimationFrame(animate);
   }
 
   // ==================== SMOOTH SCROLL ====================

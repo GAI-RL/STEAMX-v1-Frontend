@@ -29,6 +29,8 @@ export class DashboardComponent implements OnInit {
   recentSessions: ChatSession[] = [];
   loading = true;
   activityFilter: 'today' | 'week' | 'month' = 'week';
+  sidebarCollapsed = false;
+  userInitial = 'A';
 
   constructor(
     private chatService: ChatService,
@@ -38,11 +40,21 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.authService.currentUserValue;
+    if (this.user && this.user.full_name) {
+      this.userInitial = this.user.full_name.charAt(0).toUpperCase();
+    } else {
+      this.userInitial = 'A';
+    }
+    
     this.loadDashboardData();
     
     setTimeout(() => {
       this.initScrollAnimations();
     }, 100);
+  }
+
+  toggleSidebar(): void {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
   }
 
   loadDashboardData(): void {

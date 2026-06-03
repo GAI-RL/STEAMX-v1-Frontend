@@ -12,64 +12,58 @@ import { AuthService } from './core/services/auth.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-   imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent, SessionExpiredModal],
+  imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent, SessionExpiredModal],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class  AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   sessionExpired = false;
   private sub: Subscription | undefined;
   
-
   title = 'STEAMX';
   showHeaderFooter = true;
 
   constructor(
-    private router: Router, private sessionService: SessionService,
-    private authService:AuthService,
+    private router: Router, 
+    private sessionService: SessionService,
+    private authService: AuthService,
     private ngZone: NgZone,
-  private cdr: ChangeDetectorRef  )
-   {
-    
+    private cdr: ChangeDetectorRef
+  ) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
-      // Hide navbar/footer only on chat and dashboard pages
+      // Hide navbar/footer on chat, dashboard, login, register, and contact pages
       this.showHeaderFooter = !event.url.includes('/chat') && 
-                             !event.url.includes('/dashboard') && !event.url.includes('/login') && 
-                             !event.url.includes('/register') &&
-                       !event.url.includes('#pricing');
+                              !event.url.includes('/dashboard') && 
+                              !event.url.includes('/login') && 
+                              !event.url.includes('/register') &&
+                              !event.url.includes('/contact') &&  // ← ADDED THIS LINE
+                              !event.url.includes('#pricing');
     });
   }
-ngOnInit(): void {
-   
+
+  ngOnInit(): void {
     this.sub = this.sessionService.sessionExpired$.subscribe(() => {
-  console.log('session expired received');   // ← check this fires
-  this.ngZone.run(() => {
-    console.log('inside zone, setting true'); // ← check this fires
-    this.sessionExpired = true;
-      this.cdr.detectChanges();  
-  });
-});
+      console.log('session expired received');
+      this.ngZone.run(() => {
+        console.log('inside zone, setting true');
+        this.sessionExpired = true;
+        this.cdr.detectChanges();
+      });
+    });
   }
 
-handleAuthError(): void {
-  this.sessionExpired = false;
-  this.cdr.detectChanges();
-  this.authService.logout();             // ← clears token first
-  this.router.navigateByUrl('/login').then(success => {
-    console.log('navigate result:', success);  // should now be true
-  });
-}
+  handleAuthError(): void {
+    this.sessionExpired = false;
+    this.cdr.detectChanges();
+    this.authService.logout();
+    this.router.navigateByUrl('/login').then(success => {
+      console.log('navigate result:', success);
+    });
+  }
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
   }
-  //Testing
-
-
-
-
 }
-
-

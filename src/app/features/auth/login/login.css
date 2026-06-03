@@ -182,7 +182,7 @@
 .illustration-wrap {
   display: flex;
   justify-content: flex-start;
-  margin: -75px 0 -65px;  /* Significantly increased negative margins to pull image tight to text and stats */
+  margin: -75px 0 -65px -120px;  /* Increased negative left margin to shift it further left */
 }
 .books-illustration {
   height: 330px;  /* Enlarged: was 240px */

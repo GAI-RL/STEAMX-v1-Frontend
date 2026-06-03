@@ -255,6 +255,7 @@
 .auth-card {
   padding: 36px 36px 40px 36px !important;
   margin: 0;
+  max-width: 540px !important;
   background: rgba(255, 255, 255, 0.92) !important;
 }
 
@@ -458,30 +459,35 @@
 
 /* Button row */
 .step-btn-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   margin-top: 20px;
 }
 
 .btn-secondary {
-  flex: 1; display: flex; align-items: center;
+  width: 100%; margin: 0 !important;
+  display: flex; align-items: center;
   justify-content: center; gap: 6px;
   padding: 13px 16px;
   background: #ffffff; color: #00687a;
   border: 1.5px solid rgba(0, 104, 122, 0.3);
-  border-radius: 40px; font-size: 0.9rem; font-weight: 600;
+  border-radius: 10px; font-size: 0.9rem; font-weight: 600;
   cursor: pointer; transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .btn-primary {
-  flex: 1; display: flex; align-items: center;
+  width: 100%; margin: 0 !important;
+  display: flex; align-items: center;
   justify-content: center; gap: 6px;
   padding: 13px 16px;
   background: linear-gradient(135deg, #00687a 0%, #008a9e 100%);
-  color: white; border: none; border-radius: 40px;
+  color: white; border: none; border-radius: 10px;
   font-size: 0.9rem; font-weight: 700; cursor: pointer;
   transition: all 0.25s ease;
   box-shadow: 0 3px 10px rgba(0, 104, 122, 0.2);
+  white-space: nowrap;
 }
 
 .btn-secondary:hover {

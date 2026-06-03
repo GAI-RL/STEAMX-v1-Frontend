@@ -152,7 +152,7 @@ export class SteamxHomeComponent implements OnInit, OnDestroy, AfterViewInit {
       avatar: 'assets/images/Nauman.jpeg',
       name: 'Nauman Hanif',
       role: 'Founder',
-      bio: 'Founded STEAMx to transform digital education in Pakistan,leading strategic vision and cross functional teams to build the country\'s leading  AI-powered learning platform.',
+      bio: 'Founded STEAMx to transform digital education in Pakistan,leading strategic vision and cross functional teams to build the AI-powered learning platform.',
       twitter: '#'
     },
     

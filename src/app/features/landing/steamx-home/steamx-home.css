@@ -2197,14 +2197,12 @@
   position: relative;
   overflow: hidden;
 }
-
-/* ==================== CTA CARD ==================== */
 .steps-cta {
   max-width: 940px;
   margin: 0 auto;
   text-align: center;
   padding: 60px 48px 52px;
-  background: linear-gradient(135deg, #d9f1f6 0%, #c5e4ed 100%);
+  background: #D9E8EB;
   border-radius: 28px;
   border: 1px solid rgba(0, 104, 122, 0.12);
   position: relative;

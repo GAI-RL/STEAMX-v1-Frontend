@@ -3,8 +3,14 @@ import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  // External OCR service must not receive JWT (avoids CORS preflight issues).
+  if (req.url.startsWith(environment.ocrApiUrl)) {
+    return next(req);
+  }
+
   const authService = inject(AuthService);
   const router = inject(Router);
   const token = authService.getToken();

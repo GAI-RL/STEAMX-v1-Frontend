@@ -46,9 +46,10 @@
   --transition-normal: 300ms ease;
 }
 
-/* Smooth Scroll */
+/* Smooth Scroll and Global Font Size */
 html {
   scroll-behavior: smooth;
+  font-size: 18px; /* Increased from default 16px to visibly scale up rem values globally */
 }
 
 /* Body */

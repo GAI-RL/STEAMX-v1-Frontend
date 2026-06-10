@@ -15,22 +15,28 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const token = authService.getToken();
 
-  // If we have a token, add it to the request
+  // Clone request with Authorization header if token exists
+  let authReq = req;
   if (token) {
-    req = req.clone({
+    authReq = req.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`  // Add JWT token to header
+        Authorization: `Bearer ${token}`
       }
     });
   }
 
-  // Send the request and handle errors
-  return next(req).pipe(
+  // Handle response errors
+  return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
-      // If we get 401 (Unauthorized), token expired or invalid
+      // If 401 Unauthorized, token is invalid or expired
       if (error.status === 401) {
-        authService.logout();  // Log user out
-        router.navigate(['/login']);  // Send to login page
+        // Clear local storage
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('currentUser');
+        authService.logout();
+        // Redirect to login
+        router.navigate(['/login']);
       }
       return throwError(() => error);
     })

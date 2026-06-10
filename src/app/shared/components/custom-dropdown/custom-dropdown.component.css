@@ -1,0 +1,136 @@
+/* Inside custom-dropdown.component.css */
+
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.custom-dropdown {
+  width: 100%;
+  min-width: 0;
+  display: block;
+  position: relative;
+}
+
+.dropdown-trigger {
+  width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 12px 40px 12px 14px !important;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  color: #0d3b43;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+
+.dropdown-trigger:hover {
+  border-color: #00687a;
+}
+
+.dropdown-trigger.active {
+  border-color: #00687a;
+  box-shadow: 0 0 0 3px rgba(0, 104, 122, 0.1);
+}
+
+.selected-value {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selected-value.placeholder {
+  color: #94a3b8;
+}
+
+.dropdown-arrow {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+  color: #94a3b8;
+}
+
+.custom-dropdown.open .dropdown-arrow {
+  transform: rotate(180deg);
+  color: #00687a;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e2e8f0;
+  z-index: 1000;
+  max-height: 280px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.options-container {
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.dropdown-option {
+  padding: 10px 14px;
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+  font-size: 0.85rem;
+  color: #334155;
+}
+
+.dropdown-option:hover {
+  background: #f0fdf4;
+  color: #00687a;
+}
+
+.dropdown-option.selected {
+  background: linear-gradient(135deg, #00687a, #008a9e);
+  color: #ffffff;
+}
+
+.check-icon {
+  flex-shrink: 0;
+}
+
+.custom-dropdown.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Scrollbar */
+.options-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.options-container::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.options-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.options-container::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

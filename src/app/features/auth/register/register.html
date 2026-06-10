@@ -9,20 +9,59 @@
 
   <div class="auth-container">
 
-    <!-- ══════════ LEFT PANEL ══════════ -->
+    <!-- ══════════ LEFT PANEL - WITH IMAGE ══════════ -->
     <div class="auth-branding animate-on-scroll">
 
-      <!-- Logo -->
-      <a routerLink="/" class="brand-logo">
-<img src="assets/images/logo.png" alt="STEAMX" class="brand-logo-img" style="height:170px !important; width:auto !important; display:block !important; mix-blend-mode:multiply !important; margin:0 0 -30px -20px !important;" />      </a>
-
-      <!-- Headline -->
-      <div class="branding-headline">
-        <h1>Start your<br/><em>journey today</em></h1>
-        <p>Join 50,000+ students already learning smarter with AI-powered education</p>
+      <div class="brand-logo-wrapper">
+        <a routerLink="/" class="brand-logo">
+          <img src="assets/images/logo.png" alt="STEAMX" class="brand-logo-img" />
+        </a>
       </div>
 
-      <!-- Minimal proof -->
+      <div class="branding-headline">
+        <span class="ai-badge">✦ AI-Powered Learning</span>
+        <h1>Start your <span class="gradient-text">learning journey</span></h1>
+        <h2 class="brand-subtitle">with STEAMX</h2>
+        <p>Join 50,000+ students who are learning smarter with AI-powered education.</p>
+      </div>
+
+      <div class="branding-features">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="feature-text">
+            <strong>Personalized Learning</strong>
+            <span>AI adapts to your pace and style</span>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="feature-text">
+            <strong>Smart Progress Tracking</strong>
+            <span>Track, analyze and improve</span>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/></svg>
+          </div>
+          <div class="feature-text">
+            <strong>Exam Ready</strong>
+            <span>Practice smarter, score higher</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADDED: Illustration Image -->
+      <div class="branding-illustration">
+        <img src="assets/images/regsiter-img.png" alt="Learning illustration" class="illustration-img" />
+      </div>
+
       <div class="branding-proof">
         <div class="proof-row">
           <div class="avatars">
@@ -39,15 +78,17 @@
 
     </div>
 
-    <!-- ══════════ RIGHT PANEL — Form ══════════ -->
+    <!-- ══════════ RIGHT PANEL — Form (UNCHANGED) ══════════ -->
     <div class="auth-form-section animate-on-scroll">
       <div class="auth-card">
         <div class="card-glow"></div>
 
+        <!-- ── SUCCESS STATE ── -->
         @if (success) {
           <div class="success-box">
             <div class="success-icon-wrap">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
             </div>
@@ -57,160 +98,291 @@
 
         } @else {
 
-          <div class="auth-header">
-            <h2>Create account</h2>
+          <!-- ── STEP INDICATOR ── -->
+          <div class="step-indicator">
+            <div class="step-track">
+
+              <div class="step-bubble"
+                [class.step-active]="currentStep === 1"
+                [class.step-done]="currentStep > 1">
+                @if (currentStep > 1) {
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                } @else {
+                  1
+                }
+              </div>
+
+              <div class="step-line" [class.step-line-done]="currentStep > 1"></div>
+
+              <div class="step-bubble"
+                [class.step-active]="currentStep === 2"
+                [class.step-done]="currentStep > 2"
+                [class.step-inactive]="currentStep < 2">
+                @if (currentStep > 2) {
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                } @else {
+                  2
+                }
+              </div>
+
+              <div class="step-line" [class.step-line-done]="currentStep > 2"></div>
+
+              <div class="step-bubble"
+                [class.step-active]="currentStep === 3"
+                [class.step-inactive]="currentStep < 3">
+                3
+              </div>
+
+            </div>
+            <div class="step-labels">
+              <span [class.label-active]="currentStep === 1">Account</span>
+              <span [class.label-active]="currentStep === 2">Academic</span>
+              <span [class.label-active]="currentStep === 3">Preferences</span>
+            </div>
           </div>
 
-          <!-- Google -->
-          <!-- <div class="google-signin-section">
-            <div #googleButton class="google-button-container">
-              <button class="google-btn" type="button">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-                Continue with Google
-              </button>
-            </div>
-          </div> -->
-
-        
-        <div class="google-signin-section">
-
-  <div class="google-btn-wrap" [class.google-btn-wrap--busy]="isGoogleLoginLoading">
-    <div #googleButton class="google-button-container"></div>
-
-    @if (isGoogleLoginLoading) {
-      <div class="google-btn-overlay">
-        <span class="g-spinner"></span>
-        <span>Signing in with Google…</span>
-      </div>
-    }
-  </div>
-
-  @if (sendError) {
-    <div class="error-alert error-alert--google" style="padding: 5px !important;">
-     
-
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-       fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="10"/>
-    <line x1="12" y1="8" x2="12" y2="12"/>
-    <line x1="12" y1="16" x2="12.01" y2="16"/>
-  </svg>
-      <span>{{ sendError }}</span>
-      <!-- <button class="error-dismiss" (click)="sendError = ''">✕</button> -->
-    </div>
-  }
-</div>
-
-          <div class="divider"><span>or</span></div>
-
-          <!-- Form -->
-          <form (ngSubmit)="onSubmit()" class="auth-form">
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="fullName">Full Name</label>
-                <input
-                  type="text"
-                  id="fullName"
-                  [(ngModel)]="formData.full_name"
-                  name="fullName"
-                  placeholder="John Doe"
-                  required
-                  autocomplete="name"
-                  (input)="clearError()">
-              </div>
-
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  [(ngModel)]="formData.email"
-                  name="email"
-                  placeholder="you@example.com"
-                  required
-                  autocomplete="email"
-                  (input)="clearError()">
-              </div>
+          <!-- ════ STEP 1 ════ -->
+          @if (currentStep === 1) {
+            <div class="auth-header">
+              <h2>Create account</h2>
+              <p class="auth-subtext">Let's start with your basic details</p>
             </div>
 
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                [(ngModel)]="formData.password"
-                name="password"
-                placeholder="Min. 8 characters"
-                required
-                autocomplete="new-password"
-                (input)="clearError()">
-              <div class="password-strength">
-                <div class="strength-bar"
-                  [class.weak]="formData.password.length > 0 && formData.password.length < 8"
-                  [class.strong]="formData.password.length >= 8">
+            <div class="google-signin-section">
+              <div class="google-btn-wrap" [class.google-btn-wrap--busy]="isGoogleLoginLoading">
+                <div #googleButton class="google-button-container"></div>
+                @if (isGoogleLoginLoading) {
+                  <div class="google-btn-overlay">
+                    <span class="g-spinner"></span>
+                    <span>Signing in with Google…</span>
+                  </div>
+                }
+              </div>
+              @if (sendError) {
+                <div class="error-alert error-alert--google" style="padding:5px !important;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                  </svg>
+                  <span>{{ sendError }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="divider"><span>or</span></div>
+
+            <form class="auth-form" (ngSubmit)="goStep(2)">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="fullName">Full Name</label>
+                  <input type="text" id="fullName"
+                    [(ngModel)]="formData.full_name" name="fullName"
+                    placeholder="John Doe" autocomplete="name"
+                    (input)="clearError()" />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" id="email"
+                    [(ngModel)]="formData.email" name="email"
+                    placeholder="you@example.com" autocomplete="email"
+                    (input)="clearError()" />
                 </div>
               </div>
-              <small class="field-hint">Use 8+ characters with letters and numbers</small>
-            </div>
 
-            <div class="form-group">
-              <label for="confirmPassword">Confirm Password</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                [(ngModel)]="formData.confirm_password"
-                name="confirmPassword"
-                placeholder="Re-enter your password"
-                required
-                autocomplete="new-password"
-                (input)="clearError()">
-            </div>
-
-            @if (error) {
-              <div class="error-alert">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-                {{ error }}
+              <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-pw-wrap">
+                  <input [type]="showPassword ? 'text' : 'password'" id="password"
+                    [(ngModel)]="formData.password" name="password"
+                    placeholder="Min. 8 characters" autocomplete="new-password"
+                    (input)="clearError()" />
+                  <button type="button" class="pw-toggle" (click)="togglePassword('pw')">
+                    @if (showPassword) {
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    } @else {
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    }
+                  </button>
+                </div>
+                <div class="password-strength">
+                  <div class="strength-bar"
+                    [class.weak]="formData.password.length > 0 && formData.password.length < 8"
+                    [class.strong]="formData.password.length >= 8">
+                  </div>
+                </div>
+                <small class="field-hint">Use 8+ characters with letters and numbers</small>
               </div>
-            }
 
-            <div class="terms-checkbox">
-              <input 
-                type="checkbox" 
-                id="terms" 
-                [(ngModel)]="termsAccepted"
-                name="terms"
-                (change)="clearError()">
-              <label for="terms">
-                I agree to the <a routerLink="/terms" class="link-primary">Terms of Service</a> and <a routerLink="/privacy" class="link-primary">Privacy Policy</a>
-              </label>
+              <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="input-pw-wrap">
+                  <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword"
+                    [(ngModel)]="formData.confirm_password" name="confirmPassword"
+                    placeholder="Re-enter your password" autocomplete="new-password"
+                    (input)="clearError()" />
+                  <button type="button" class="pw-toggle" (click)="togglePassword('cpw')">
+                    @if (showConfirmPassword) {
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    } @else {
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    }
+                  </button>
+                </div>
+              </div>
+
+              @if (error) {
+                <div class="error-alert">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                  {{ error }}
+                </div>
+              }
+
+              <button type="submit" class="btn-primary">
+                Continue
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </form>
+          }
+
+          <!-- ════ STEP 2 ════ -->
+          @if (currentStep === 2) {
+            <div class="auth-header">
+              <h2>Academic details</h2>
+              <p class="auth-subtext">Tell us about your studies</p>
             </div>
 
-            <button type="submit" class="btn-primary" [disabled]="loading">
-              @if (loading) {
-                <span class="btn-spinner"></span>
-                Creating account...
-              } @else {
-                Create free account
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              }
-            </button>
+            <form class="auth-form" (ngSubmit)="goStep(3)">
+              <div class="form-group">
+                <label for="province">Province / Region</label>
+                <app-custom-dropdown
+                  [options]="provinces"
+                  placeholder="Select Province"
+                  (selectionChanged)="academicData.province = $event"
+                ></app-custom-dropdown>
+              </div>
 
-          </form>
+              <div class="form-group">
+                <label>Medium</label>
+                <app-custom-dropdown
+                  [options]="['English Medium', 'Urdu Medium']"
+                  placeholder="Select Medium"
+                  (selectionChanged)="academicData.medium = $event"
+                ></app-custom-dropdown>
+              </div>
+
+
+              <div class="form-group">
+                <label>School / Institution <span class="label-optional">(optional)</span></label>
+                <input type="text" class="form-input"
+                  [(ngModel)]="academicData.school" name="school"
+                  placeholder="e.g. Lahore Grammar School" />
+              </div>
+
+              <div class="form-group">
+                <label>Phone Number <span class="label-optional">(optional)</span></label>
+                <div class="phone-input-wrap">
+                  <span class="phone-prefix">+92</span>
+                  <input type="tel"
+                    [(ngModel)]="academicData.phone" name="phone"
+                    placeholder="3XX XXXXXXX" />
+                </div>
+              </div>
+
+              <div class="step-btn-row">
+                <button type="button" class="btn-secondary" (click)="goStep(1)">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M19 12H5M12 5l-7 7 7 7"/>
+                  </svg>
+                  Previous
+                </button>
+                <button type="submit" class="btn-primary">
+                  Continue
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
+            </form>
+          }
+
+          <!-- ════ STEP 3 ════ -->
+          @if (currentStep === 3) {
+            <div class="auth-header">
+              <h2>Almost done!</h2>
+              <p class="auth-subtext">Set your preferences and create your account</p>
+            </div>
+
+            <form class="auth-form" (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                <label for="bio">About you <span class="label-optional">(optional)</span></label>
+                <textarea id="bio" [(ngModel)]="prefData.bio" name="bio"
+                  placeholder="Tell us a bit about yourself or your study goals…"
+                  rows="3"></textarea>
+              </div>
+
+              <div class="pref-checks">
+                <label class="pref-check-label">
+                  <input type="checkbox" [(ngModel)]="prefData.emailNotif" name="emailNotif" />
+                  <span class="pref-check-text">
+                    <span class="pref-check-title">Email notifications</span>
+                    <span class="pref-check-sub">Get updates about your progress and new features</span>
+                  </span>
+                </label>
+                <label class="pref-check-label">
+                  <input type="checkbox" [(ngModel)]="prefData.studyReminders" name="studyReminders" />
+                  <span class="pref-check-text">
+                    <span class="pref-check-title">Study reminders</span>
+                    <span class="pref-check-sub">Daily reminders to keep your learning on track</span>
+                  </span>
+                </label>
+              </div>
+
+              @if (error) {
+                <div class="error-alert">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                  {{ error }}
+                </div>
+              }
+
+              <div class="terms-checkbox">
+                <input type="checkbox" id="terms"
+                  [(ngModel)]="termsAccepted" name="terms"
+                  (change)="clearError()" />
+                <label for="terms">
+                  I agree to the <a routerLink="/terms" class="link-primary">Terms of Service</a>
+                  and <a routerLink="/privacy" class="link-primary">Privacy Policy</a>
+                </label>
+              </div>
+
+              <div class="step-btn-row">
+                <button type="button" class="btn-secondary" (click)="goStep(2)">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M19 12H5M12 5l-7 7 7 7"/>
+                  </svg>
+                  Previous
+                </button>
+                <button type="submit" class="btn-primary" [disabled]="loading">
+                  @if (loading) {
+                    <span class="btn-spinner"></span>
+                    Creating account...
+                  } @else {
+                    Create free account
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  }
+                </button>
+              </div>
+            </form>
+          }
         }
 
         <div class="auth-footer">
           <p>Already have an account? <a routerLink="/login" class="link-primary">Sign in</a></p>
         </div>
-
-        
       </div>
     </div>
-
   </div>
 </div>

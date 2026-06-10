@@ -5,15 +5,12 @@
 <main>
   <router-outlet></router-outlet>
   @if (sessionExpired) {
-  <app-session-expired-modal
-    (loginNow)="handleAuthError()">
-  </app-session-expired-modal>
-}
+    <app-session-expired-modal
+      (loginNow)="handleAuthError()">
+    </app-session-expired-modal>
+  }
 </main>
 
 @if (showHeaderFooter) {
   <app-footer></app-footer>
 }
-
-
-

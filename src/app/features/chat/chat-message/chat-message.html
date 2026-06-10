@@ -1,8 +1,8 @@
-<div class="message" [class.user-message]="message.role === 'user'" [class.assistant-message]="message.role === 'assistant'">
+<div class="message" [class.user-message]="displayRole === 'user'" [class.assistant-message]="displayRole === 'assistant'">
   <div class="message-wrapper">
 
     <div class="message-avatar">
-      @if (message.role === 'user') {
+      @if (displayRole === 'user') {
         <div class="avatar user-avatar">
           {{ userInitial }}
         </div>
@@ -20,60 +20,19 @@
 
       <div class="message-header">
         <span class="message-sender">
-          {{ message.role === 'user' ? userName : 'AI Assistant' }}
+          {{ displayRole === 'user' ? userName : 'AI Assistant' }}
         </span>
         <span class="message-time">
-          {{ formatTime(message.timestamp) }}
+          {{ formatTime(displayTimestamp) }}
         </span>
       </div>
 
-      <!-- First dialogue box: text -->
-      <div class="message-text" [innerHTML]="formatContent(message.content)"></div>
+      <div class="message-text" [innerHTML]="formatContent(displayContent)"></div>
 
-      @if (message.role === 'user' && showActions) {
-        <div class="message-actions">
-          <button type="button" class="message-action-btn" (click)="onEdit()" title="Edit">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <path d="M12 20h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              <path d="M16.5 3.5a2.1 2.1 0 013 3L8 18l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-            </svg>
-            <span>Edit</span>
-          </button>
-          <button type="button" class="message-action-btn" (click)="onRetry()" title="Retry">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <path d="M3 12a9 9 0 109-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              <path d="M3 4v8h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Retry</span>
-          </button>
-          <button type="button" class="message-action-btn" (click)="onCopy()" title="Copy">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/>
-              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
-            <span>{{ copied ? 'Copied' : 'Copy' }}</span>
-          </button>
-        </div>
-      }
-
-      @if (message.role === 'assistant') {
-        <div class="message-actions">
-          <button type="button" class="message-action-btn" (click)="onCopy()" title="Copy response">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/>
-              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
-            <span>{{ copied ? 'Copied' : 'Copy' }}</span>
-          </button>
-        </div>
-      }
-
-      <!-- Second dialogue box: figure -->
-      @if (message.figures?.length) {
+      @if (displayFigures?.length) {
         <div class="figure-dialogue-box">
-          @for (fig of message.figures; track $index) {
+          @for (fig of displayFigures; track $index) {
             <div class="figure-card">
-
               @if (fig.imageUrl || fig.image_base64) {
                 <img
                   class="figure-image"
@@ -81,11 +40,9 @@
                   [alt]="fig.caption || 'Figure image'"
                 />
               }
-
               @if (fig.caption) {
                 <p class="figure-caption">{{ fig.caption }}</p>
               }
-
             </div>
           }
         </div>

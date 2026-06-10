@@ -25,18 +25,17 @@ export class LoginComponent implements OnInit, AfterViewInit {
   loading = false;
   error = '';
   isGoogleLoginLoading: boolean = false;
-  sendError: string ="";
+  sendError: string = "";
 
   constructor(
     private authService: AuthService,
     private googleAuthService: GoogleAuthService,
     private router: Router,
     private ngZone: NgZone,
-     private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    // Add scroll animation class
     setTimeout(() => {
       document.querySelectorAll('.animate-on-scroll').forEach(el => {
         el.classList.add('visible');
@@ -45,7 +44,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Initialize Google Sign-In button
     if (this.googleButton) {
       this.googleAuthService.initializeGoogleSignIn(
         this.googleButton.nativeElement,
@@ -54,47 +52,29 @@ export class LoginComponent implements OnInit, AfterViewInit {
     }
   }
 
-//   onGoogleCredential(credential: string): void {
-//   this.isGoogleLoginLoading = true;
-//   this.sendError = '';
-
-//   this.googleAuthService.handleGoogleLogin(credential).subscribe({
-//     next: () => {
-//       this.isGoogleLoginLoading = false;
-//       this.router.navigate(['/chat']);
-//     },
-//     error: (err) => {
-//       this.isGoogleLoginLoading = false;
-//       this.sendError = err.message;  // ← just one line, no if/else!\
-
-//     }
-//   });
-// }
-
-   onGoogleCredential(credential: string): void {
-    // Step 1: mark loading and trigger change detection immediately
+  onGoogleCredential(credential: string): void {
     this.isGoogleLoginLoading = true;
     this.sendError = '';
-    this.cdr.detectChanges(); // forces Angular to render overlay now
+    this.cdr.detectChanges();
 
-    // Step 2: defer the actual login so overlay is visible
-    setTimeout(() => {
-      this.googleAuthService.handleGoogleLogin(credential).subscribe({
-        next: () => {
-          this.ngZone.run(() => {
-            this.isGoogleLoginLoading = false;
-            this.router.navigate(['/chat']);
-          });
-        },
-        error: (err) => {
-          this.ngZone.run(() => {
-            this.isGoogleLoginLoading = false;
-            this.sendError = err.message;
-             this.cdr.detectChanges();
-          });
-        }
-      });
-    }, 0); // defer to next event loop tick
+    // Use the authService.googleLogin method
+    this.authService.googleLogin(credential).subscribe({
+      next: (response) => {
+        this.ngZone.run(() => {
+          this.isGoogleLoginLoading = false;
+          console.log('Google login successful:', response);
+          this.router.navigate(['/chat']);
+        });
+      },
+      error: (err) => {
+        this.ngZone.run(() => {
+          this.isGoogleLoginLoading = false;
+          console.error('Google login error:', err);
+          this.sendError = err.error?.detail || 'Google login failed. Please try again.';
+          this.cdr.detectChanges();
+        });
+      }
+    });
   }
 
   onSubmit() {

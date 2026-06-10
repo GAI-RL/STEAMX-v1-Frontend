@@ -45,20 +45,23 @@ export class AuthService {
       );
   }
 
-  // Google Login - NEW
+  // Google Login - FIXED to handle response correctly
   googleLogin(credential: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth/google`, { token: credential })
       .pipe(
         tap(response => {
-          localStorage.setItem('access_token', response.access_token);
-          localStorage.setItem('refresh_token', response.refresh_token);
-          localStorage.setItem('currentUser', JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user);
+          console.log('Google login response:', response);
+          if (response && response.access_token && response.user) {
+            localStorage.setItem('access_token', response.access_token);
+            localStorage.setItem('refresh_token', response.refresh_token);
+            localStorage.setItem('currentUser', JSON.stringify(response.user));
+            this.currentUserSubject.next(response.user);
+          } else {
+            console.error('Invalid Google login response:', response);
+          }
         })
       );
   }
-
-  
 
   logout(): void {
     localStorage.removeItem('access_token');

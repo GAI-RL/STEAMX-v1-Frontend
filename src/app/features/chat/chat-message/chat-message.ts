@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import {  EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatMessage } from '../../../core/services/chat.service';
 
@@ -30,6 +29,10 @@ export class ChatMessageComponent implements OnInit {
   @Output() copyMessage = new EventEmitter<void>();
   copied = false;
   private copyResetTimer: ReturnType<typeof setTimeout> | null = null;
+
+  @Output() editMessage = new EventEmitter<void>();
+  @Output() retryMessage = new EventEmitter<void>();
+  @Output() copyMessage = new EventEmitter<void>();
 
   displayRole: 'user' | 'assistant' = 'assistant';
   displayContent: string = '';

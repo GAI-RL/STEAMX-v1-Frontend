@@ -23,6 +23,7 @@ export class ChatMessageComponent implements OnInit {
   @Input() message!: ChatMessage | DisplayMessage;
   @Input() userName: string = 'You';
   @Input() userInitial: string = 'U';
+  @Input() showActions: boolean = true;
 
   @Output() editMessage = new EventEmitter<void>();
   @Output() retryMessage = new EventEmitter<void>();
@@ -34,7 +35,6 @@ export class ChatMessageComponent implements OnInit {
   displayFigures: any[] = [];
 
   ngOnInit(): void {
-    // Check if this is a DisplayMessage (has 'role' property)
     if ('role' in this.message) {
       const msg = this.message as DisplayMessage;
       this.displayRole = msg.role;
@@ -42,8 +42,6 @@ export class ChatMessageComponent implements OnInit {
       this.displayTimestamp = msg.timestamp;
       this.displayFigures = msg.figures || [];
     } else {
-      // Raw ChatMessage from backend - but this shouldn't happen directly
-      // because chat-interface converts before passing
       const msg = this.message as ChatMessage;
       this.displayRole = 'assistant';
       this.displayContent = msg.response || '';

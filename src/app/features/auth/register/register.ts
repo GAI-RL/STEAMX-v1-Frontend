@@ -54,9 +54,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   showPassword = false;
   showConfirmPassword = false;
   isGoogleUser = false;
-
-  subjects: string[] = [];
-
   readonly provinces = [
     'Punjab',
     'Sindh',
@@ -66,15 +63,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     'Azad Jammu & Kashmir (AJK)',
     'Islamabad Capital Territory (ICT)'
   ];
-
-  readonly grades = ['Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'];
-
-  readonly subjectMap: Record<string, string[]> = {
-    'Grade 9':  ['Science — Pre-Medical (Bio, Chem, Phy, Math)', 'Science — Pre-Engineering (CS, Chem, Phy, Math)', 'Arts / General Group'],
-    'Grade 10': ['Science — Pre-Medical (Bio, Chem, Phy, Math)', 'Science — Pre-Engineering (CS, Chem, Phy, Math)', 'Arts / General Group'],
-    'Grade 11': ['Pre-Medical (Bio, Chem, Phy)', 'Pre-Engineering (Math, Phy, CS)', 'ICS (Math, Stats, CS)', 'I.Com (Accounting, Economics)', 'Arts / Humanities'],
-    'Grade 12': ['Pre-Medical (Bio, Chem, Phy)', 'Pre-Engineering (Math, Phy, CS)', 'ICS (Math, Stats, CS)', 'I.Com (Accounting, Economics)', 'Arts / Humanities']
-  };
 
   constructor(
     private authService: AuthService,
@@ -133,10 +121,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     return true;
   }
 
-  updateSubjects(): void {
-    this.subjects = this.subjectMap[this.academicData.grade] ?? [];
-    this.academicData.subjectGroup = '';
-  }
+
 
   togglePassword(field: 'pw' | 'cpw'): void {
     if (field === 'pw') this.showPassword = !this.showPassword;

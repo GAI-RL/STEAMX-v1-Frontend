@@ -23,16 +23,7 @@
         <span class="nav-label">Dashboard</span>
       </a>
       
-      <a href="#" class="nav-item">
-        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M23 7a2 2 0 0 0-2.45-1.45L11 8 1 5.55A2 2 0 0 0 0 7.45V19a2 2 0 0 0 2.45 1.45L13 18l10 2.45A2 2 0 0 0 24 18.55V7.45z"></path>
-          <line x1="12" y1="8" x2="12" y2="18"></line>
-        </svg>
-        <span class="nav-label">Live Sessions</span>
-        <span class="sidebar-badge badge-live">LIVE</span>
-      </a>
-      
-      <a href="#" class="nav-item">
+      <a routerLink="/chat" class="nav-item">
         <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5L4 3.5A2.5 2.5 0 0 1 6.5 1H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z"></path>
         </svg>
@@ -90,7 +81,6 @@
     </nav>
 
     <div class="sidebar-footer">
-      <!-- Upgrade card -->
       <div class="sidebar-upgrade-card">
         <div class="crown-badge">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2">
@@ -104,13 +94,12 @@
         </button>
       </div>
 
-      <!-- User Profile block -->
       <div class="sidebar-profile-block">
         <div class="profile-avatar">
           {{ userInitial }}
         </div>
         <div class="profile-details">
-          <span class="profile-name">{{ user?.full_name || 'Aiemen Altaf' }}</span>
+          <span class="profile-name">{{ user?.full_name || 'User' }}</span>
           <span class="profile-tier">{{ stats.plan | titlecase }} Plan</span>
         </div>
         <button class="profile-chevron" (click)="logout()" title="Logout">
@@ -165,12 +154,6 @@
         </svg>
         <span>New Session</span>
       </a>
-      <a href="#" class="action-btn btn-outline">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M23 7a2 2 0 0 0-2.45-1.45L11 8 1 5.55A2 2 0 0 0 0 7.45V19a2 2 0 0 0 2.45 1.45L13 18l10 2.45A2 2 0 0 0 24 18.55V7.45z"></path>
-        </svg>
-        <span>Join Live Session</span>
-      </a>
     </div>
 
     <!-- ════════════════ METRIC CARDS ROW ════════════════ -->
@@ -194,10 +177,9 @@
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="18 15 12 9 6 15"></polyline>
               </svg>
-              <span>25% from last week</span>
+              <span>Total sessions created</span>
             </div>
           </div>
-          <!-- Small sparkline chart SVG -->
           <div class="metric-sparkline">
             <svg class="sparkline-svg" viewBox="0 0 120 40">
               <defs>
@@ -206,8 +188,8 @@
                   <stop offset="100%" stop-color="#00687a" stop-opacity="0"/>
                 </linearGradient>
               </defs>
-              <path d="M 0 30 L 25 30 L 45 10 L 65 25 L 85 5 L 100 15 L 120 15 L 120 40 L 0 40 Z" fill="url(#sparkline-teal-grad)"></path>
-              <path d="M 0 30 L 25 30 L 45 10 L 65 25 L 85 5 L 100 15 L 120 15" fill="none" stroke="#00687a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+              <path [attr.d]="sessionsSparkline.fillPath" fill="url(#sparkline-teal-grad)"></path>
+              <path [attr.d]="sessionsSparkline.linePath" fill="none" stroke="#00687a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
             </svg>
           </div>
         </div>
@@ -227,15 +209,14 @@
         </div>
         <div class="metric-body">
           <div class="metric-left">
-            <span class="metric-num">{{ stats.messagesThisWeek }}</span>
+            <span class="metric-num">{{ stats.questionsAsked }}</span>
             <div class="metric-growth color-green">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="18 15 12 9 6 15"></polyline>
               </svg>
-              <span>18% from last week</span>
+              <span>Total questions</span>
             </div>
           </div>
-          <!-- Purple sparkline SVG -->
           <div class="metric-sparkline">
             <svg class="sparkline-svg" viewBox="0 0 120 40">
               <defs>
@@ -244,8 +225,8 @@
                   <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
                 </linearGradient>
               </defs>
-              <path d="M 0 35 L 20 35 L 40 10 L 60 25 L 80 5 L 100 20 L 120 15 L 120 40 L 0 40 Z" fill="url(#sparkline-purple-grad)"></path>
-              <path d="M 0 35 L 20 35 L 40 10 L 60 25 L 80 5 L 100 20 L 120 15" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+              <path [attr.d]="questionsSparkline.fillPath" fill="url(#sparkline-purple-grad)"></path>
+              <path [attr.d]="questionsSparkline.linePath" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
             </svg>
           </div>
         </div>
@@ -269,7 +250,6 @@
               <span>Keep it going!</span>
             </div>
           </div>
-          <!-- Orange sparkline SVG -->
           <div class="metric-sparkline">
             <svg class="sparkline-svg" viewBox="0 0 120 40">
               <defs>
@@ -278,8 +258,8 @@
                   <stop offset="100%" stop-color="#ea580c" stop-opacity="0"/>
                 </linearGradient>
               </defs>
-              <path d="M 0 25 L 20 25 L 40 35 L 60 15 L 80 10 L 100 25 L 120 15 L 120 40 L 0 40 Z" fill="url(#sparkline-orange-grad)"></path>
-              <path d="M 0 25 L 20 25 L 40 35 L 60 15 L 80 10 L 100 25 L 120 15" fill="none" stroke="#ea580c" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+              <path [attr.d]="streakSparkline.fillPath" fill="url(#sparkline-orange-grad)"></path>
+              <path [attr.d]="streakSparkline.linePath" fill="none" stroke="#ea580c" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
             </svg>
           </div>
         </div>
@@ -310,10 +290,10 @@
       </div>
     </div>
 
-    <!-- ════════════════ MIDDLE SECTION: RECENT ACTIVITY & LIVE SESSIONS ════════════════ -->
-    <div class="middle-columns-grid">
+    <!-- ════════════════ MIDDLE SECTION: RECENT ACTIVITY & SUBJECT STATS ════════════════ -->
+    <div class="middle-columns-grid" style="grid-template-columns: 1fr;">
       
-      <!-- COLUMN 1: Recent Activity -->
+      <!-- COLUMN 1: Recent Activity (Full Width) -->
       <div class="content-card recent-activity-card">
         <div class="card-header">
           <h3>Recent Activity</h3>
@@ -324,11 +304,9 @@
           </div>
         </div>
 
-        <div class="activity-list">
-          <!-- Item 1: Python Learning -->
-          <div class="activity-item">
+        <div class="activity-list" *ngIf="!loading; else loadingSpinner">
+          <div class="activity-item" *ngFor="let session of recentSessions">
             <div class="activity-icon bg-light-blue">
-              <!-- Video / screen icon -->
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M23 7l-7 5 7 5V7z"></path>
                 <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
@@ -336,59 +314,12 @@
             </div>
             <div class="activity-details">
               <div class="item-title-row">
-                <h4>Completed Python Learning Session</h4>
-                <span class="activity-time">2 hours ago</span>
+                <h4>{{ session.title || 'New Conversation' }}</h4>
+                <span class="activity-time">{{ formatDate(session.updated_at) }}</span>
               </div>
-              <p>Covered functions, loops, and list comprehensions</p>
+              <p>{{ getSessionPreview(session) }}</p>
               <div class="activity-badges">
-                <span class="item-badge">12 Questions</span>
-                <span class="item-badge">45 min</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Item 2: Mathematics -->
-          <div class="activity-item">
-            <div class="activity-icon bg-light-purple">
-              <!-- Summation sign -->
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16v3M4 4l8 8-8 8v0h16v-3"></path>
-              </svg>
-            </div>
-            <div class="activity-details">
-              <div class="item-title-row">
-                <h4>Mathematics Problem Solving</h4>
-                <span class="activity-time">5 hours ago</span>
-              </div>
-              <p>Worked on calculus derivatives and integrals</p>
-              <div class="activity-badges">
-                <span class="item-badge">8 Questions</span>
-                <span class="item-badge">30 min</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Item 3: Essay Writing -->
-          <div class="activity-item">
-            <div class="activity-icon bg-light-amber">
-              <!-- Document icon -->
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="16" y1="13" x2="8" y2="13"></line>
-                <line x1="16" y1="17" x2="8" y2="17"></line>
-                <polyline points="10 9 9 9 8 9"></polyline>
-              </svg>
-            </div>
-            <div class="activity-details">
-              <div class="item-title-row">
-                <h4>Essay Writing Practice</h4>
-                <span class="activity-time">Yesterday</span>
-              </div>
-              <p>Structured argumentative essay on climate change</p>
-              <div class="activity-badges">
-                <span class="item-badge">5 Questions</span>
-                <span class="item-badge">1 hour</span>
+                <span class="item-badge">{{ getQuestionCount(session) }} Questions</span>
               </div>
             </div>
           </div>
@@ -401,109 +332,41 @@
           </svg>
         </a>
       </div>
+    </div>
 
-      <!-- COLUMN 2: Live Sessions -->
-      <div class="content-card live-sessions-card">
-        <div class="card-header">
-          <h3>Live Sessions</h3>
-          <a href="#" class="view-all-link">
-            <span>View All</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </a>
-        </div>
-
-        <!-- Featured Active Live Session Card -->
-        <div class="featured-live-session">
-          <div class="live-tag">
-            <span class="pulse-dot"></span>
-            <span>LIVE NOW</span>
-          </div>
-          
-          <div class="live-content-row">
-            <div class="live-topic">
-              <h4>Data Structures in Python</h4>
-              <span class="instructor-name">Instructor: Ali Raza</span>
+    <!-- ════════════════ SUBJECT STATS SECTION (COLLAPSIBLE) ════════════════ -->
+    <div class="subject-stats-card content-card" *ngIf="subjectStats.length > 0">
+      <div class="card-header clickable" (click)="toggleSubjectStats()">
+        <h3>📊 Stats by Subject</h3>
+        <button class="expand-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="6 9 12 15 18 9" [attr.transform]="showSubjectStats ? 'rotate(180 12 12)' : ''"></polyline>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="subject-stats-content" [class.expanded]="showSubjectStats">
+        <div class="subject-stats-grid" *ngIf="showSubjectStats">
+          <div class="subject-stat-item" *ngFor="let stat of subjectStats">
+            <div class="subject-stat-icon" [style.backgroundColor]="stat.subject.color || '#00687a'">
+              {{ stat.subject.icon || '📚' }}
             </div>
-            
-            <div class="countdown-timer">
-              <span class="time-left-num">00 : 24 : 15</span>
-              <span class="time-left-lbl">Time Left</span>
+            <div class="subject-stat-info">
+              <span class="subject-stat-name">{{ stat.subject.name }}</span>
+              <div class="subject-stat-numbers">
+                <span class="stat-badge sessions-badge">{{ stat.sessions }} sessions</span>
+                <span class="stat-badge questions-badge">{{ stat.questions }} questions</span>
+              </div>
             </div>
-          </div>
-
-          <div class="live-footer-row">
-            <!-- Avatars overlapping stack -->
-            <div class="participant-avatars">
-              <div class="avatar-stack av-1" style="background: #a855f7;">R</div>
-              <div class="avatar-stack av-2" style="background: #3b82f6;">Z</div>
-              <div class="avatar-stack av-3" style="background: #ef4444;">K</div>
-              <div class="avatar-stack av-4" style="background: #10b981;">N</div>
-              <div class="avatar-stack av-5" style="background: #f59e0b;">S</div>
-              <span class="avatar-more">+24</span>
-            </div>
-            
-            <button class="join-session-btn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M23 7l-7 5 7 5V7z"></path>
-                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-              </svg>
-              <span>Join Session</span>
-            </button>
           </div>
         </div>
-
-        <!-- Next Up items list -->
-        <div class="next-up-section">
-          <h5>Next Up</h5>
-          
-          <div class="next-up-list">
-            <!-- Next Up 1 -->
-            <div class="next-up-item">
-              <div class="next-icon-wrap bg-light-purple">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M10 2v7.586l7.243 7.243a2 2 0 0 1 0 2.828v0a2 2 0 0 1-2.828 0L7.172 12.414A2 2 0 0 1 6.586 11V2h4z"></path>
-                </svg>
-              </div>
-              <div class="next-details">
-                <h6>Chemistry - Organic Reactions</h6>
-                <span class="instructor-tag">By Sara Khan</span>
-              </div>
-              <div class="next-time-box">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-                <span>Today, 9:00 PM</span>
-              </div>
-            </div>
-
-            <!-- Next Up 2 -->
-            <div class="next-up-item">
-              <div class="next-icon-wrap bg-light-blue">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                </svg>
-              </div>
-              <div class="next-details">
-                <h6>Physics - Laws of Motion</h6>
-                <span class="instructor-tag">By Hamza Ali</span>
-              </div>
-              <div class="next-time-box">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-                <span>Tomorrow, 6:00 PM</span>
-              </div>
-            </div>
-          </div>
+        
+        <div class="subject-stats-preview" *ngIf="!showSubjectStats">
+          <span class="preview-text">
+            📚 {{ subjectStats.length }} subjects with activity · 
+            💬 {{ subjectStats.reduce((sum, s) => sum + s.questions, 0) }} total questions
+          </span>
+          <span class="preview-hint">Click to expand →</span>
         </div>
       </div>
     </div>
@@ -523,22 +386,17 @@
           </a>
         </div>
 
-        <div class="sessions-resume-box">
+        <div class="sessions-resume-box" [routerLink]="recentSessions.length > 0 ? ['/chat', recentSessions[0].id] : ['/chat']" style="cursor: pointer;">
           <div class="resume-illustration">
-            <!-- stack of books and plant drawn cleanly in SVGs -->
             <svg class="illustration-svg" viewBox="0 0 120 90" fill="none">
-              <!-- Book stack base -->
               <rect x="20" y="60" width="70" height="10" rx="2" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5"></rect>
               <rect x="25" y="50" width="60" height="10" rx="2" fill="#00687a" opacity="0.8" stroke="#004d5a" stroke-width="1.5"></rect>
               <rect x="23" y="40" width="64" height="10" rx="2" fill="#7c3aed" opacity="0.7" stroke="#5b21b6" stroke-width="1.5"></rect>
               <rect x="30" y="30" width="50" height="10" rx="2" fill="#f59e0b" opacity="0.8" stroke="#b45309" stroke-width="1.5"></rect>
-              
-              <!-- Potted plant -->
               <path d="M92 45 C92 30 85 25 85 25 C85 25 78 30 78 45 C78 55 92 55 92 45 Z" fill="#10b981" opacity="0.8"></path>
               <path d="M102 50 C102 40 96 35 96 35 C96 35 90 40 90 50 C90 58 102 58 102 50 Z" fill="#059669" opacity="0.6"></path>
               <path d="M85 55 L85 70" stroke="#78350f" stroke-width="2"></path>
               <path d="M96 55 L96 70" stroke="#78350f" stroke-width="2"></path>
-              <!-- Pot -->
               <path d="M80 65 L100 65 L96 80 L84 80 Z" fill="#d97706"></path>
             </svg>
           </div>
@@ -548,69 +406,49 @@
             <p>Continue your learning journey.</p>
           </div>
 
-          <div class="resume-progress-section">
+          <div class="resume-progress-section" *ngIf="recentSessions.length > 0; else startNewSession">
             <div class="progress-details-row">
-              <span class="course-title">Python for Beginners</span>
-              <span class="progress-pct">65% Completed</span>
+              <span class="course-title">{{ recentSessions[0]?.title || 'Start a new session' }}</span>
+              <span class="progress-pct">{{ getQuestionCount(recentSessions[0]) }} Questions</span>
             </div>
             
             <div class="progress-bar-wrap">
-              <div class="progress-bar-fill" style="width: 65%;"></div>
+              <div class="progress-bar-fill" [style.width.%]="getQuestionCount(recentSessions[0]) * 5"></div>
             </div>
           </div>
+          <ng-template #startNewSession>
+            <div class="start-session-btn-wrap">
+              <div class="btn-resume-session">
+                <span>Start Session</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </div>
+            </div>
+          </ng-template>
         </div>
       </div>
 
-      <!-- COLUMN 2: Calendar -->
-      <div class="content-card calendar-mini-card">
+      <!-- COLUMN 2: Calendar (Interactive) -->
+      <div class="content-card calendar-card">
         <div class="card-header">
           <h3>Calendar</h3>
-          <div class="calendar-controls">
-            <span class="calendar-year">2026</span>
-            <div class="arrow-buttons">
-              <button class="cal-arrow-btn">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-              </button>
-              <button class="cal-arrow-btn">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-              </button>
-            </div>
-          </div>
         </div>
-
-        <div class="calendar-grid-wrap">
-          <!-- Days of Week labels -->
-          <div class="calendar-week-days">
-            <span>SUN</span>
-            <span>MON</span>
-            <span>TUE</span>
-            <span>WED</span>
-            <span>THU</span>
-            <span>FRI</span>
-            <span>SAT</span>
-          </div>
-
-          <!-- Calendar Dates row -->
-          <div class="calendar-days-numbers">
-            <span class="day-num active">24</span>
-            <span class="day-num">25</span>
-            <span class="day-num">26</span>
-            <span class="day-num">27</span>
-            <span class="day-num">28</span>
-            <span class="day-num">29</span>
-            <span class="day-num">30</span>
-          </div>
-
-          <!-- Active Day Details item -->
-          <div class="calendar-day-details">
-            <div class="event-time">9:00 PM</div>
-            <div class="event-desc-block">
-              <span class="event-name">Data Structures in Python</span>
-              <span class="event-type-badge">Live Session</span>
+        <app-calendar 
+          [startDate]="calendarStartDate"
+          [selectedDate]="selectedDate"
+          [sessionsByDate]="sessionsByDate"
+          (dateSelected)="onDateSelected($event)">
+        </app-calendar>
+        
+        <!-- Selected date stats -->
+        <div class="selected-date-stats" *ngIf="selectedDate">
+          <div class="stat-row">
+            <span class="stat-label">{{ selectedDate | date: 'MMMM d, yyyy' }}</span>
+            <div class="stat-values">
+              <span class="stat-badge sessions-stat">{{ stats.totalSessionsForDate || 0 }} sessions</span>
+              <span class="stat-badge questions-stat">{{ stats.questionsAsked || 0 }} questions</span>
             </div>
           </div>
         </div>
@@ -623,7 +461,6 @@
         </div>
 
         <div class="quick-actions-box-grid">
-          <!-- Action 1: New Session -->
           <a routerLink="/chat" class="quick-action-item animate-on-scroll stagger-1">
             <div class="action-icon-wrap bg-light-blue">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -635,7 +472,6 @@
             <p>Start a fresh conversation</p>
           </a>
 
-          <!-- Action 2: Practice -->
           <a routerLink="/chat" class="quick-action-item animate-on-scroll stagger-2">
             <div class="action-icon-wrap bg-light-purple">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -647,7 +483,6 @@
             <p>Solve questions and quizzes</p>
           </a>
 
-          <!-- Action 3: Resources -->
           <a href="#" class="quick-action-item animate-on-scroll stagger-3">
             <div class="action-icon-wrap bg-light-amber">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -658,7 +493,6 @@
             <p>Access study materials</p>
           </a>
 
-          <!-- Action 4: Help Center -->
           <a href="#" class="quick-action-item animate-on-scroll stagger-4">
             <div class="action-icon-wrap bg-light-pink">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#db2777" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -673,3 +507,11 @@
     </div>
   </main>
 </div>
+
+<!-- Loading spinner template -->
+<ng-template #loadingSpinner>
+  <div class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Loading your activity...</p>
+  </div>
+</ng-template>

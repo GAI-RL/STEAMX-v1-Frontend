@@ -37,6 +37,21 @@
       </div>
     </div>
 
+    <!-- Grade Selection Section -->
+    <div class="sidebar-class-section">
+      <span class="sidebar-class-label">Your Class</span>
+      <div class="grade-selector">
+        @for (grade of availableGrades; track grade.id) {
+          <button 
+            class="grade-btn"
+            [class.active]="selectedGrade?.id === grade.id"
+            (click)="onGradeSelected(grade)">
+            {{ grade.display_name }}
+          </button>
+        }
+      </div>
+    </div>
+
     <!-- Sessions List (Categorized) -->
     <div class="sessions-list">
       @if (loading) {
@@ -114,7 +129,7 @@
       <!-- Upgrade plan premium card -->
       <div class="upgrade-card">
         <div class="upgrade-header">
-          <span class="upgrade-crown">👑</span>
+          <span class="upgrade-crown"></span>
           <span class="upgrade-title">Upgrade to Pro</span>
         </div>
         <p class="upgrade-desc">Get unlimited access to advanced AI, priority support, and more.</p>
@@ -162,6 +177,20 @@
       <button class="collapsed-btn" (click)="newChat.emit()" title="New chat">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
       </button>
+      
+      <!-- Collapsed Grade Selector -->
+      <div class="collapsed-grades">
+        @for (grade of availableGrades; track grade.id) {
+          <button 
+            class="collapsed-grade-btn" 
+            [class.active]="selectedGrade?.id === grade.id"
+            (click)="onGradeSelected(grade)"
+            title="{{ grade.display_name }}">
+            {{ grade.level }}
+          </button>
+        }
+      </div>
+
       <div class="collapsed-spacer"></div>
       <button class="collapsed-avatar" (click)="toggleSidebar.emit()" title="{{ userName }}">{{ userInitial }}</button>
     </div>

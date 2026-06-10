@@ -8,6 +8,8 @@
     [userName]="user?.full_name || 'User'"
     [userInitial]="getUserInitial()"
     [userPlan]="stats.plan"
+    [selectedGrade]="selectedGrade"
+    (gradeSelected)="handleGradeSelected($event)"
     (newChat)="createNewSession()"
     (selectSession)="loadSession($event)"
     (deleteSession)="handleDeleteSession($event)"
@@ -32,6 +34,8 @@
             <path d="M6 9l6 6 6-6"/>
           </svg>
         </div>
+
+
       </div>
 
       <div class="header-right">
@@ -45,6 +49,39 @@
         </a>
       </div>
     </header>
+
+   <!-- RAG Subject Pills Bar (Updated to use real subjects from API) -->
+<div class="chat-subjects-bar" *ngIf="selectedGrade">
+  <button 
+    *ngFor="let subject of availableSubjects" 
+    class="subject-pill" 
+    [ngClass]="getSubjectClass(subject.name)"
+    [class.active]="selectedSubject?.id === subject.id"
+    (click)="selectSubject(subject)">
+    {{ subject.name }}
+  </button>
+</div>
+
+    <!-- Floating Class/Subject Selection Toasts -->
+    <div class="grade-selection-toast animate-toast" *ngIf="!selectedGrade">
+      <div class="toast-glowing-glow"></div>
+      <div class="toast-content">
+        <div class="toast-text-wrap">
+          <h4 class="toast-title">Setup Your Class</h4>
+          <p class="toast-body">Please select your class in the sidebar to load subjects and start studying.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grade-selection-toast animate-toast" *ngIf="selectedGrade && !selectedSubject">
+      <div class="toast-glowing-glow"></div>
+      <div class="toast-content">
+        <div class="toast-text-wrap">
+          <h4 class="toast-title">Choose a Subject</h4>
+          <p class="toast-body">Please select a subject from the top bar to begin chatting with your AI tutor.</p>
+        </div>
+      </div>
+    </div>
 
     <!-- Session / Auth error banner -->
     @if (sessionError) {
@@ -225,13 +262,13 @@
             (input)="onTextareaInput($event)"
             (focus)="inputFocused = true"
             (blur)="inputFocused = false"
-            placeholder="Ask anything..."
+            [placeholder]="getPlaceholderText()"
             rows="1"
-            [disabled]="loading">
+            [disabled]="loading || !selectedGrade || !selectedSubject">
           </textarea>
 
           <!-- Circular Send button -->
-          <button class="send-btn-pill" [class.active]="currentMessage.trim()" [disabled]="!currentMessage.trim() || loading" (click)="sendMessage()">
+          <button class="send-btn-pill" [class.active]="currentMessage.trim() && selectedGrade && selectedSubject" [disabled]="!currentMessage.trim() || loading || !selectedGrade || !selectedSubject" (click)="sendMessage()">
             @if (loading) {
               <div class="btn-spinner-pill"></div>
             } @else {

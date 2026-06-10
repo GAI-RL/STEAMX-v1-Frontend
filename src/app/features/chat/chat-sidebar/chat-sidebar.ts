@@ -1,8 +1,9 @@
-import { Component, Input, Output, EventEmitter, OnChanges, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { ChatSession } from '../../../core/models/chat.model';
+import { ChatSession } from '../../../core/services/chat.service';
+import { SubjectService, Grade } from '../../../core/services/subject.service';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -12,20 +13,25 @@ import { AuthService } from '../../../core/services/auth.service';
   templateUrl: './chat-sidebar.html',
   styleUrl: './chat-sidebar.css'
 })
-export class ChatSidebarComponent implements OnChanges {
+export class ChatSidebarComponent implements OnChanges, OnInit {
   @Input() sessions: ChatSession[] = [];
   @Input() activeSessionId: string | null = null;
   @Input() loading = false;
-  @Input() collapsed = true; // Changed to true - sidebar closed by default
+  @Input() collapsed = true;
   @Input() userName = 'User';
   @Input() userInitial = 'U';
   @Input() userPlan = 'FREE';
+  @Input() selectedGrade: Grade | null = null;
 
   @Output() newChat = new EventEmitter<void>();
   @Output() selectSession = new EventEmitter<string>();
   @Output() deleteSession = new EventEmitter<string>();
   @Output() logout = new EventEmitter<void>();
   @Output() toggleSidebar = new EventEmitter<void>();
+  @Output() gradeSelected = new EventEmitter<Grade>();
+
+  // Available grades from API
+  availableGrades: Grade[] = [];
 
   searchOpen = false;
   searchQuery = '';
@@ -42,7 +48,42 @@ export class ChatSidebarComponent implements OnChanges {
   // Delete account modal state
   deleteAccountModal = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    private subjectService: SubjectService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadGrades();
+  }
+
+  loadGrades(): void {
+    this.subjectService.getGrades().subscribe({
+      next: (grades) => {
+        this.availableGrades = grades && grades.length > 0 ? grades : [
+          { id: '9', level: 9, display_name: 'Class 9' },
+          { id: '10', level: 10, display_name: 'Class 10' },
+          { id: '11', level: 11, display_name: 'Class 11' },
+          { id: '12', level: 12, display_name: 'Class 12' }
+        ];
+      },
+      error: (err) => {
+        console.error('Error loading grades:', err);
+        // Fallback to hardcoded grades if API fails
+        this.availableGrades = [
+          { id: '9', level: 9, display_name: 'Class 9' },
+          { id: '10', level: 10, display_name: 'Class 10' },
+          { id: '11', level: 11, display_name: 'Class 11' },
+          { id: '12', level: 12, display_name: 'Class 12' }
+        ];
+      }
+    });
+  }
+
+  onGradeSelected(grade: Grade): void {
+    this.gradeSelected.emit(grade);
+  }
 
   get displayedSessions(): ChatSession[] {
     return this.searchQuery.trim() ? this.filteredSessions : this.sessions;
@@ -103,7 +144,10 @@ export class ChatSidebarComponent implements OnChanges {
   }
 
   filterSessions(): void {
-    if (!this.searchQuery.trim()) { this.filteredSessions = []; return; }
+    if (!this.searchQuery.trim()) { 
+      this.filteredSessions = []; 
+      return; 
+    }
     const q = this.searchQuery.toLowerCase();
     this.filteredSessions = this.sessions.filter(s =>
       (s.title || 'New Conversation').toLowerCase().includes(q)
@@ -119,36 +163,27 @@ export class ChatSidebarComponent implements OnChanges {
     this.userMenuOpen = !this.userMenuOpen;
   }
 
-  // Handle logout - close menu and emit event
   handleLogout(): void {
     this.userMenuOpen = false;
     this.logout.emit();
   }
 
-  // Show delete chat confirmation modal
   promptDeleteSession(sessionId: string, title: string = ''): void {
     this.deleteModal = { show: true, sessionId, title };
   }
 
-  // User confirmed delete chat
   confirmDeleteChat(): void {
     this.deleteSession.emit(this.deleteModal.sessionId);
     this.deleteModal = { show: false, sessionId: '', title: '' };
   }
 
-  // Show delete account confirmation modal
   promptDeleteAccount(): void {
     this.userMenuOpen = false;
     this.deleteAccountModal = true;
   }
 
-  // User confirmed delete account
   confirmDeleteAccount(): void {
     this.deleteAccountModal = false;
-    
-    // Simple implementation: Just logout the user
-    // In a production app, you would call an API endpoint to actually delete the account
-    // For now, we'll just log them out
     this.authService.logout();
     this.router.navigate(['/']);
   }

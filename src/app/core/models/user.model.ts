@@ -5,6 +5,7 @@ export interface User {
   full_name: string;
   created_at: string;
   subscription_tier: string;
+  first_login_at?: string;
 }
 
 // Login form data

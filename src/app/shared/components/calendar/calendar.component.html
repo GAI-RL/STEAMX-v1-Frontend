@@ -1,0 +1,50 @@
+<div class="calendar-container">
+  <!-- Calendar Header -->
+  <div class="calendar-header">
+    <div class="month-nav">
+      <button class="nav-btn" (click)="previousMonth()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <span class="month-year">{{ getMonthYearString() }}</span>
+      <button class="nav-btn" (click)="nextMonth()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+    <button class="today-btn" (click)="goToToday()">Today</button>
+  </div>
+
+  <!-- Day Names -->
+  <div class="calendar-weekdays">
+    <span *ngFor="let day of dayNames" class="weekday">{{ day }}</span>
+  </div>
+
+  <!-- Calendar Days Grid -->
+  <div class="calendar-days">
+    <div *ngFor="let day of calendarDays" 
+         class="calendar-day"
+         [class.other-month]="!day.isCurrentMonth"
+         [class.today]="day.isToday"
+         [class.selected]="day.isSelected"
+         [class.has-data]="day.hasData"
+         [class.disabled]="day.date > today || day.date < startDate"
+         (click)="selectDate(day)">
+      
+      <span class="day-number">{{ day.dayNumber }}</span>
+      
+      <!-- Tooltip for stats -->
+      <div class="day-stats" *ngIf="day.hasData">
+        <span class="stat-dot"></span>
+      </div>
+      
+      <!-- Hover tooltip -->
+      <div class="day-tooltip" *ngIf="day.hasData">
+        <span>{{ day.sessionsCount }} sessions</span>
+        <span>{{ day.questionsCount }} questions</span>
+      </div>
+    </div>
+  </div>
+</div>

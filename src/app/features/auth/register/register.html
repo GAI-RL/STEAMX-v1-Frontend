@@ -263,34 +263,15 @@
                 ></app-custom-dropdown>
               </div>
 
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Grade</label>
-                  <app-custom-dropdown
-                    [options]="grades"
-                    placeholder="Select Grade"
-                    (selectionChanged)="academicData.grade = $event; updateSubjects()"
-                  ></app-custom-dropdown>
-                </div>
-                <div class="form-group">
-                  <label>Medium</label>
-                  <app-custom-dropdown
-                    [options]="['English Medium', 'Urdu Medium']"
-                    placeholder="Select Medium"
-                    (selectionChanged)="academicData.medium = $event"
-                  ></app-custom-dropdown>
-                </div>
-              </div>
-
               <div class="form-group">
-                <label>Subject Group</label>
+                <label>Medium</label>
                 <app-custom-dropdown
-                  [options]="subjects"
-                  [placeholder]="academicData.grade ? 'Select Subject Group' : 'Select Grade First'"
-                  [disabled]="!academicData.grade"
-                  (selectionChanged)="academicData.subjectGroup = $event"
+                  [options]="['English Medium', 'Urdu Medium']"
+                  placeholder="Select Medium"
+                  (selectionChanged)="academicData.medium = $event"
                 ></app-custom-dropdown>
               </div>
+
 
               <div class="form-group">
                 <label>School / Institution <span class="label-optional">(optional)</span></label>

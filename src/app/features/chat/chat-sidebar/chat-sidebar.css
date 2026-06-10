@@ -724,3 +724,95 @@
     display: none;
   }
 }
+
+/* =====================================================
+   GRADE / CLASS SELECTOR STYLING
+   ===================================================== */
+.sidebar-class-section {
+  padding: 8px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.sidebar-class-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding-left: 4px;
+}
+
+.grade-selector {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.grade-btn {
+  flex: 1;
+  padding: 8px 6px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+.grade-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.grade-btn.active {
+  background: #e6f0f2;
+  border-color: #00687a;
+  color: #00687a;
+  box-shadow: 0 1px 3px rgba(0, 104, 122, 0.1);
+}
+
+.collapsed-grades {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 10px 0;
+  width: 100%;
+  align-items: center;
+}
+
+.collapsed-grade-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.collapsed-grade-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.collapsed-grade-btn.active {
+  background: #e6f0f2;
+  border-color: #00687a;
+  color: #00687a;
+  box-shadow: 0 1px 3px rgba(0, 104, 122, 0.15);
+}

@@ -684,6 +684,275 @@
   opacity: 1;
 }
 
+/* ==================== GRADE & SUBJECT PILLS (DYNAMIC DESIGN) ==================== */
+.header-grade-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 16px;
+}
+
+.header-grade-pill {
+  padding: 6px 14px;
+  border-radius: 30px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.header-grade-pill:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
+  transform: translateY(-1px);
+}
+
+.header-grade-pill.active {
+  background: rgba(0, 104, 122, 0.08);
+  border-color: #00687a;
+  color: #00687a;
+  box-shadow: 0 2px 6px rgba(0, 104, 122, 0.06);
+}
+
+.chat-subjects-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background: #ffffff;
+  overflow-x: auto;
+  scrollbar-width: none; /* Hide scrollbar for clean layout */
+  flex-shrink: 0;
+}
+
+.chat-subjects-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.subject-pill {
+  padding: 8px 18px;
+  border-radius: 30px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.subject-pill:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Unselected Default Neon Pill Themes */
+.subject-pill.sub-biology {
+  border: 1.5px solid rgba(16, 185, 129, 0.3);
+  background: #ffffff;
+  color: #059669;
+}
+.subject-pill.sub-biology:hover {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #047857;
+}
+
+.subject-pill.sub-chemistry {
+  border: 1.5px solid rgba(217, 70, 239, 0.3);
+  background: #ffffff;
+  color: #b5179e;
+}
+.subject-pill.sub-chemistry:hover {
+  background: rgba(217, 70, 239, 0.08);
+  border-color: rgba(217, 70, 239, 0.5);
+  color: #7209b7;
+}
+
+.subject-pill.sub-physics {
+  border: 1.5px solid rgba(6, 182, 212, 0.3);
+  background: #ffffff;
+  color: #0891b2;
+}
+.subject-pill.sub-physics:hover {
+  background: rgba(6, 182, 212, 0.08);
+  border-color: rgba(6, 182, 212, 0.5);
+  color: #0369a1;
+}
+
+.subject-pill.sub-math {
+  border: 1.5px solid rgba(255, 78, 80, 0.3);
+  background: #ffffff;
+  color: #e11d48;
+}
+.subject-pill.sub-math:hover {
+  background: rgba(255, 78, 80, 0.08);
+  border-color: rgba(255, 78, 80, 0.5);
+  color: #be123c;
+}
+
+.subject-pill.sub-cs {
+  border: 1.5px solid rgba(99, 102, 241, 0.3);
+  background: #ffffff;
+  color: #4f46e5;
+}
+.subject-pill.sub-cs:hover {
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #3730a3;
+}
+
+.subject-pill.sub-english {
+  border: 1.5px solid rgba(245, 158, 11, 0.3);
+  background: #ffffff;
+  color: #d97706;
+}
+.subject-pill.sub-english:hover {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.5);
+  color: #b45309;
+}
+
+/* Active States for Subjects (Larger size, white background, shadow-free, bold) */
+.subject-pill.sub-biology.active {
+  background: #ffffff !important;
+  border: 2px solid #10b981;
+  color: #10b981;
+  box-shadow: none !important;
+  transform: scale(1.08);
+  font-weight: 700;
+}
+
+.subject-pill.sub-chemistry.active {
+  background: #ffffff !important;
+  border: 2px solid #d946ef;
+  color: #d946ef;
+  box-shadow: none !important;
+  transform: scale(1.08);
+  font-weight: 700;
+}
+
+.subject-pill.sub-physics.active {
+  background: #ffffff !important;
+  border: 2px solid #00d2ff;
+  color: #00d2ff;
+  box-shadow: none !important;
+  transform: scale(1.08);
+  font-weight: 700;
+}
+
+.subject-pill.sub-math.active {
+  background: #ffffff !important;
+  border: 2px solid #ff4e50;
+  color: #ff4e50;
+  box-shadow: none !important;
+  transform: scale(1.08);
+  font-weight: 700;
+}
+
+.subject-pill.sub-cs.active {
+  background: #ffffff !important;
+  border: 2px solid #6366f1;
+  color: #6366f1;
+  box-shadow: none !important;
+  transform: scale(1.08);
+  font-weight: 700;
+}
+
+.subject-pill.sub-english.active {
+  background: #ffffff !important;
+  border: 2px solid #f59e0b;
+  color: #f59e0b;
+  box-shadow: none !important;
+  transform: scale(1.08);
+  font-weight: 700;
+}
+
+/* Floating Class/Subject Selection Toast Notification with Teal Glow (Moved to Corner) */
+.grade-selection-toast {
+  position: absolute;
+  top: 84px;
+  right: 24px;
+  z-index: 1000;
+  width: 90%;
+  max-width: 300px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1.2px solid rgba(0, 104, 122, 0.2);
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 8px 24px rgba(0, 104, 122, 0.06), 0 0 15px rgba(0, 210, 255, 0.12);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.animate-toast {
+  animation: toastSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.toast-glowing-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 210, 255, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.toast-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.toast-text-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toast-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #00687a;
+  margin: 0 0 2px 0;
+}
+
+.toast-body {
+  font-size: 0.78rem;
+  color: #475569;
+  line-height: 1.4;
+  margin: 0;
+}
+
 /* ==================== RESPONSIVE DESIGN ==================== */
 @media (max-width: 1024px) {
   .mobile-toggle { display: flex; }
@@ -703,4 +972,11 @@
   .welcome-inner h2 { font-size: 1.5rem; }
   .prompts-grid-horizontal { grid-template-columns: 1fr; }
   .send-btn-pill { width: 34px; height: 34px; }
+  .grade-selection-toast {
+    width: 90%;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    top: 80px;
+  }
 }

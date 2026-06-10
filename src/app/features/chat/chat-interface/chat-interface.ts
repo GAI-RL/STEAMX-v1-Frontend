@@ -1,4 +1,7 @@
+import { HttpClient } from '@angular/common/http';
+import { timeout, catchError, throwError } from 'rxjs';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, HostListener, ChangeDetectorRef } from '@angular/core';
+import { environment } from '../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
@@ -39,6 +42,8 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   messages: DisplayMessage[] = [];
   currentMessage = '';
   loading = false;
+  /** True while waiting for /api/extract after image upload (does not block textarea like `loading`). */
+  ocrLoading = false;
   loadingSessions = false;
   sidebarCollapsed = true;
   inputFocused = false;
@@ -67,7 +72,8 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private sessionService: SessionService,
-  ) {}
+    private http: HttpClient
+  ) { }
 
   ngOnInit(): void {
     this.user = this.authService.currentUserValue;
@@ -254,6 +260,7 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     
     const userPrompt = this.currentMessage.trim();
     this.currentMessage = '';
+    this.clearUploadedFile();
 
     if (this.messageInput) {
       this.messageInput.nativeElement.style.height = 'auto';
@@ -401,16 +408,113 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   toggleInputMenu(): void { this.inputMenuOpen = !this.inputMenuOpen; }
 
   handleInputAction(action: string): void {
-    this.inputMenuOpen = false;
-    if (action === 'upload') {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.multiple = true;
-      input.accept = 'image/*,.pdf,.doc,.docx,.txt,.csv';
-      input.click();
-    }
+  this.inputMenuOpen = false;
+
+  if (action === 'upload') {
+
+    const input = document.createElement('input');
+
+    input.type = 'file';
+
+    // Allow multiple file types
+    input.accept = `
+      image/*,
+      .pdf,
+      .doc,
+      .docx,
+      .xls,
+      .xlsx,
+      .csv,
+      .txt,
+      .ppt,
+      .pptx
+    `;
+
+    // Allow multiple files if needed
+    input.multiple = true;
+
+    input.onchange = (event: any) => {
+
+      const files: FileList = event.target.files;
+
+      if (files && files.length > 0) {
+
+        Array.from(files).forEach((file: File) => {
+
+          console.log('Selected File:', file.name, file.type);
+
+          this.uploadedFileName = file.name;
+          this.uploadedFileType = file.type;
+
+          this.uploadFileToApi(file);
+        });
+
+      }
+    };
+
+    input.click();
+  }
+}
+  uploadFileToApi(file: File): void {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const extractUrl = `${environment.ocrApiUrl}/api/extract`;
+    const ocrTimeoutMs = 120_000;
+
+    this.ocrLoading = true;
+    this.sendErrorMessage = '';
+    this.cdr.detectChanges();
+
+    console.log('[OCR] POST', extractUrl, { fileName: file.name, fileType: file.type, timeoutMs: ocrTimeoutMs });
+
+    this.http.post<{ text?: string; data?: { text?: string } }>(extractUrl, formData).pipe(
+      timeout(ocrTimeoutMs),
+      catchError((error) => {
+        console.error('[OCR] Request failed', { url: extractUrl, error });
+        return throwError(() => error);
+      })
+    ).subscribe({
+      next: (response) => {
+        this.ocrLoading = false;
+
+        const raw = response?.text ?? response?.data?.text;
+        this.currentMessage = raw == null ? '' : String(raw);
+
+        console.log('[OCR] Response from', extractUrl, { textLength: this.currentMessage.length });
+
+        this.cdr.detectChanges();
+
+        setTimeout(() => {
+          if (this.messageInput) {
+            const textarea = this.messageInput.nativeElement;
+            textarea.focus();
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+          }
+        }, 0);
+      },
+      error: (error) => {
+        this.ocrLoading = false;
+        this.clearUploadedFile();
+
+        const isTimeout = error?.name === 'TimeoutError';
+        const status = error?.status;
+        if (isTimeout || status === 0) {
+          this.sendErrorMessage = 'File processing is taking longer than expected. Please try again.';
+        } else {
+          this.sendErrorMessage = 'Unable to process this file. Please try again.';
+        }
+
+        this.cdr.detectChanges();
+      }
+    });
   }
 
+  clearUploadedFile(): void {
+    this.uploadedFileName = '';
+    this.uploadedFileType = '';
+  }
   loadSessions(silent = false): void {
     if (!silent) this.loadingSessions = true;
     this.chatService.getAllSessions().subscribe({
@@ -483,6 +587,41 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     }, 0);
   }
 
+  hasAssistantReplyAfter(index: number): boolean {
+    return this.messages[index + 1]?.role === 'assistant';
+  }
+
+  editUserMessage(content: string): void {
+    this.currentMessage = content;
+    setTimeout(() => {
+      if (this.messageInput) {
+        const textarea = this.messageInput.nativeElement;
+        textarea.focus();
+        textarea.style.height = 'auto';
+        textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+      }
+    }, 0);
+  }
+
+  retryUserMessage(content: string): void {
+    if (this.loading || this.ocrLoading) return;
+    this.currentMessage = content;
+    this.sendMessage();
+  }
+
+  copyUserMessage(content: string): void {
+    if (!content) return;
+    navigator.clipboard?.writeText(content).catch(() => {
+      // Keep fallback minimal without adding new UI noise.
+      const temp = document.createElement('textarea');
+      temp.value = content;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+    });
+  }
+
   scrollToBottom(): void {
     try { 
       this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight; 
@@ -501,6 +640,13 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   getUserInitial(): string {
     if (!this.user?.full_name) return 'U';
     return this.user.full_name.charAt(0).toUpperCase();
+  }
+
+  // Handle authentication errors
+  handleAuthError(): void {
+    console.log('Authentication error detected - logging out');
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
   logout(): void {

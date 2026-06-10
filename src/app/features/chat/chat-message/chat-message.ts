@@ -23,6 +23,12 @@ export class ChatMessageComponent implements OnInit {
   @Input() message!: ChatMessage | DisplayMessage;
   @Input() userName: string = 'You';
   @Input() userInitial: string = 'U';
+  @Input() showActions: boolean = false;
+  @Output() editMessage = new EventEmitter<void>();
+  @Output() retryMessage = new EventEmitter<void>();
+  @Output() copyMessage = new EventEmitter<void>();
+  copied = false;
+  private copyResetTimer: ReturnType<typeof setTimeout> | null = null;
 
   @Output() editMessage = new EventEmitter<void>();
   @Output() retryMessage = new EventEmitter<void>();
@@ -68,5 +74,18 @@ export class ChatMessageComponent implements OnInit {
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
       .replace(/\n/g, '<br>');
+  }
+
+  onEdit(): void { this.editMessage.emit(); }
+  onRetry(): void { this.retryMessage.emit(); }
+  onCopy(): void {
+    this.copyMessage.emit();
+    this.copied = true;
+    if (this.copyResetTimer) {
+      clearTimeout(this.copyResetTimer);
+    }
+    this.copyResetTimer = setTimeout(() => {
+      this.copied = false;
+    }, 1500);
   }
 }

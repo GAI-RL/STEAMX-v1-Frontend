@@ -43,6 +43,8 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   sidebarCollapsed = true;
   inputFocused = false;
   inputMenuOpen = false;
+  uploadedFileName: string = '';
+  uploadedFileType: string = '';
 
   stats = { plan: 'FREE' };
   sendError: { type: 'offline' | 'timeout' | 'server' | 'unknown'; message: string } | null = null;

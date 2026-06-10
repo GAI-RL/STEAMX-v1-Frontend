@@ -29,7 +29,8 @@
 
       <div class="message-text" [innerHTML]="formatContent(displayContent)"></div>
 
-      @if (displayFigures?.length) {
+      <!-- FIXED: Removed optional chaining '?.' -->
+      @if (displayFigures.length) {
         <div class="figure-dialogue-box">
           @for (fig of displayFigures; track $index) {
             <div class="figure-card">

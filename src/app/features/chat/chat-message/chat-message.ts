@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatMessage } from '../../../core/services/chat.service';
 
@@ -23,6 +23,10 @@ export class ChatMessageComponent implements OnInit {
   @Input() message!: ChatMessage | DisplayMessage;
   @Input() userName: string = 'You';
   @Input() userInitial: string = 'U';
+
+  @Output() editMessage = new EventEmitter<void>();
+  @Output() retryMessage = new EventEmitter<void>();
+  @Output() copyMessage = new EventEmitter<void>();
 
   displayRole: 'user' | 'assistant' = 'assistant';
   displayContent: string = '';

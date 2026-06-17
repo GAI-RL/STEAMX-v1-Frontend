@@ -472,7 +472,13 @@
   }
 
   .features-bar-inner {
-    max-width: 1200px;
+    max-width: 1400px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -946,9 +952,9 @@
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 28px;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -1137,6 +1143,44 @@
 .features-set:nth-child(2) .feature-card:nth-child(3):hover {
   border-color: #3498db;
   box-shadow: 0 12px 24px rgba(52, 152, 219, 0.15), 0 24px 48px rgba(52, 152, 219, 0.2);
+}
+
+/* Set 1 - Card 4: New Card (Blue) */
+.features-set:nth-child(1) .feature-card:nth-child(4) {
+  --card-color: #3498db;
+}
+
+.features-set:nth-child(1) .feature-card:nth-child(4) .feature-icon {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+.features-set:nth-child(1) .feature-card:nth-child(4)::before {
+  background: linear-gradient(90deg, #3498db, #2980b9);
+}
+
+.features-set:nth-child(1) .feature-card:nth-child(4):hover {
+  border-color: #3498db;
+  box-shadow: 0 12px 24px rgba(52, 152, 219, 0.15), 0 24px 48px rgba(52, 152, 219, 0.2);
+}
+
+/* Set 2 - Card 4: New Card (Amber) */
+.features-set:nth-child(2) .feature-card:nth-child(4) {
+  --card-color: #f39c12;
+}
+
+.features-set:nth-child(2) .feature-card:nth-child(4) .feature-icon {
+  background: linear-gradient(135deg, #f39c12, #d35400);
+  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.2);
+}
+
+.features-set:nth-child(2) .feature-card:nth-child(4)::before {
+  background: linear-gradient(90deg, #f39c12, #d35400);
+}
+
+.features-set:nth-child(2) .feature-card:nth-child(4):hover {
+  border-color: #f39c12;
+  box-shadow: 0 12px 24px rgba(243, 156, 18, 0.15), 0 24px 48px rgba(243, 156, 18, 0.2);
 }
 
 .feature-dots {
@@ -2501,8 +2545,12 @@
   }
 
   .stat-row {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .queries-card {
+    grid-column: 1 / -1 !important;
   }
 
   .stat-card {

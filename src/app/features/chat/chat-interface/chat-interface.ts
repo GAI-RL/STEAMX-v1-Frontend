@@ -51,6 +51,11 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   uploadedFileName: string = '';
   uploadedFileType: string = '';
 
+  isRecording = false;
+  isTranscribingVoice = false;
+  private mediaRecorder: MediaRecorder | null = null;
+  private audioChunks: Blob[] = [];
+
   stats = { plan: 'FREE' };
   sendError: { type: 'offline' | 'timeout' | 'server' | 'unknown'; message: string } | null = null;
   sessionError: 'auth' | 'network' | 'service' | null = null;
@@ -514,6 +519,76 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   clearUploadedFile(): void {
     this.uploadedFileName = '';
     this.uploadedFileType = '';
+  }
+
+  toggleVoiceRecording(): void {
+    if (this.isRecording) {
+      this.stopRecording();
+    } else {
+      this.startRecording();
+    }
+  }
+
+  startRecording(): void {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(stream => {
+        this.isRecording = true;
+        this.audioChunks = [];
+        this.mediaRecorder = new MediaRecorder(stream);
+        
+        this.mediaRecorder.addEventListener('dataavailable', event => {
+          if (event.data.size > 0) {
+            this.audioChunks.push(event.data);
+          }
+        });
+
+        this.mediaRecorder.addEventListener('stop', () => {
+          const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
+          this.transcribeAudio(audioBlob);
+          stream.getTracks().forEach(track => track.stop());
+        });
+
+        this.mediaRecorder.start();
+      })
+      .catch(error => {
+        console.error('Error accessing microphone:', error);
+        this.sendErrorMessage = 'Could not access microphone. Please check permissions.';
+      });
+  }
+
+  stopRecording(): void {
+    if (this.mediaRecorder && this.isRecording) {
+      this.isRecording = false;
+      this.mediaRecorder.stop();
+    }
+  }
+
+  transcribeAudio(blob: Blob): void {
+    this.isTranscribingVoice = true;
+    const formData = new FormData();
+    formData.append('audio', blob, 'recording.webm');
+
+    this.http.post<{text: string, language: string}>('http://localhost:8501/api/transcribe', formData).pipe(
+      timeout(60000),
+      catchError(error => {
+        console.error('Transcription error:', error);
+        return throwError(() => error);
+      })
+    ).subscribe({
+      next: (res) => {
+        this.isTranscribingVoice = false;
+        if (res.text) {
+          const separator = this.currentMessage.trim() ? ' ' : '';
+          this.currentMessage = this.currentMessage + separator + res.text;
+          this.cdr.detectChanges();
+        }
+      },
+      error: (err) => {
+        this.isTranscribingVoice = false;
+        this.sendErrorMessage = 'Transcription failed. Please make sure the STI backend is running on port 8501.';
+        this.cdr.detectChanges();
+      }
+    });
   }
   loadSessions(silent = false): void {
     if (!silent) this.loadingSessions = true;

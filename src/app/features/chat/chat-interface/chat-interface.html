@@ -50,10 +50,10 @@
       </div>
     </header>
 
-   <!-- RAG Subject Pills Bar (Updated to use real subjects from API) -->
+<!-- RAG Subject Pills Bar (Updated to use real subjects from API) -->
 <div class="chat-subjects-bar" *ngIf="selectedGrade">
   <button 
-    *ngFor="let subject of availableSubjects" 
+    *ngFor="let subject of getFilteredSubjects()" 
     class="subject-pill" 
     [ngClass]="getSubjectClass(subject.name)"
     [class.active]="selectedSubject?.id === subject.id"
@@ -194,9 +194,9 @@
               [message]="message"
               [userName]="user?.full_name || 'You'"
               [userInitial]="getUserInitial()"
-              [showActions]="message.role === 'user' && hasAssistantReplyAfter(i)"
+              [showActions]="true"
               (editMessage)="editUserMessage(message.content)"
-              (retryMessage)="retryUserMessage(message.content)"
+              (retryMessage)="retryMessageAction(message)"
               (copyMessage)="copyUserMessage(message.content)">
             </app-chat-message>
           }

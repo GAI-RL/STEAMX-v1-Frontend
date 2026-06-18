@@ -367,12 +367,36 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   }
 
   handleGradeSelected(grade: Grade): void {
+    const gradeChanged = this.selectedGrade?.id !== grade.id;
     this.selectedGrade = grade;
-    this.selectedSubject = null;
+
+    if (gradeChanged) {
+      this.selectedSubject = null;
+      this.resetCurrentChatForSelectionChange();
+    }
   }
 
   selectSubject(subject: Subject): void {
-    this.selectedSubject = this.selectedSubject?.id === subject.id ? null : subject;
+    const isSameSubject = this.selectedSubject?.id === subject.id;
+    this.selectedSubject = isSameSubject ? null : subject;
+
+    // Important: if the user changes the subject button, start a fresh session.
+    // Otherwise the backend will keep using the old session's subject_id/grade_id.
+    if (!isSameSubject) {
+      this.resetCurrentChatForSelectionChange();
+    }
+  }
+
+  private resetCurrentChatForSelectionChange(): void {
+    this.currentSession = null;
+    this.currentSessionId = null;
+    this.messages = [];
+    this.loading = false;
+    this.isFirstMessage = false;
+    this.sendErrorMessage = '';
+    this.clearUploadedFile();
+    window.history.replaceState({}, '', '/chat');
+    this.cdr.detectChanges();
   }
 
   getSubjectClass(subjectName: string): string {

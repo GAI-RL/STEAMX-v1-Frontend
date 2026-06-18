@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import {  Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatMessage } from '../../../core/services/chat.service';
 
@@ -24,12 +23,11 @@ export class ChatMessageComponent implements OnInit {
   @Input() message!: ChatMessage | DisplayMessage;
   @Input() userName: string = 'You';
   @Input() userInitial: string = 'U';
-  @Input() showActions: boolean = false;
+  @Input() showActions: boolean = true;
+
   @Output() editMessage = new EventEmitter<void>();
   @Output() retryMessage = new EventEmitter<void>();
   @Output() copyMessage = new EventEmitter<void>();
-  copied = false;
-  private copyResetTimer: ReturnType<typeof setTimeout> | null = null;
 
   displayRole: 'user' | 'assistant' = 'assistant';
   displayContent: string = '';
@@ -37,7 +35,6 @@ export class ChatMessageComponent implements OnInit {
   displayFigures: any[] = [];
 
   ngOnInit(): void {
-    // Check if this is a DisplayMessage (has 'role' property)
     if ('role' in this.message) {
       const msg = this.message as DisplayMessage;
       this.displayRole = msg.role;
@@ -45,8 +42,6 @@ export class ChatMessageComponent implements OnInit {
       this.displayTimestamp = msg.timestamp;
       this.displayFigures = msg.figures || [];
     } else {
-      // Raw ChatMessage from backend - but this shouldn't happen directly
-      // because chat-interface converts before passing
       const msg = this.message as ChatMessage;
       this.displayRole = 'assistant';
       this.displayContent = msg.response || '';
@@ -71,18 +66,5 @@ export class ChatMessageComponent implements OnInit {
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
       .replace(/\n/g, '<br>');
-  }
-
-  onEdit(): void { this.editMessage.emit(); }
-  onRetry(): void { this.retryMessage.emit(); }
-  onCopy(): void {
-    this.copyMessage.emit();
-    this.copied = true;
-    if (this.copyResetTimer) {
-      clearTimeout(this.copyResetTimer);
-    }
-    this.copyResetTimer = setTimeout(() => {
-      this.copied = false;
-    }, 1500);
   }
 }

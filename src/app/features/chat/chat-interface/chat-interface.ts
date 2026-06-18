@@ -48,8 +48,13 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   sidebarCollapsed = true;
   inputFocused = false;
   inputMenuOpen = false;
-  uploadedFileName = '';
-  uploadedFileType = '';
+  uploadedFileName: string = '';
+  uploadedFileType: string = '';
+
+  isRecording = false;
+  isTranscribingVoice = false;
+  private mediaRecorder: MediaRecorder | null = null;
+  private audioChunks: Blob[] = [];
 
   stats = { plan: 'FREE' };
   sendError: { type: 'offline' | 'timeout' | 'server' | 'unknown'; message: string } | null = null;
@@ -146,35 +151,28 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     this.subjectService.getSubjects().subscribe({
       next: (subjects) => {
         const activeSubjects = subjects ? subjects.filter(s => s.is_active) : [];
-        this.availableSubjects = activeSubjects.length > 0 ? activeSubjects : [
-          { id: 'physics', name: 'Physics', icon: '⚛️', color: '#F59E0B', is_active: true },
-          { id: 'chemistry', name: 'Chemistry', icon: '🧪', color: '#10B981', is_active: true },
-          { id: 'mathematics', name: 'Mathematics', icon: '📐', color: '#8B5CF6', is_active: true },
-          { id: 'biology', name: 'Biology', icon: '🧬', color: '#22C55E', is_active: true },
-          { id: 'computer-science', name: 'Computer Science', icon: '💻', color: '#3B82F6', is_active: true },
-          { id: 'python', name: 'Python Programming', icon: '🐍', color: '#06B6D4', is_active: true },
-          { id: 'english', name: 'English', icon: '📝', color: '#EC4899', is_active: true },
-          { id: 'urdu', name: 'Urdu', icon: '✍️', color: '#14B8A6', is_active: true },
-          { id: 'pakistan-studies', name: 'Pakistan Studies', icon: '🇵🇰', color: '#F97316', is_active: true },
-          { id: 'islamic-studies', name: 'Islamic Studies', icon: '🕌', color: '#A855F7', is_active: true }
-        ];
+        this.availableSubjects = activeSubjects.length > 0 ? activeSubjects : this.getFallbackSubjects();
       },
       error: (err) => {
         console.error('Error loading subjects:', err);
-        this.availableSubjects = [
-          { id: 'physics', name: 'Physics', icon: '⚛️', color: '#F59E0B', is_active: true },
-          { id: 'chemistry', name: 'Chemistry', icon: '🧪', color: '#10B981', is_active: true },
-          { id: 'mathematics', name: 'Mathematics', icon: '📐', color: '#8B5CF6', is_active: true },
-          { id: 'biology', name: 'Biology', icon: '🧬', color: '#22C55E', is_active: true },
-          { id: 'computer-science', name: 'Computer Science', icon: '💻', color: '#3B82F6', is_active: true },
-          { id: 'python', name: 'Python Programming', icon: '🐍', color: '#06B6D4', is_active: true },
-          { id: 'english', name: 'English', icon: '📝', color: '#EC4899', is_active: true },
-          { id: 'urdu', name: 'Urdu', icon: '✍️', color: '#14B8A6', is_active: true },
-          { id: 'pakistan-studies', name: 'Pakistan Studies', icon: '🇵🇰', color: '#F97316', is_active: true },
-          { id: 'islamic-studies', name: 'Islamic Studies', icon: '🕌', color: '#A855F7', is_active: true }
-        ];
+        this.availableSubjects = this.getFallbackSubjects();
       }
     });
+  }
+
+  private getFallbackSubjects(): Subject[] {
+    return [
+      { id: 'english', name: 'English', icon: '📝', color: '#EC4899', is_active: true },
+      { id: 'urdu', name: 'Urdu', icon: '✍️', color: '#14B8A6', is_active: true },
+      { id: 'mathematics', name: 'Mathematics', icon: '📐', color: '#8B5CF6', is_active: true },
+      { id: 'biology', name: 'Biology', icon: '🧬', color: '#22C55E', is_active: true },
+      { id: 'physics', name: 'Physics', icon: '⚛️', color: '#F59E0B', is_active: true },
+      { id: 'chemistry', name: 'Chemistry', icon: '🧪', color: '#10B981', is_active: true },
+      { id: 'computer-science', name: 'Computer Science', icon: '💻', color: '#3B82F6', is_active: true },
+      { id: 'pakistan-studies', name: 'Pakistan Studies', icon: '🇵🇰', color: '#F97316', is_active: true },
+      { id: 'islamic-studies', name: 'Islamic Studies', icon: '🕌', color: '#A855F7', is_active: true },
+      { id: 'tarjuma-e-quran', name: 'Tarjuma-e-Quran', icon: '📖', color: '#D97706', is_active: true }
+    ];
   }
 
   ngAfterViewChecked(): void {
@@ -409,7 +407,46 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     if (s.includes('mathematics') || s.includes('math')) return 'sub-math';
     if (s.includes('computer') || s.includes('cs') || s.includes('python')) return 'sub-cs';
     if (s.includes('english')) return 'sub-english';
+    if (s.includes('urdu')) return 'sub-urdu';
+    if (s.includes('islam') || s.includes('isl')) return 'sub-islamic';
+    if (s.includes('pakistan') || s.includes('pak')) return 'sub-pakistan';
+    if (s.includes('tarjuma') || s.includes('quran')) return 'sub-tarjuma';
     return 'sub-default';
+  }
+
+  getFilteredSubjects(): Subject[] {
+    if (!this.selectedGrade) return [];
+    
+    const levelStr = this.selectedGrade.level?.toString() || this.selectedGrade.id;
+    
+    // Common subjects for all classes (9, 10, 11, 12)
+    const commonIds = ['english', 'urdu', 'mathematics', 'biology', 'physics', 'chemistry', 'computer-science', 'tarjuma-e-quran'];
+    
+    let allowedIds: string[] = [];
+    if (levelStr === '9' || levelStr === '11') {
+      allowedIds = [...commonIds, 'islamic-studies'];
+    } else if (levelStr === '10' || levelStr === '12') {
+      allowedIds = [...commonIds, 'pakistan-studies'];
+    } else {
+      allowedIds = commonIds;
+    }
+    
+    // Return subjects from availableSubjects that match these IDs
+    return this.availableSubjects.filter(sub => {
+      const id = sub.id.toLowerCase();
+      const name = sub.name.toLowerCase();
+      
+      return allowedIds.some(allowed => 
+        id.includes(allowed) || 
+        name.includes(allowed.replace('-', ' ')) ||
+        allowed.includes(id) ||
+        (allowed === 'tarjuma-e-quran' && (id.includes('tarjuma') || id.includes('tq') || name.includes('quran'))) ||
+        (allowed === 'islamic-studies' && (id.includes('isl') || name.includes('islam'))) ||
+        (allowed === 'pakistan-studies' && (id.includes('pak') || name.includes('pakistan'))) ||
+        (allowed === 'mathematics' && (id.includes('math') || name.includes('math'))) ||
+        (allowed === 'computer-science' && (id.includes('comp') || name.includes('comp')))
+      );
+    });
   }
 
   getPlaceholderText(): string {
@@ -539,6 +576,76 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     this.uploadedFileName = '';
     this.uploadedFileType = '';
   }
+
+  toggleVoiceRecording(): void {
+    if (this.isRecording) {
+      this.stopRecording();
+    } else {
+      this.startRecording();
+    }
+  }
+
+  startRecording(): void {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(stream => {
+        this.isRecording = true;
+        this.audioChunks = [];
+        this.mediaRecorder = new MediaRecorder(stream);
+        
+        this.mediaRecorder.addEventListener('dataavailable', event => {
+          if (event.data.size > 0) {
+            this.audioChunks.push(event.data);
+          }
+        });
+
+        this.mediaRecorder.addEventListener('stop', () => {
+          const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
+          this.transcribeAudio(audioBlob);
+          stream.getTracks().forEach(track => track.stop());
+        });
+
+        this.mediaRecorder.start();
+      })
+      .catch(error => {
+        console.error('Error accessing microphone:', error);
+        this.sendErrorMessage = 'Could not access microphone. Please check permissions.';
+      });
+  }
+
+  stopRecording(): void {
+    if (this.mediaRecorder && this.isRecording) {
+      this.isRecording = false;
+      this.mediaRecorder.stop();
+    }
+  }
+
+  transcribeAudio(blob: Blob): void {
+    this.isTranscribingVoice = true;
+    const formData = new FormData();
+    formData.append('audio', blob, 'recording.webm');
+
+    this.http.post<{text: string, language: string}>('http://localhost:8501/api/transcribe', formData).pipe(
+      timeout(60000),
+      catchError(error => {
+        console.error('Transcription error:', error);
+        return throwError(() => error);
+      })
+    ).subscribe({
+      next: (res) => {
+        this.isTranscribingVoice = false;
+        if (res.text) {
+          const separator = this.currentMessage.trim() ? ' ' : '';
+          this.currentMessage = this.currentMessage + separator + res.text;
+          this.cdr.detectChanges();
+        }
+      },
+      error: (err) => {
+        this.isTranscribingVoice = false;
+        this.sendErrorMessage = 'Transcription failed. Please make sure the STI backend is running on port 8501.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
   loadSessions(silent = false): void {
     if (!silent) this.loadingSessions = true;
     this.chatService.getAllSessions().subscribe({
@@ -627,10 +734,34 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     }, 0);
   }
 
-  retryUserMessage(content: string): void {
+  retryMessageAction(message: DisplayMessage): void {
     if (this.loading || this.ocrLoading) return;
-    this.currentMessage = content;
-    this.sendMessage();
+    
+    if (message.role === 'assistant') {
+      this.loading = true;
+      this.shouldScroll = true;
+      this.cdr.detectChanges();
+
+      this.chatService.regenerateResponse(message.id).subscribe({
+        next: (res: any) => {
+          message.content = res.response;
+          if (res.figures) {
+            message.figures = res.figures;
+          }
+          this.loading = false;
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => {
+          console.error('Error regenerating response:', err);
+          this.loading = false;
+          this.sendErrorMessage = 'Failed to regenerate response. Please try again.';
+          this.cdr.detectChanges();
+        }
+      });
+    } else {
+      this.currentMessage = message.content;
+      this.sendMessage();
+    }
   }
 
   copyUserMessage(content: string): void {

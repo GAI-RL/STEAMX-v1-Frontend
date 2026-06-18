@@ -466,7 +466,10 @@
   .brand-logo-wrapper { justify-content: center; }
   .branding-hero { text-align: center; }
   .brand-sub { margin: 0 auto; }
-  .illustration-wrap { justify-content: center; }
+  .illustration-wrap { 
+    justify-content: center; 
+    margin: 20px 0; 
+  }
   .stats-bar { justify-content: center; margin: 0 auto; }
   .stat-item { justify-content: center; }
   .hero-heading { font-size: 2.6rem; }

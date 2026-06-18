@@ -50,10 +50,10 @@
       </div>
     </header>
 
-   <!-- RAG Subject Pills Bar (Updated to use real subjects from API) -->
+<!-- RAG Subject Pills Bar (Updated to use real subjects from API) -->
 <div class="chat-subjects-bar" *ngIf="selectedGrade">
   <button 
-    *ngFor="let subject of availableSubjects" 
+    *ngFor="let subject of getFilteredSubjects()" 
     class="subject-pill" 
     [ngClass]="getSubjectClass(subject.name)"
     [class.active]="selectedSubject?.id === subject.id"
@@ -194,9 +194,9 @@
               [message]="message"
               [userName]="user?.full_name || 'You'"
               [userInitial]="getUserInitial()"
-              [showActions]="message.role === 'user' && hasAssistantReplyAfter(i)"
+              [showActions]="true"
               (editMessage)="editUserMessage(message.content)"
-              (retryMessage)="retryUserMessage(message.content)"
+              (retryMessage)="retryMessageAction(message)"
               (copyMessage)="copyUserMessage(message.content)">
             </app-chat-message>
           }
@@ -263,6 +263,20 @@
             </svg>
           </button>
 
+          <!-- Voice Recording button -->
+          <button class="mic-btn" (click)="toggleVoiceRecording()" [class.recording]="isRecording" title="Record Voice" type="button" [disabled]="loading || !selectedGrade || !selectedSubject || isTranscribingVoice">
+            @if (isTranscribingVoice) {
+              <div class="btn-spinner-pill" style="border-color: currentColor; border-top-color: transparent; width: 14px; height: 14px; border-width: 2px;"></div>
+            } @else {
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+              </svg>
+            }
+          </button>
+
           <textarea
             #messageInput
             [(ngModel)]="currentMessage"
@@ -272,7 +286,7 @@
             (blur)="inputFocused = false"
             [placeholder]="getPlaceholderText()"
             rows="1"
-            [disabled]="loading || !selectedGrade || !selectedSubject">
+            [disabled]="loading || !selectedGrade || !selectedSubject || isRecording || isTranscribingVoice">
           </textarea>
 
           <!-- Circular Send button -->

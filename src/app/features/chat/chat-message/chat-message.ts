@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {  EventEmitter } from '@angular/core';
+import {  Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatMessage } from '../../../core/services/chat.service';
 

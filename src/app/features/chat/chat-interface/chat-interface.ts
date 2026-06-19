@@ -589,6 +589,7 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
         this.isRecording = true;
+        this.cdr.detectChanges();
         this.audioChunks = [];
         this.mediaRecorder = new MediaRecorder(stream);
         
@@ -609,12 +610,14 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
       .catch(error => {
         console.error('Error accessing microphone:', error);
         this.sendErrorMessage = 'Could not access microphone. Please check permissions.';
+        this.cdr.detectChanges();
       });
   }
 
   stopRecording(): void {
     if (this.mediaRecorder && this.isRecording) {
       this.isRecording = false;
+      this.cdr.detectChanges();
       this.mediaRecorder.stop();
     }
   }
@@ -624,7 +627,8 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     const formData = new FormData();
     formData.append('audio', blob, 'recording.webm');
 
-    this.http.post<{text: string, language: string}>('http://localhost:8501/api/transcribe', formData).pipe(
+    const apiUrl = environment.transcribeApiUrl || 'http://localhost:8501/api/transcribe';
+    this.http.post<{text: string, language: string}>(apiUrl, formData).pipe(
       timeout(60000),
       catchError(error => {
         console.error('Transcription error:', error);

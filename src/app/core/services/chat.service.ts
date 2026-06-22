@@ -77,12 +77,35 @@ export class ChatService {
     );
   }
 
-  // Updated: Send message with 'prompt' instead of 'question'
-  sendMessage(sessionId: string, prompt: string): Observable<SendMessageResponse> {
+  // Updated: Send message with optional file_ids
+  sendMessage(sessionId: string, prompt: string, fileIds?: string[]): Observable<SendMessageResponse> {
+    const payload: any = { session_id: sessionId, prompt: prompt };
+    if (fileIds && fileIds.length > 0) {
+      payload.file_ids = fileIds;
+    }
     return this.http.post<SendMessageResponse>(
       `${this.apiUrl}/message`,
-      { session_id: sessionId, prompt: prompt },
+      payload,
       { headers: this.getAuthHeaders() }
+    );
+  }
+
+  // New: Upload file to backend
+  uploadFile(file: File): Observable<{ file_id: string; filename: string; size_bytes: number; mime_type: string }> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // Get auth token for multipart request
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    // Note: Do not set Content-Type header for FormData, browser sets it automatically with boundary
+    return this.http.post<{ file_id: string; filename: string; size_bytes: number; mime_type: string }>(
+      `${environment.apiUrl}/files/upload`,
+      formData,
+      { headers }
     );
   }
 

@@ -138,6 +138,91 @@
   line-height: 1.5;
 }
 
+/* =========================================
+   MARKDOWN STYLES (Tables, Code, Lists)
+   ========================================= */
+
+.message-text p {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+.message-text p:last-child {
+  margin-bottom: 0;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin: 16px 0;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.markdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+  background-color: var(--white);
+}
+
+.markdown-table th {
+  background-color: #f8fafc;
+  color: var(--primary-color);
+  font-weight: 600;
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--border);
+}
+
+.markdown-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+  transition: background-color 0.2s ease;
+}
+
+.markdown-table tbody tr:hover td {
+  background-color: #f4fdfd;
+}
+
+.markdown-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.message-text pre {
+  background-color: #1e293b;
+  color: #f8fafc;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  margin: 12px 0;
+}
+
+.message-text code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Inline code block */
+.message-text p > code, .message-text li > code {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  border: 1px solid #e2e8f0;
+}
+
+.message-text ul, .message-text ol {
+  margin-top: 8px;
+  margin-bottom: 16px;
+  padding-left: 24px;
+}
+
+.message-text li {
+  margin-bottom: 4px;
+}
+
 @media (max-width: 640px) {
   .message-text,
   .figure-dialogue-box {

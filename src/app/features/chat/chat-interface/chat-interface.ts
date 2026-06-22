@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { timeout, catchError, throwError } from 'rxjs';
+import { timeout, catchError, throwError, forkJoin } from 'rxjs';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, HostListener, ChangeDetectorRef } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { CommonModule } from '@angular/common';
@@ -247,7 +247,7 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     }, 100);
   }
 
-  sendMessage(): void {
+  sendMessage(fileIds?: string[]): void {
     if (!this.currentMessage.trim() || this.loading) return;
     
     // Check if subject and grade are selected
@@ -276,7 +276,7 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
           this.currentSessionId = session.id;
           this.currentSession = session;
           this.loadSessions(true);
-          this.sendToSession(userPrompt, session.id);
+          this.sendToSession(userPrompt, session.id, fileIds);
         },
         error: (err) => {
           console.error('Error creating session:', err);
@@ -290,11 +290,11 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
         }
       });
     } else {
-      this.sendToSession(userPrompt, this.currentSessionId);
+      this.sendToSession(userPrompt, this.currentSessionId, fileIds);
     }
   }
 
-  private sendToSession(prompt: string, sessionId: string): void {
+  private sendToSession(prompt: string, sessionId: string, fileIds?: string[]): void {
     this.sendErrorMessage = '';
     
     // Add user message to UI immediately
@@ -310,7 +310,7 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     this.shouldScroll = true;
     this.cdr.detectChanges();
 
-    this.chatService.sendMessage(sessionId, prompt).subscribe({
+    this.chatService.sendMessage(sessionId, prompt, fileIds).subscribe({
       next: (response: SendMessageResponse) => {
         // Add assistant message to UI
         const assistantMessage: DisplayMessage = {
@@ -517,6 +517,11 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   }
 }
   uploadFileToApi(file: File): void {
+    if (!this.selectedGrade || !this.selectedSubject) {
+      this.sendErrorMessage = 'Please select a grade and subject before uploading a file.';
+      return;
+    }
+
     const formData = new FormData();
     formData.append('file', file);
 
@@ -525,39 +530,64 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
 
     this.ocrLoading = true;
     this.sendErrorMessage = '';
+    
+    // Add a temporary processing message to the UI
+    const tempMessageId = 'temp_file_' + Date.now();
+    this.messages.push({
+      id: tempMessageId,
+      session_id: this.currentSessionId || 'temp',
+      role: 'user',
+      content: `📄 Processing file: ${file.name}...`,
+      timestamp: new Date().toISOString(),
+      figures: []
+    });
+    this.shouldScroll = true;
     this.cdr.detectChanges();
 
-    console.log('[OCR] POST', extractUrl, { fileName: file.name, fileType: file.type, timeoutMs: ocrTimeoutMs });
+    const ocrRequest = this.http.post<{ text?: string; data?: { text?: string } }>(extractUrl, formData).pipe(
+      timeout(ocrTimeoutMs)
+    );
 
-    this.http.post<{ text?: string; data?: { text?: string } }>(extractUrl, formData).pipe(
-      timeout(ocrTimeoutMs),
+    const uploadRequest = this.chatService.uploadFile(file);
+
+    forkJoin({
+      ocr: ocrRequest,
+      upload: uploadRequest
+    }).pipe(
       catchError((error) => {
-        console.error('[OCR] Request failed', { url: extractUrl, error });
+        console.error('[OCR/Upload] Request failed', error);
         return throwError(() => error);
       })
     ).subscribe({
-      next: (response) => {
+      next: (results) => {
         this.ocrLoading = false;
 
+        // Remove the temporary processing message
+        this.messages = this.messages.filter(m => m.id !== tempMessageId);
+
+        const response = results.ocr;
+        const uploadRes = results.upload;
+
         const raw = response?.text ?? response?.data?.text;
-        this.currentMessage = raw == null ? '' : String(raw);
+        const extractedText = raw == null ? '' : String(raw);
 
-        console.log('[OCR] Response from', extractUrl, { textLength: this.currentMessage.length });
+        console.log('[OCR] Response length', extractedText.length);
 
-        this.cdr.detectChanges();
-
-        setTimeout(() => {
-          if (this.messageInput) {
-            const textarea = this.messageInput.nativeElement;
-            textarea.focus();
-            textarea.style.height = 'auto';
-            textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
-          }
-        }, 0);
+        if (extractedText.trim()) {
+          // Automatically send the extracted text as a prompt
+          this.currentMessage = `📄 File: ${file.name}\n[OCR_TEXT]\n${extractedText}\n[/OCR_TEXT]`;
+          this.sendMessage([uploadRes.file_id]);
+        } else {
+          this.sendErrorMessage = 'Could not extract text from the file.';
+          this.cdr.detectChanges();
+        }
       },
       error: (error) => {
         this.ocrLoading = false;
         this.clearUploadedFile();
+
+        // Remove the temporary processing message
+        this.messages = this.messages.filter(m => m.id !== tempMessageId);
 
         const isTimeout = error?.name === 'TimeoutError';
         const status = error?.status;
@@ -727,7 +757,8 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   }
 
   editUserMessage(content: string): void {
-    this.currentMessage = content;
+    // Strip out hidden OCR text when editing
+    this.currentMessage = content.replace(/\[OCR_TEXT\][\s\S]*?\[\/OCR_TEXT\]/g, '').trim();
     setTimeout(() => {
       if (this.messageInput) {
         const textarea = this.messageInput.nativeElement;
@@ -770,10 +801,14 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
 
   copyUserMessage(content: string): void {
     if (!content) return;
-    navigator.clipboard?.writeText(content).catch(() => {
+    
+    // Strip out hidden OCR text when copying
+    const cleanContent = content.replace(/\[OCR_TEXT\][\s\S]*?\[\/OCR_TEXT\]/g, '').trim();
+    
+    navigator.clipboard?.writeText(cleanContent).catch(() => {
       // Keep fallback minimal without adding new UI noise.
       const temp = document.createElement('textarea');
-      temp.value = content;
+      temp.value = cleanContent;
       document.body.appendChild(temp);
       temp.select();
       document.execCommand('copy');

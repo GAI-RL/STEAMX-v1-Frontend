@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { CustomDropdownComponent } from '../../../shared/components/custom-dropdown/custom-dropdown.component';
+import { FeedbackService } from '../../../core/services/feedback.service';
+import { ContactFormPayload } from '../../../core/models/feedback.model';
 
 @Component({
   selector: 'app-contact',
@@ -38,7 +40,10 @@ export class ContactComponent {
   contactSuccess = false;
   contactError = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private feedbackService: FeedbackService
+  ) {}
 
   // Navigate back to home
   goToHome() {
@@ -74,24 +79,43 @@ export class ContactComponent {
     this.contactLoading = true;
     this.contactSuccess = false;
 
-    setTimeout(() => {
-      this.contactLoading = false;
-      this.contactSuccess = true;
-      
-      this.contact = { 
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        topic: '',
-        school: '',
-        subject: '',
-        message: ''
-      };
-      
-      setTimeout(() => {
-        this.contactSuccess = false;
-      }, 5000);
-    }, 1500);
+    const payload: ContactFormPayload = {
+      first_name: this.contact.firstName,
+      last_name: this.contact.lastName,
+      email: this.contact.email,
+      phone_number: this.contact.phone || undefined,
+      topic: this.contact.topic,
+      institution: this.contact.school || undefined,
+      subject_line: this.contact.subject || undefined,
+      message: this.contact.message
+    };
+
+    this.feedbackService.submitContactForm(payload).subscribe({
+      next: (response) => {
+        this.contactLoading = false;
+        this.contactSuccess = true;
+        
+        // Reset form
+        this.contact = { 
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          topic: '',
+          school: '',
+          subject: '',
+          message: ''
+        };
+        
+        setTimeout(() => {
+          this.contactSuccess = false;
+        }, 5000);
+      },
+      error: (err) => {
+        console.error('Error submitting contact form:', err);
+        this.contactLoading = false;
+        this.contactError = 'Failed to send message. Please try again later.';
+      }
+    });
   }
 }

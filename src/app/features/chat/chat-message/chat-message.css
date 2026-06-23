@@ -150,7 +150,7 @@
   margin-bottom: 0;
 }
 
-.table-container {
+.message-text .table-container {
   overflow-x: auto;
   margin: 16px 0;
   border-radius: 8px;
@@ -158,7 +158,7 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.03);
 }
 
-.markdown-table {
+.message-text table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
@@ -166,7 +166,7 @@
   background-color: var(--white);
 }
 
-.markdown-table th {
+.message-text table th {
   background-color: #f8fafc;
   color: var(--primary-color);
   font-weight: 600;
@@ -174,18 +174,18 @@
   border-bottom: 2px solid var(--border);
 }
 
-.markdown-table td {
+.message-text table td {
   padding: 12px 16px;
   border-bottom: 1px solid var(--border);
   color: var(--text-primary);
   transition: background-color 0.2s ease;
 }
 
-.markdown-table tbody tr:hover td {
+.message-text table tbody tr:hover td {
   background-color: #f4fdfd;
 }
 
-.markdown-table tbody tr:last-child td {
+.message-text table tbody tr:last-child td {
   border-bottom: none;
 }
 

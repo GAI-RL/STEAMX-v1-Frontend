@@ -171,7 +171,7 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
       { id: 'computer-science', name: 'Computer Science', icon: '💻', color: '#3B82F6', is_active: true },
       { id: 'pakistan-studies', name: 'Pakistan Studies', icon: '🇵🇰', color: '#F97316', is_active: true },
       { id: 'islamic-studies', name: 'Islamic Studies', icon: '🕌', color: '#A855F7', is_active: true },
-      { id: 'tarjuma-e-quran', name: 'Tarjuma-e-Quran', icon: '📖', color: '#D97706', is_active: true }
+      { id: 'tarjuma-tul-quran', name: 'Tarjuma tul Quran', icon: '📖', color: '#D97706', is_active: true }
     ];
   }
 

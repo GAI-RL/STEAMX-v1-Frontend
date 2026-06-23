@@ -44,15 +44,6 @@ export class ChatMessageComponent implements OnInit {
       gfm: true,
       breaks: true
     });
-
-    // Custom renderer for tables to add wrapper for scrolling
-    const renderer = new marked.Renderer();
-    const originalTable = renderer.table.bind(renderer);
-    
-    renderer.table = (token: any) => {
-      return `<div class="table-container">${originalTable(token)}</div>`;
-    };
-    marked.use({ renderer });
   }
 
   ngOnInit(): void {
@@ -88,11 +79,14 @@ export class ChatMessageComponent implements OnInit {
     let cleanContent = content.replace(/\[OCR_TEXT\][\s\S]*?\[\/OCR_TEXT\]/g, '');
     
     // Parse Markdown to HTML
-    // @ts-ignore
-    const rawHtml = marked.parse(cleanContent);
+    let rawHtml = marked.parse(cleanContent) as string;
+    
+    // Wrap tables in a responsive container for scrolling
+    rawHtml = rawHtml.replace(/<table>/g, '<div class="table-container"><table class="markdown-table">');
+    rawHtml = rawHtml.replace(/<\/table>/g, '</table></div>');
     
     // Sanitize the HTML
-    const sanitizedHtml = DOMPurify.sanitize(rawHtml as string);
+    const sanitizedHtml = DOMPurify.sanitize(rawHtml);
     
     // Bypass Angular security to render the safe HTML
     return this.sanitizer.bypassSecurityTrustHtml(sanitizedHtml);

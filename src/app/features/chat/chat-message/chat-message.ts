@@ -1,5 +1,8 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 import { ChatMessage } from '../../../core/services/chat.service';
 
 // Display interface for the component
@@ -17,7 +20,8 @@ interface DisplayMessage {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './chat-message.html',
-  styleUrl: './chat-message.css'
+  styleUrl: './chat-message.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class ChatMessageComponent implements OnInit {
   @Input() message!: ChatMessage | DisplayMessage;
@@ -30,23 +34,40 @@ export class ChatMessageComponent implements OnInit {
   @Output() copyMessage = new EventEmitter<void>();
 
   displayRole: 'user' | 'assistant' = 'assistant';
-  displayContent: string = '';
+  displayContent: SafeHtml = '';
   displayTimestamp: string = '';
   displayFigures: any[] = [];
+
+  constructor(private sanitizer: DomSanitizer) {
+    // Configure marked to use GFM and break on newlines
+    marked.setOptions({
+      gfm: true,
+      breaks: true
+    });
+
+    // Custom renderer for tables to add wrapper for scrolling
+    const renderer = new marked.Renderer();
+    const originalTable = renderer.table.bind(renderer);
+    
+    renderer.table = (token: any) => {
+      return `<div class="table-container">${originalTable(token)}</div>`;
+    };
+    marked.use({ renderer });
+  }
 
   ngOnInit(): void {
     if ('role' in this.message) {
       const msg = this.message as DisplayMessage;
       this.displayRole = msg.role;
-      this.displayContent = msg.content;
       this.displayTimestamp = msg.timestamp;
       this.displayFigures = msg.figures || [];
+      this.displayContent = this.formatContent(msg.content);
     } else {
       const msg = this.message as ChatMessage;
       this.displayRole = 'assistant';
-      this.displayContent = msg.response || '';
       this.displayTimestamp = msg.created_at;
       this.displayFigures = msg.figures || [];
+      this.displayContent = this.formatContent(msg.response || '');
     }
   }
 
@@ -60,11 +81,20 @@ export class ChatMessageComponent implements OnInit {
     });
   }
 
-  formatContent(content: string): string {
+  formatContent(content: string): SafeHtml {
     if (!content) return '';
-    return content
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/\n/g, '<br>');
+    
+    // Remove hidden OCR text block BEFORE parsing markdown
+    let cleanContent = content.replace(/\[OCR_TEXT\][\s\S]*?\[\/OCR_TEXT\]/g, '');
+    
+    // Parse Markdown to HTML
+    // @ts-ignore
+    const rawHtml = marked.parse(cleanContent);
+    
+    // Sanitize the HTML
+    const sanitizedHtml = DOMPurify.sanitize(rawHtml as string);
+    
+    // Bypass Angular security to render the safe HTML
+    return this.sanitizer.bypassSecurityTrustHtml(sanitizedHtml);
   }
 }

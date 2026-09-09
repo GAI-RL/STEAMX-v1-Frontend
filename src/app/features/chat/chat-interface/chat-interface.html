@@ -9,7 +9,9 @@
     [userInitial]="getUserInitial()"
     [userPlan]="stats.plan"
     [selectedGrade]="selectedGrade"
+    [isTcfActive]="isTcfView || selectedProgram === 'TCF'"
     (gradeSelected)="handleGradeSelected($event)"
+    (tcfSelected)="handleTcfSelected()"
     (newChat)="createNewSession()"
     (selectSession)="loadSession($event)"
     (deleteSession)="handleDeleteSession($event)"
@@ -51,7 +53,7 @@
     </header>
 
 <!-- RAG Subject Pills Bar (Updated to use real subjects from API) -->
-<div class="chat-subjects-bar" *ngIf="selectedGrade">
+<div class="chat-subjects-bar" *ngIf="selectedGrade && !isTcfView && selectedProgram !== 'TCF'">
   <button 
     *ngFor="let subject of getFilteredSubjects()" 
     class="subject-pill" 
@@ -63,7 +65,7 @@
 </div>
 
     <!-- Floating Class/Subject Selection Toasts -->
-    <div class="grade-selection-toast animate-toast" *ngIf="!selectedGrade">
+    <div class="grade-selection-toast animate-toast" *ngIf="!selectedGrade && !isTcfView && selectedProgram !== 'TCF'">
       <div class="toast-glowing-glow"></div>
       <div class="toast-content">
         <div class="toast-text-wrap">
@@ -73,7 +75,7 @@
       </div>
     </div>
 
-    <div class="grade-selection-toast animate-toast" *ngIf="selectedGrade && !selectedSubject">
+    <div class="grade-selection-toast animate-toast" *ngIf="selectedGrade && !selectedSubject && !isTcfView && selectedProgram !== 'TCF'">
       <div class="toast-glowing-glow"></div>
       <div class="toast-content">
         <div class="toast-text-wrap">
@@ -82,6 +84,46 @@
         </div>
       </div>
     </div>
+
+    @if ((isTcfView || selectedProgram === 'TCF') && messages.length === 0) {
+      <!-- TCF Page Content -->
+      <div class="tcf-page-view">
+        <div class="tcf-content-wrap">
+          <div class="tcf-hero">
+            <div class="tcf-icon-badge">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+            </div>
+            <h1 class="tcf-title">TCF</h1>
+            <p class="tcf-subtitle">Select a level to explore subjects and start learning.</p>
+          </div>
+
+          <div class="tcf-levels-grid">
+            @for (lvl of tcfLevels; track lvl.level) {
+              <div 
+                class="tcf-level-card" 
+                [class.selected]="selectedTcfLevel === lvl.level"
+                (click)="onTcfLevelClick(lvl)" 
+                role="button" 
+                tabindex="0">
+                <div class="tcf-level-badge" [ngClass]="lvl.badgeClass">
+                  <span>{{ lvl.level }}</span>
+                </div>
+                <div class="tcf-level-header">
+                  <h3 class="tcf-level-name">Level {{ lvl.level }}</h3>
+                  <svg class="tcf-level-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6"/>
+                  </svg>
+                </div>
+                <p class="tcf-level-desc">Explore subjects for Level {{ lvl.level }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    } @else {
 
     <!-- Session / Auth error banner -->
     @if (sessionError) {
@@ -241,6 +283,7 @@
       }
 
     </div>
+    }
 
     <!-- Input Area -->
     <div class="input-area">
@@ -264,7 +307,7 @@
           </button>
 
           <!-- Voice Recording button -->
-          <button class="mic-btn" (click)="toggleVoiceRecording()" [class.recording]="isRecording" title="Record Voice" type="button" [disabled]="loading || !selectedGrade || !selectedSubject || isTranscribingVoice">
+          <button class="mic-btn" (click)="toggleVoiceRecording()" [class.recording]="isRecording" title="Record Voice" type="button" [disabled]="loading || !isChatInputEnabled() || isTranscribingVoice">
             @if (isTranscribingVoice) {
               <div class="btn-spinner-pill" style="border-color: currentColor; border-top-color: transparent; width: 14px; height: 14px; border-width: 2px;"></div>
             } @else {
@@ -286,11 +329,11 @@
             (blur)="inputFocused = false"
             [placeholder]="getPlaceholderText()"
             rows="1"
-            [disabled]="loading || !selectedGrade || !selectedSubject || isRecording || isTranscribingVoice">
+            [disabled]="loading || !isChatInputEnabled() || isRecording || isTranscribingVoice">
           </textarea>
 
           <!-- Circular Send button -->
-          <button class="send-btn-pill" [class.active]="currentMessage.trim() && selectedGrade && selectedSubject" [disabled]="!currentMessage.trim() || loading || !selectedGrade || !selectedSubject" (click)="sendMessage()">
+          <button class="send-btn-pill" [class.active]="currentMessage.trim() && isChatInputEnabled()" [disabled]="!currentMessage.trim() || loading || !isChatInputEnabled()" (click)="sendMessage()">
             @if (loading) {
               <div class="btn-spinner-pill"></div>
             } @else {

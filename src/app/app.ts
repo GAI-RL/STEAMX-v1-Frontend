@@ -30,20 +30,28 @@ export class AppComponent implements OnInit, OnDestroy {
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef
   ) {
+    this.updateHeaderFooterVisibility(window.location.pathname);
+
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
-      // Hide navbar/footer on chat, dashboard, login, register, and contact pages
-      this.showHeaderFooter = !event.url.includes('/chat') && 
-                              !event.url.includes('/dashboard') && 
-                              !event.url.includes('/login') && 
-                              !event.url.includes('/register') &&
-                              !event.url.includes('/contact') &&  // ← ADDED THIS LINE
-                              !event.url.includes('#pricing');
+      this.updateHeaderFooterVisibility(event.url);
     });
   }
 
+  private updateHeaderFooterVisibility(url: string): void {
+    // Hide navbar/footer on chat, tcf, dashboard, login, register, and contact pages
+    const isAppPage = url.includes('/chat') || 
+                      url.includes('/tcf') || 
+                      url.includes('/dashboard') || 
+                      url.includes('/login') || 
+                      url.includes('/register') || 
+                      url.includes('/contact');
+    this.showHeaderFooter = !isAppPage && !url.includes('#pricing');
+  }
+
   ngOnInit(): void {
+    this.updateHeaderFooterVisibility(window.location.pathname || this.router.url);
     this.sub = this.sessionService.sessionExpired$.subscribe(() => {
       console.log('session expired received');
       this.ngZone.run(() => {

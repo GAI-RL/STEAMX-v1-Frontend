@@ -22,6 +22,7 @@ export class ChatSidebarComponent implements OnChanges, OnInit {
   @Input() userInitial = 'U';
   @Input() userPlan = 'FREE';
   @Input() selectedGrade: Grade | null = null;
+  @Input() isTcfActive = false;
 
   @Output() newChat = new EventEmitter<void>();
   @Output() selectSession = new EventEmitter<string>();
@@ -29,6 +30,7 @@ export class ChatSidebarComponent implements OnChanges, OnInit {
   @Output() logout = new EventEmitter<void>();
   @Output() toggleSidebar = new EventEmitter<void>();
   @Output() gradeSelected = new EventEmitter<Grade>();
+  @Output() tcfSelected = new EventEmitter<void>();
 
   // Available grades from API
   availableGrades: Grade[] = [];
@@ -61,7 +63,8 @@ export class ChatSidebarComponent implements OnChanges, OnInit {
   loadGrades(): void {
     this.subjectService.getGrades().subscribe({
       next: (grades) => {
-        this.availableGrades = grades && grades.length > 0 ? grades : [
+        const classGrades = (grades || []).filter(g => g.display_name !== 'TCF' && g.level > 0);
+        this.availableGrades = classGrades.length > 0 ? classGrades : [
           { id: '9', level: 9, display_name: 'Class 9' },
           { id: '10', level: 10, display_name: 'Class 10' },
           { id: '11', level: 11, display_name: 'Class 11' },
@@ -83,6 +86,10 @@ export class ChatSidebarComponent implements OnChanges, OnInit {
 
   onGradeSelected(grade: Grade): void {
     this.gradeSelected.emit(grade);
+  }
+
+  onTcfSelected(): void {
+    this.tcfSelected.emit();
   }
 
   get displayedSessions(): ChatSession[] {

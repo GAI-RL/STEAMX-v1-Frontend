@@ -4,7 +4,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, HostListene
 import { environment } from '../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { ChatService, ChatSession, ChatMessage, SendMessageResponse } from '../../../core/services/chat.service';
 import { SubjectService, Subject, Grade } from '../../../core/services/subject.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -69,6 +69,18 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   availableSubjects: Subject[] = [];
   availableGrades: Grade[] = [];
 
+  // TCF View State
+  isTcfView = false;
+  selectedTcfLevel: number | null = null;
+  selectedProgram: 'REGULAR' | 'TCF' = 'REGULAR';
+  selectedLevel: string | null = null;
+  readonly tcfLevels = [
+    { level: 1, badgeClass: 'badge-level-1' },
+    { level: 2, badgeClass: 'badge-level-2' },
+    { level: 3, badgeClass: 'badge-level-3' },
+    { level: 4, badgeClass: 'badge-level-4' }
+  ];
+
   constructor(
     private chatService: ChatService,
     private subjectService: SubjectService,
@@ -119,6 +131,13 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
       }
     });
 
+    this.checkIfTcfRoute();
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.checkIfTcfRoute();
+      }
+    });
+
     this.route.params.subscribe(params => {
       const sessionId = params['id'];
       if (sessionId && sessionId !== this.currentSessionId && !this.isFirstMessage) {
@@ -131,6 +150,7 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     this.subjectService.getGrades().subscribe({
       next: (grades) => {
         this.availableGrades = grades && grades.length > 0 ? grades : [
+          { id: '21b69762-0c8c-45ba-981c-2157f45259e1', level: 0, display_name: 'TCF' },
           { id: '9', level: 9, display_name: 'Class 9' },
           { id: '10', level: 10, display_name: 'Class 10' },
           { id: '11', level: 11, display_name: 'Class 11' },
@@ -140,6 +160,7 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
       error: (err) => {
         console.error('Error loading grades:', err);
         this.availableGrades = [
+          { id: '21b69762-0c8c-45ba-981c-2157f45259e1', level: 0, display_name: 'TCF' },
           { id: '9', level: 9, display_name: 'Class 9' },
           { id: '10', level: 10, display_name: 'Class 10' },
           { id: '11', level: 11, display_name: 'Class 11' },
@@ -171,7 +192,11 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
       { id: 'computer-science', name: 'Computer Science', icon: '💻', color: '#3B82F6', is_active: true },
       { id: 'pakistan-studies', name: 'Pakistan Studies', icon: '🇵🇰', color: '#F97316', is_active: true },
       { id: 'islamic-studies', name: 'Islamic Studies', icon: '🕌', color: '#A855F7', is_active: true },
-      { id: 'tarjuma-tul-quran', name: 'Tarjuma tul Quran', icon: '📖', color: '#D97706', is_active: true }
+      { id: 'tarjuma-tul-quran', name: 'Tarjuma tul Quran', icon: '📖', color: '#D97706', is_active: true },
+      { id: 'bdd2f7ad-73c1-4f2e-8874-579fea0725c4', name: 'TCF Level 1', icon: '📖', color: '#00687a', is_active: true },
+      { id: '7172e0db-3652-4ee0-a901-d41605fcbd74', name: 'TCF Level 2', icon: '📖', color: '#00687a', is_active: true },
+      { id: '00eb1e61-49dd-4a91-ba46-1bcc257e0f91', name: 'TCF Level 3', icon: '📖', color: '#00687a', is_active: true },
+      { id: '4452026d-b1a6-4de2-a31f-af6038221532', name: 'TCF Level 4', icon: '📖', color: '#00687a', is_active: true }
     ];
   }
 
@@ -183,6 +208,11 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   }
 
   loadSession(sessionId: string): void {
+    if (this.isTcfView) {
+      this.isTcfView = false;
+      this.router.navigate(['/chat', sessionId]);
+    }
+
     if (this.isFirstMessage && this.currentSessionId === sessionId) {
       return;
     }
@@ -196,6 +226,29 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     this.chatService.getSession(sessionId).subscribe({
       next: (response) => {
         this.currentSession = response.session;
+
+        // Restore context if session has grade/subject
+        if (response.session?.grade_id) {
+          const matchedGrade = this.availableGrades.find(g => g.id === response.session.grade_id);
+          if (matchedGrade) {
+            this.selectedGrade = matchedGrade;
+            if (matchedGrade.display_name === 'TCF' || matchedGrade.level === 0) {
+              this.selectedProgram = 'TCF';
+            }
+          }
+        }
+        if (response.session?.subject_id) {
+          const matchedSubject = this.availableSubjects.find(s => s.id === response.session.subject_id);
+          if (matchedSubject) {
+            this.selectedSubject = matchedSubject;
+            if (matchedSubject.name.startsWith('TCF Level')) {
+              this.selectedProgram = 'TCF';
+              this.selectedLevel = matchedSubject.name.replace('TCF ', '');
+              const m = matchedSubject.name.match(/\d+/);
+              if (m) this.selectedTcfLevel = parseInt(m[0], 10);
+            }
+          }
+        }
         
         // Convert Q&A pairs to display message format
         this.messages = [];
@@ -236,6 +289,22 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   }
 
   createNewSession(): void {
+    if (this.isTcfView || this.selectedProgram === 'TCF') {
+      this.currentSession = null;
+      this.currentSessionId = null;
+      this.messages = [];
+      this.loading = false;
+      this.isFirstMessage = false;
+      this.selectedLevel = null;
+      this.selectedTcfLevel = null;
+      this.selectedGrade = null;
+      this.selectedSubject = null;
+      this.sendErrorMessage = '';
+      this.clearUploadedFile();
+      this.router.navigate(['/tcf']);
+      this.cdr.detectChanges();
+      return;
+    }
     this.currentSession = null;
     this.currentSessionId = null;
     this.messages = [];
@@ -250,10 +319,17 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   sendMessage(fileIds?: string[]): void {
     if (!this.currentMessage.trim() || this.loading) return;
     
-    // Check if subject and grade are selected
-    if (!this.selectedGrade || !this.selectedSubject) {
-      this.sendErrorMessage = 'Please select a grade and subject before starting a chat.';
-      return;
+    // Check if subject and grade are selected (or TCF level)
+    if (this.selectedProgram === 'TCF' || this.isTcfView) {
+      if (!this.selectedLevel) {
+        this.sendErrorMessage = 'Please select a TCF level before starting a chat.';
+        return;
+      }
+    } else {
+      if (!this.selectedGrade || !this.selectedSubject) {
+        this.sendErrorMessage = 'Please select a grade and subject before starting a chat.';
+        return;
+      }
     }
     
     const userPrompt = this.currentMessage.trim();
@@ -270,8 +346,20 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     if (!this.currentSessionId) {
       this.isFirstMessage = true;
 
+      // Determine subjectId and gradeId based on program context
+      const subjectId = this.selectedSubject?.id;
+      const gradeId = this.selectedGrade?.id;
+
+      if (!subjectId || !gradeId) {
+        this.sendErrorMessage = this.selectedProgram === 'TCF'
+          ? 'Please select a TCF level before starting a chat.'
+          : 'Please select a grade and subject before starting a chat.';
+        this.loading = false;
+        return;
+      }
+
       // Create session with selected subject and grade
-      this.chatService.createNewSession(this.selectedSubject.id, this.selectedGrade.id).subscribe({
+      this.chatService.createNewSession(subjectId, gradeId).subscribe({
         next: (session) => {
           this.currentSessionId = session.id;
           this.currentSession = session;
@@ -366,7 +454,90 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  private checkIfTcfRoute(): void {
+    this.isTcfView = this.router.url.includes('/tcf');
+    if (this.isTcfView) {
+      this.selectedProgram = 'TCF';
+    } else {
+      this.selectedProgram = 'REGULAR';
+      this.selectedLevel = null;
+      this.selectedTcfLevel = null;
+    }
+  }
+
+  handleTcfSelected(): void {
+    this.isTcfView = true;
+    this.selectedProgram = 'TCF';
+    this.selectedLevel = null;
+    this.selectedTcfLevel = null;
+    this.selectedGrade = null;
+    this.selectedSubject = null;
+    this.currentSession = null;
+    this.currentSessionId = null;
+    this.messages = [];
+    this.sendErrorMessage = '';
+    this.router.navigate(['/tcf']);
+  }
+
+  onTcfLevelClick(lvl: { level: number }): void {
+    this.selectedTcfLevel = lvl.level;
+    this.selectedProgram = 'TCF';
+    this.selectedLevel = `Level ${lvl.level}`;
+
+    // Find real database TCF Grade
+    const tcfGrade = this.availableGrades.find(g => g.display_name === 'TCF' || g.level === 0) || {
+      id: '21b69762-0c8c-45ba-981c-2157f45259e1',
+      level: 0,
+      display_name: 'TCF'
+    };
+
+    // Find real database TCF Level Subject
+    const targetSubjectName = `TCF Level ${lvl.level}`;
+    const tcfSubject = this.availableSubjects.find(s => s.name === targetSubjectName || s.name === `Level ${lvl.level}`) || {
+      id: this.getTcfLevelSubjectId(lvl.level),
+      name: targetSubjectName,
+      icon: '📖',
+      color: '#00687a',
+      is_active: true
+    };
+
+    this.selectedGrade = tcfGrade;
+    this.selectedSubject = tcfSubject;
+
+    this.sendErrorMessage = '';
+    this.cdr.detectChanges();
+    setTimeout(() => {
+      if (this.messageInput) {
+        this.messageInput.nativeElement.focus();
+      }
+    }, 100);
+  }
+
+  private getTcfLevelSubjectId(level: number): string {
+    const map: Record<number, string> = {
+      1: 'bdd2f7ad-73c1-4f2e-8874-579fea0725c4',
+      2: '7172e0db-3652-4ee0-a901-d41605fcbd74',
+      3: '00eb1e61-49dd-4a91-ba46-1bcc257e0f91',
+      4: '4452026d-b1a6-4de2-a31f-af6038221532'
+    };
+    return map[level] || 'bdd2f7ad-73c1-4f2e-8874-579fea0725c4';
+  }
+
+  isChatInputEnabled(): boolean {
+    if (this.isTcfView || this.selectedProgram === 'TCF') {
+      return !!this.selectedLevel;
+    }
+    return !!(this.selectedGrade && this.selectedSubject);
+  }
+
   handleGradeSelected(grade: Grade): void {
+    if (this.isTcfView || this.selectedProgram === 'TCF') {
+      this.isTcfView = false;
+      this.selectedProgram = 'REGULAR';
+      this.selectedLevel = null;
+      this.selectedTcfLevel = null;
+      this.router.navigate(['/chat']);
+    }
     const gradeChanged = this.selectedGrade?.id !== grade.id;
     this.selectedGrade = grade;
 
@@ -450,6 +621,12 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   }
 
   getPlaceholderText(): string {
+    if (this.isTcfView || this.selectedProgram === 'TCF') {
+      if (this.selectedLevel) {
+        return `Ask anything about TCF ${this.selectedLevel}...`;
+      }
+      return 'Please select a TCF level above to start chatting...';
+    }
     if (!this.selectedGrade) {
       return 'Please select your class in the sidebar...';
     }

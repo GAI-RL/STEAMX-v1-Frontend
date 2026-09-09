@@ -55,6 +55,11 @@ export const routes: Routes = [
     component: ChatInterfaceComponent,
     canActivate: [authGuard]
   },
+  { 
+    path: 'tcf', 
+    component: ChatInterfaceComponent,
+    canActivate: [authGuard]
+  },
   
   // ════════════════════════════════════════════════════════════
   // FALLBACK ROUTE

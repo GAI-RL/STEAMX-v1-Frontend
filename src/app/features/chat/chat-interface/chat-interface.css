@@ -999,3 +999,175 @@
     transform: none !important;
   }
 }
+
+/* =====================================================
+   TCF PAGE VIEW STYLING
+   ===================================================== */
+.tcf-page-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.tcf-content-wrap {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto 0;
+}
+
+.tcf-hero {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.tcf-icon-badge {
+  width: 72px;
+  height: 72px;
+  background: #e8f5f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px auto;
+  color: #00687a;
+  box-shadow: 0 4px 14px rgba(0, 104, 122, 0.08);
+}
+
+.tcf-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 10px 0;
+  letter-spacing: -0.5px;
+}
+
+.tcf-subtitle {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #64748b;
+  margin: 0;
+}
+
+.tcf-levels-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.tcf-level-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  user-select: none;
+  position: relative;
+}
+
+.tcf-level-card:hover {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 104, 122, 0.08);
+}
+
+.tcf-level-card:hover .tcf-level-chevron {
+  color: #00687a;
+  transform: translateX(3px);
+}
+
+.tcf-level-card.selected {
+  border-color: #00687a;
+  box-shadow: 0 0 0 2px rgba(0, 104, 122, 0.18), 0 8px 24px rgba(0, 104, 122, 0.08);
+}
+
+.tcf-level-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.badge-level-1 {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.badge-level-2 {
+  background: #f3e8ff;
+  color: #9333ea;
+}
+
+.badge-level-3 {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.badge-level-4 {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.tcf-level-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.tcf-level-name {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.tcf-level-chevron {
+  color: #94a3b8;
+  transition: transform 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.tcf-level-desc {
+  font-size: 0.86rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.4;
+}
+
+@media (max-width: 1024px) {
+  .tcf-levels-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .tcf-levels-grid {
+    grid-template-columns: 1fr;
+  }
+  .tcf-hero {
+    margin-bottom: 32px;
+  }
+  .tcf-title {
+    font-size: 1.8rem;
+  }
+}

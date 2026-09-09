@@ -819,3 +819,87 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transform: scale(1.05);
 }
+
+/* =====================================================
+   TCF SECTION STYLING
+   ===================================================== */
+.sidebar-tcf-section {
+  padding: 4px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.tcf-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.tcf-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tcf-nav-icon {
+  color: #00687a;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.tcf-nav-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: inherit;
+}
+
+.tcf-nav-arrow {
+  color: #94a3b8;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.tcf-nav-btn:hover {
+  background: #f0f8f9;
+  border-color: #00687a;
+  color: #00687a;
+  box-shadow: 0 2px 6px rgba(0, 104, 122, 0.08);
+}
+
+.tcf-nav-btn:hover .tcf-nav-arrow {
+  color: #00687a;
+  transform: translateX(2px);
+}
+
+.tcf-nav-btn.active {
+  background: #eaf5f5;
+  border-color: #00687a;
+  color: #00687a;
+  box-shadow: 0 2px 8px rgba(0, 104, 122, 0.12);
+}
+
+.tcf-nav-btn.active .tcf-nav-icon {
+  color: #00687a;
+}
+
+.tcf-nav-btn.active .tcf-nav-arrow {
+  color: #00687a;
+}
+
+.collapsed-tcf {
+  margin-top: 0;
+}

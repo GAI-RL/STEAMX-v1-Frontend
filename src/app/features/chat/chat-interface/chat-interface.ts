@@ -75,10 +75,38 @@ export class ChatInterfaceComponent implements OnInit, AfterViewChecked {
   selectedProgram: 'REGULAR' | 'TCF' = 'REGULAR';
   selectedLevel: string | null = null;
   readonly tcfLevels = [
-    { level: 1, badgeClass: 'badge-level-1' },
-    { level: 2, badgeClass: 'badge-level-2' },
-    { level: 3, badgeClass: 'badge-level-3' },
-    { level: 4, badgeClass: 'badge-level-4' }
+    {
+      level: 1,
+      themeClass: 'theme-level-1',
+      badgeClass: 'badge-level-1',
+      title: 'Digital & Professional Foundations',
+      description: 'Build essential digital skills, professional habits and workplace readiness.',
+      iconType: 'laptop'
+    },
+    {
+      level: 2,
+      themeClass: 'theme-level-2',
+      badgeClass: 'badge-level-2',
+      title: 'AI Tools, Data Science & Machine Learning',
+      description: 'Work with modern AI tools, learn data skills and explore machine learning concepts.',
+      iconType: 'brain'
+    },
+    {
+      level: 3,
+      themeClass: 'theme-level-3',
+      badgeClass: 'badge-level-3',
+      title: 'Digital Media & Marketing OR No-Code Web Development',
+      description: 'Choose your track and gain hands-on skills in digital media & marketing or no-code web development.',
+      iconType: 'megaphone'
+    },
+    {
+      level: 4,
+      themeClass: 'theme-level-4',
+      badgeClass: 'badge-level-4',
+      title: 'Advanced Specialization + Internship',
+      description: 'Advance your expertise, complete real-world projects and gain internship experience.',
+      iconType: 'briefcase'
+    }
   ];
 
   constructor(
